@@ -1,0 +1,10 @@
+# Source: https://github.com/camunda-community-hub/camunda-8-code-studio/tree/f234094b4429fb05a0b1b715622aa3150d643995/src/JavaCloudWorker/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+# https://github.com/camunda-community-hub/spring-zeebe#configuring-camunda-platform-8-saas-connection
+# https://github.com/camunda-community-hub/spring-zeebe#additional-configuration-options
+zeebe.client:
+    cloud:
+        region: bru-2
+        clusterId: dbd4cad1-5621-4d66-b14e-71c92456939a
+        clientId: jHVr.3DQ~3ApfHfFJ4msPgGl~a6Pjv.G
+        clientSecret: iJAUCN5j.y_zt0khCgo2gvfU08FxZuMM0n.ld9yeEyqvP~L7hxRQiQdK.6FqTyAW

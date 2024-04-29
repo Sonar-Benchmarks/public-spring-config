@@ -1,0 +1,8 @@
+# Source: https://github.com/zpng/spring-cloud-microservice-examples/tree/6938297335e924f8066f5558b79ee82fa204c4ee/cloud-hystrix-turbine/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+
+
+
+#turbine:
+#  appConfig: cloud-simple-ui
+#  clusterNameExpression: new String('default') #http://stackoverflow.com/questions/28365202/spring-boot-eureka-server-hystrix-with-turbine-empty-turbine-stream

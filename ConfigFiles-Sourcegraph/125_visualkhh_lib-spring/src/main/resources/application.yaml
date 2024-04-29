@@ -1,0 +1,35 @@
+# Source: https://github.com/visualkhh/lib-spring/tree/89e7d4b9a6318138d24f81e4e0fc2646f2d6a3d5/boot/multi2/tlo/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  profiles:
+    include:
+      - core
+      - default
+  #    active: core,db,default
+  pid:
+    file: tlo-app.pid
+
+---
+spring:
+  profiles: default
+project:
+  run-polling-time: 2000
+  properties:
+    tloPath: .
+logging:
+  config: classpath:logback-spring.xml
+---
+spring:
+  profiles: local
+#logging:
+#  config: classpath:logback-local.xml
+---
+spring:
+  profiles: dev
+logging:
+  config: classpath:logback-dev.xml
+---
+spring:
+  profiles: prod
+logging:
+  config: classpath:logback-prod.xml

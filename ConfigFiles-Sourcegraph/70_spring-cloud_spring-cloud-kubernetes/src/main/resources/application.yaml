@@ -1,0 +1,24 @@
+# Source: https://github.com/spring-cloud/spring-cloud-kubernetes/tree/1c819d00b16c81613277c5a682565a8922d2b993/spring-cloud-kubernetes-integration-tests/spring-cloud-kubernetes-k8s-client-kafka-configmap-reload-multiple-apps/kafka-configmap-app-b/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+#logging:
+#  level:
+#    org.springframework: DEBUG
+#
+spring:
+  application:
+    name: spring-cloud-kubernetes-client-configuration-watcher-configmap-app-b
+  cloud:
+    bus:
+      refresh:
+        enabled: false
+      enabled: true
+      destination: multiple-apps
+    stream:
+      default-binder: kafka
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+server:
+  port: 8081

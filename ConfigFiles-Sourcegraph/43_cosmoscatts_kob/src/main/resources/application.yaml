@@ -1,0 +1,4 @@
+# Source: https://github.com/cosmoscatts/kob/tree/886a659fa2dc967a646d94a40d9a27f4355e38ce/backend-cloud/matching-system/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 3001

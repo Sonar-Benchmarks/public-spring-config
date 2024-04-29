@@ -1,0 +1,9 @@
+# Source: https://github.com/camunda/camunda-bpm-examples/tree/83941d97825fdc488bf582cd4b3ae14672dabf9a/spring-boot-starter/example-webapp/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+camunda.bpm:
+  webapp:
+    index-redirect-enabled: true
+  admin-user:
+    id: demo
+    password: demo
+

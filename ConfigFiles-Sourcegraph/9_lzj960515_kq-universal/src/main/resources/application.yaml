@@ -1,0 +1,4 @@
+# Source: https://github.com/lzj960515/kq-universal/tree/47a9eabf01a155699433902ecce04689bef579c4/kq-universal-enum-starter/src/test/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 8080

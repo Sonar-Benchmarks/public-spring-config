@@ -1,0 +1,2 @@
+# Source: https://github.com/btpka3/btpka3.github.com/tree/7ea9c67352402ca7b450027459562f459bf04b82/java/maven/demo-maven-app/demo-war/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"

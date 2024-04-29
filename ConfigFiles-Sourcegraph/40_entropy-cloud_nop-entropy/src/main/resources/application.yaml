@@ -1,0 +1,5 @@
+# Source: https://github.com/entropy-cloud/nop-entropy/tree/c610aca14cc7c0492f0c024a19c6b50f973e5cb0/nop-demo/nop-spring-report-demo/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+logging:
+  level:
+    ROOT: INFO

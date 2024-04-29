@@ -1,0 +1,9 @@
+# Source: https://github.com/young-datafan-ooooo1/data-integration/tree/bfee3393dd56d651cf9694a708623817165125f5/dataintegration-group/dataintegration-group-provider/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  profiles:
+    active: local
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: dataintegration-group-provider

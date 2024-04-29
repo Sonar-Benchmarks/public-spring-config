@@ -1,0 +1,15 @@
+# Source: https://github.com/davidkiss/spring-cloud-streams-kafka-demo/tree/aa826bba4ac11de6bbdb1b454ebfb79fcc95c422/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+      bindings:
+        greetings-in:
+          destination: greetings
+          contentType: application/json
+        greetings-out:
+          destination: greetings
+          contentType: application/json
