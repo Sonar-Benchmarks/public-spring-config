@@ -1,0 +1,25 @@
+# Source: https://github.com/swiftech/swiftboot/tree/f006e4398a189d97c487977d59d14a5e028a9da7/swiftboot-data/src/test/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  jpa:
+#    database-platform: org.hibernate.dialect.H2Dialect
+#    hibernate:
+#      dialect: org.hibernate.dialect.H2Dialect
+#      ddl-auto: update
+#      naming:
+#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#    properties:
+#      hibernate:
+#        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+    show-sql: true
+    open-in-view: false
+logging:
+  level:
+    root: INFO
+    org.swiftboot: TRACE
+#    org.hibernate: DEBUG
+swiftboot:
+  data:
+    model:
+      autoGenerateId: true
+      autoUpdateTimeStrategy: on-change

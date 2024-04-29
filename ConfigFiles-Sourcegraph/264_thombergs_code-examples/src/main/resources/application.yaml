@@ -1,0 +1,23 @@
+# Source: https://github.com/thombergs/code-examples/tree/d5aa9334ba9776a75b05d664c4286531e51f1f5f/core-java/retrofit/introduction-to-retrofit/AuditApplication/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  datasource:
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    url: jdbc:hsqldb:mem:auditdb;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+
+server:
+  port: 8081
+
+library:
+  endpoint: http://localhost:8090
+  username: libuser
+  password: libpass
+  connectionTimeout: 30
+  readWriteTimeout: 30

@@ -1,0 +1,10 @@
+# Source: https://github.com/huaweicloud/Sermant/tree/af3dbc5b2b28b206d214aa5bb5b886c49a969882/sermant-integration-tests/spring-test/spring-zookeeper-config/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  application:
+    name: zookeeper-dynamic-config
+  cloud:
+    zookeeper:
+      connect-string: 127.0.0.1:2181
+server:
+  port: 8989

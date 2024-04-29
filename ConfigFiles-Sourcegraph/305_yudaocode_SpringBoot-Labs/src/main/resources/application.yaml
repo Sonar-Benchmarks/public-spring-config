@@ -1,0 +1,18 @@
+# Source: https://github.com/yudaocode/SpringBoot-Labs/tree/6c12efaed06d12907a0f40dd2ad1f7020aec8798/labx-14/labx-14-sc-skywalking-springcloudgateway/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 8888
+
+spring:
+  application:
+    name: gateway-application
+
+  cloud:
+    # Spring Cloud Gateway 配置项，对应 GatewayProperties 类
+    gateway:
+      # 路由配置项，对应 RouteDefinition 数组
+      routes:
+        - id: feign-service-route
+          uri: http://127.0.0.1:8081
+          predicates:
+            - Path=/**

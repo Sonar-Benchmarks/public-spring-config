@@ -1,0 +1,4 @@
+# Source: https://github.com/WENZIZZHENG/spring-boot-demo/tree/2ebfbdf0e615db4b2e7b6e245c134630c44d157b/spring-boot-multi-threading/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 7777

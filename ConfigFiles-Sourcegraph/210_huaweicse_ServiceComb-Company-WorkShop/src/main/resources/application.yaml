@@ -1,0 +1,49 @@
+# Source: https://github.com/huaweicse/ServiceComb-Company-WorkShop/tree/7bbf74a40b59fb0c2c63ae74e99a860357aa5d2a/manager/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+zuul:
+  routes:
+    doorman:
+      serviceId: doorman
+      sensitiveHeaders:
+    worker:
+      serviceId: worker
+    beekeeper:
+      serviceId: beekeeper
+
+# disable netflix eurkea since it's not used for service discovery
+ribbon:
+  eureka:
+    enabled: false
+
+spring:
+  cloud:
+    cse:
+      host: 127.0.0.1
+      port: 30100
+
+server:
+  port: 0
+
+---
+
+spring:
+  profiles: sit
+
+---
+
+spring:
+  profiles: dev
+
+logging:
+  level:
+    root: INFO
+
+zuul:
+  routes:
+    doorman:
+      url: http://localhost:8082
+      sensitiveHeaders:
+    worker:
+      url: http://localhost:8082
+    beekeeper:
+      url: http://localhost:8082

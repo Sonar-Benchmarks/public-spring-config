@@ -1,0 +1,5 @@
+# Source: https://github.com/jtsato/java-clean-architecture-example/tree/0e753814d9cf5301b0921da4a0c125fe9eabd4b3/infra/sql/src/test/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+   profiles:
+      active: h2

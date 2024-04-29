@@ -1,0 +1,11 @@
+# Source: https://github.com/bijukunjummen/sample-webflux-annot-cassandra/tree/949437ca74a63fce495e733b999f692404f121d2/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  data:
+    cassandra:
+      keyspace-name: sample
+      contact-points: localhost
+#logging:
+#  level:
+#    root: debug
+      
