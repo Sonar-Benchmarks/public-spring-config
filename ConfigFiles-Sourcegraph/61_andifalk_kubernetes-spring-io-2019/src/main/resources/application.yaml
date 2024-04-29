@@ -1,0 +1,12 @@
+# Source: https://github.com/andifalk/kubernetes-spring-io-2019/tree/5051f326cca2e577a9670ef74063d9bb8fdd1b0f/02-discovery/question-client/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+management:
+  endpoint:
+    restart:
+      enabled: true
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'

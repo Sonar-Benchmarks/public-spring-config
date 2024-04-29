@@ -1,0 +1,19 @@
+# Source: https://github.com/lzwgiter/Blockchain-Java-LatteCoin/tree/387fe58a3b8f8714493e7eaa356dbab95540d57f/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 9999
+# 数据库配置
+spring:
+  datasource:
+    username: chain_admin
+    url: jdbc:mysql://localhost:3306/lattechain?serverTimezone=UTC&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+  thymeleaf:
+    encoding: UTF-8
+  web:
+    resources:
+      static-locations: classpath:/templates/, classpath:/static/

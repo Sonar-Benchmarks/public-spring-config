@@ -1,0 +1,24 @@
+# Source: https://github.com/mihaita-tinta/articles/tree/d58451d7a6bc06c2cb4b2f38ed00326ba0ca20b2/testing-time/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+management:
+  endpoints:
+   web:
+    exposure:
+     include: startup
+logging:
+  level:
+    info.archinnov.achilles.script: DEBUG
+spring:
+  kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers}
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      auto-offset-reset: earliest
+      group-id: junit
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+       spring.json.trusted.packages: com.mih.testing.cassandra
+
+test:
+  topic: embedded-test-topic

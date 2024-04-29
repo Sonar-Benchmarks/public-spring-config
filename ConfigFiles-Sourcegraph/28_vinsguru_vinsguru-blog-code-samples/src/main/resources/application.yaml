@@ -1,0 +1,13 @@
+# Source: https://github.com/vinsguru/vinsguru-blog-code-samples/tree/fd206c53e8767fc969d999e4df6e931e80053fe2/resilient-microservice-pattern/rate-limiter-pattern/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+resilience4j.ratelimiter:
+  instances:
+    squareLimit:
+      limitForPeriod: 5
+      limitRefreshPeriod: 60s
+      timeoutDuration: 0
+---
+spring:
+  threads:
+    virtual:
+      enabled: true

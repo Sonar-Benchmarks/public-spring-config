@@ -1,0 +1,7 @@
+# Source: https://github.com/eicnix/spiffe-spring-boot-example/tree/bbbcc2987f6d2ea30b4f6401972e9045eb7573f8/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+# Because the certs are downloaded during the server start we need to configure a late SSL tomcat connector
+server.ssl.enabled: false
+spiffe:
+  socketPath: /tmp/agent.sock
+

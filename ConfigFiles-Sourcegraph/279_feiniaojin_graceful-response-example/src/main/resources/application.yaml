@@ -1,0 +1,22 @@
+# Source: https://github.com/feiniaojin/graceful-response-example/tree/3f001eeee2ee54f676c1a89bd44b4fba8ce63fe7/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 9090
+
+global:
+  result:
+    handler:
+      print: true
+
+spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+    static-path-pattern: "*.html"
+    add-mappings: false
+    view:
+      suffix: .html
+      prefix: /
+
+logging:
+  level:
+    cm.gingo: DEBUG

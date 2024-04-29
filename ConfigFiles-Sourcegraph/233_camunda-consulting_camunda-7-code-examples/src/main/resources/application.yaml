@@ -1,0 +1,7 @@
+# Source: https://github.com/camunda-consulting/camunda-7-code-examples/tree/06e290b9574d5d55a4eb12d8536b1fd5a51552b4/snippets/engine-plugin-signal-to-azure-eventhub/demo-runtime/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring.datasource.url: jdbc:h2:file:./camunda-h2-database
+
+camunda.bpm.admin-user:
+  id: demo
+  password: demo

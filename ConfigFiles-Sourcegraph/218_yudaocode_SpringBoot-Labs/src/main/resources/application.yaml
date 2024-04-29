@@ -1,0 +1,9 @@
+# Source: https://github.com/yudaocode/SpringBoot-Labs/tree/6c12efaed06d12907a0f40dd2ad1f7020aec8798/lab-68-spring-security-oauth/lab-68-demo21-authorization-server-on-sso/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  # datasource 数据源配置内容，对应 DataSourceProperties 配置属性类
+  datasource:
+    url: jdbc:mysql://127.0.0.1:43063/demo-68-authorization-server-sso?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root # 数据库账号
+    password: 123456 # 数据库密码

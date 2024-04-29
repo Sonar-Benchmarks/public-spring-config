@@ -1,0 +1,19 @@
+# Source: https://github.com/huaweicloud/Sermant-examples/tree/795b25d88bbbef8c1c1a8ffa4566a584afd9a58f/router-demo/full-link-route-demo/providerB/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 8004
+
+spring:
+  application:
+    name: providerB
+  cloud:
+    consul:
+      host: 127.0.0.1
+      port: 8500
+      discovery:
+        service-name: providerB
+        heartbeat:
+          enabled: true
+        instanceZone: A
+        catalog-services-watch:
+          enabled: false

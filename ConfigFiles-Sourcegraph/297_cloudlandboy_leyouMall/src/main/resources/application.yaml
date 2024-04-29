@@ -1,0 +1,23 @@
+# Source: https://github.com/cloudlandboy/leyouMall/tree/fa831a542c3395e4b3ced2cac79029fa03c41046/leyou-parent/leyou-goods-web/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 7004
+spring:
+  application:
+    name: goods-web
+  thymeleaf:
+    cache: false
+  main:
+    allow-bean-definition-overriding: true
+  rabbitmq:
+    host: 172.16.145.141
+    username: leyou
+    password: 123456
+    virtual-host: /leyou
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10001/eureka
+  instance:
+    lease-renewal-interval-in-seconds: 5 # 每隔5秒发送一次心跳
+    lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期

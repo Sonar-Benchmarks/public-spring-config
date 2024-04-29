@@ -1,0 +1,4 @@
+# Source: https://github.com/moelholm/smallexamples/tree/e50820a56909a1aebce1b3ff459ed58d171378d5/springboot-camel/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+app:
+  greeting.message: Hi ${dollarSign:$}{body}! You are so cool 😎

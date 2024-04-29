@@ -1,0 +1,7 @@
+# Source: https://github.com/LearningByExample/reactive-ms-example/tree/c40d5855ce2c5e0b6dfb06aa4a421ae9560d6548/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+logging.level.root: INFO
+GeoLocationServiceImpl:
+  endPoint: "https://maps.googleapis.com/maps/api/geocode/json"
+SunriseSunsetServiceImpl:
+  endPoint: "https://api.sunrise-sunset.org/json"

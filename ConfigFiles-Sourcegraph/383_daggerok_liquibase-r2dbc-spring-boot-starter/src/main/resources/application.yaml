@@ -1,0 +1,17 @@
+# Source: https://github.com/daggerok/liquibase-r2dbc-spring-boot-starter/tree/ec0073dbcc8192ed4e0fb638b0166af43516d24a/examples/mysql/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  output:
+    ansi:
+      enabled: always
+  r2dbc:
+    url: 'r2dbc:mysql://127.0.0.1:3306/database'
+    username: 'user'
+    password: 'password'
+  liquibase:
+    change-log: classpath*:/liquibase/changelog-master.xml
+server:
+  port: 8001
+logging:
+  level:
+    io.netty.resolver.dns.DnsServerAddressStreamProviders: off

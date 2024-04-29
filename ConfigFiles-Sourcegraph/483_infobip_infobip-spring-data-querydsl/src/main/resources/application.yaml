@@ -1,0 +1,13 @@
+# Source: https://github.com/infobip/infobip-spring-data-querydsl/tree/3dad133dd384b6bc1cd942432f43e96f98886201/infobip-spring-data-jpa-querydsl/src/test/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  datasource:
+    url: jdbc:sqlserver://<host>:<port>;database=InfobipSpringDataJpaQuerydslTest;trustServerCertificate=true
+  jpa:
+    properties.hibernate.show_sql: true
+    hibernate:
+      ddl_auto: validate
+      naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties.hibernate:
+      default_schema: dbo
+      use_nationalized_character_data: true

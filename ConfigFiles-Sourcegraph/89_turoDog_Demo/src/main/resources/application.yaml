@@ -1,0 +1,14 @@
+# Source: https://github.com/turoDog/Demo/tree/245bee1a247e7563f4e524b0cd50fa8fafec725f/springboot_transaction_demo/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  # 数据库相关
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&useSSL=true
+    username: root
+    password: 123456
+  # jpa 相关
+  jpa:
+    hibernate:
+      ddl-auto: update   # ddl-auto: 设为 create 表示每次都重新建表
+    show-sql: true

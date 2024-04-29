@@ -1,0 +1,9 @@
+# Source: https://github.com/name365/Blog-Java/tree/d6a653f627c368042cd7a459c03717aef68b83e3/源码/04-Java EE进阶/spring boot/spring-10-md/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  datasource:
+    username: root
+    password: root
+    # ?serverTimezone=UTC解决时区的报错
+    url: jdbc:mysql://localhost:3306/springboot?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    driver-class-name: com.mysql.cj.jdbc.Driver

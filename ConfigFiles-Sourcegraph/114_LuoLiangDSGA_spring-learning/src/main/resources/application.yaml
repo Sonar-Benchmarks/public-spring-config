@@ -1,0 +1,2 @@
+# Source: https://github.com/LuoLiangDSGA/spring-learning/tree/bc60e349b4c573fb624230d068f7bb66a9e64736/boot-starter/custom-starter/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"

@@ -1,0 +1,12 @@
+# Source: https://github.com/neo4j-graphql/neo4j-graphql-java/tree/ab89c2eb2b6bef23c478416bdf05e3d6dedddb29/examples/dgs-spring-boot/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+org:
+  neo4j:
+    driver:
+      uri: bolt://demo.neo4jlabs.com:7687
+      authentication:
+        username: movies
+        password: movies
+      config :
+        encrypted : true
+database: movies

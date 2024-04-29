@@ -1,0 +1,7 @@
+# Source: https://github.com/resteasy/resteasy-spring-boot/tree/896b98fcfc14d453b5c14c45a47e185d5439f3de/servlet/resteasy-wildfly-spring-boot-sample-app/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+resteasy:
+  jaxrs:
+    app:
+      registration: property
+      classes: com.sample.app.RestApp

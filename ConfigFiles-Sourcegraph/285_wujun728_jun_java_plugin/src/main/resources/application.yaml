@@ -1,0 +1,13 @@
+# Source: https://github.com/wujun728/jun_java_plugin/tree/3bb11e5c81dca89f90170fb830e2464fe91f8864/jun_springboot_plugin/springboot_excel/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 7777
+
+
+spring:
+  servlet:
+    # 文件上传限制
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+

@@ -1,0 +1,37 @@
+# Source: https://github.com/halimeozturk/Patika-HepsiEmlak-Graduation/tree/563c7054c54e3bdb91efd547c4410ce0cefd0f17/purchase/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 8088
+
+spring:
+  application:
+    name: advert
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8085/auth
+  datasource:
+    url: jdbc:postgresql://localhost:5432/purchase
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  rabbitmq:
+    host: localhost
+    port: 5672
+    password: guest
+    username: guest
+  main:
+    allow-bean-definition-overriding: true
+
+
+rabbitmq:
+  exchange: payment.exchange
+  routingkey: payment.routingkey
+  queue: payment
+

@@ -1,0 +1,10 @@
+# Source: https://github.com/camunda-consulting/camunda-7-code-examples/tree/06e290b9574d5d55a4eb12d8536b1fd5a51552b4/snippets/springboot-config-batch/src/test/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+# Test configuration using spring-boot
+
+camunda.bpm:
+  job-execution.enabled: false
+  id-generator: simple
+
+spring.datasource:
+  url: jdbc:h2:mem:camunda-spring-boot-test;DB_CLOSE_ON_EXIT=false

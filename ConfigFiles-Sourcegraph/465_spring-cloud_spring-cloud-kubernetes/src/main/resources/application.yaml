@@ -1,0 +1,15 @@
+# Source: https://github.com/spring-cloud/spring-cloud-kubernetes/tree/1c819d00b16c81613277c5a682565a8922d2b993/spring-cloud-kubernetes-controllers/spring-cloud-kubernetes-configserver/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  application:
+    name: kubernetesconfigserver
+
+server:
+  port: 8888
+
+---
+spring:
+  config:
+    activate:
+      on-cloud-platform: kubernetes
+    import: "optional:kubernetes:"

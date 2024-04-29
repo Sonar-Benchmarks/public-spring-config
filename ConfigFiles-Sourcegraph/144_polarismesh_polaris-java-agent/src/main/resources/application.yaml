@@ -1,0 +1,34 @@
+# Source: https://github.com/polarismesh/polaris-java-agent/tree/8d428643c03c39b1e462b0d3273b79e45c78beb1/polaris-agent-examples/spring-cloud-plugins-examples/spring-cloud-2023-examples/quickstart-examples/provider/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 65100
+
+spring:
+  application:
+    name: service-provider-2023
+  cloud:
+    nacos:
+      username: 'nacos'
+      password: 'nacos'
+      discovery:
+        enabled: false
+        server-addr: 127.0.0.1:8848
+      config:
+        enabled: true
+        serverAddr: 127.0.0.1:8848
+        username: 'nacos'
+        password: 'nacos'
+  config:
+    import:
+      - nacos:service-provider-2023.properties?refreshEnabled=true
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+logging:
+  level:
+    com.alibaba.cloud.nacos.configdata: debug

@@ -1,0 +1,32 @@
+# Source: https://github.com/actiontech/txle/tree/ce9a69329a609ee7ac533dca593376b50612306d/examples/sample-txle-springboot/sample-txle-springboot-grpcclient/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 8008
+
+spring:
+  application:
+    name: sample-txle-springboot-grpcclient
+  datasource:
+    platform: mysql
+    # springboot2.0后，需要指定该配置，但目前仅能对主数据源进行初始化数据库，通过指定数据库名称可对同一实例下的不同数据库进行初始化操作
+    initialization-mode: always
+    primary:
+      jdbc-url: jdbc:mysql://10.186.62.75:3306/db2?useSSL=false
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.jdbc.Driver
+    secondary:
+      jdbc-url: jdbc:mysql://10.186.62.75:3306/db3?useSSL=false
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+alpha:
+  cluster:
+    address: localhost:8080

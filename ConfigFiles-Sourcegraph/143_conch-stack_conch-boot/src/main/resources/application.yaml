@@ -1,0 +1,30 @@
+# Source: https://github.com/conch-stack/conch-boot/tree/e6e35b52b0220c61e207e2b653751b3498d04f04/conch-boot-samples/conch-boot-retrofit-sample/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+# Spring
+spring:
+  application:
+    name: Conch-Retrofit-Test
+  profiles:
+    active: dev
+  # email config
+  mail:
+    host:
+    port:
+    username:
+    password:
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+conch:
+  mail:
+    prefix: test
+    send-from:
+    send-to: 
+
+# Server
+server:
+  port: 8080

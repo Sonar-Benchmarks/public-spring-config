@@ -1,0 +1,40 @@
+# Source: https://github.com/ff4j/ff4j-samples/tree/a7d80e434437e919c3c4a0346ee896d551814f09/spring-boot-1x/ff4j-sample-hystrix/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+    port: 7300
+    display-name: my-project
+
+ff4j:
+  webapi:
+    authentication: false
+    authorization: false
+
+hystrix:
+    command:
+        default:
+            execution:
+                timeout:
+                    enabled: true
+                isolation:
+                    strategy: THREAD
+                    thread:
+                        interruptOnCancel: true
+                        interruptOnTimeout: true
+                        timeoutInMilliseconds: 10000
+            fallback:
+                enabled: true
+            circuitBreaker:
+                enabled: true
+                requestVolumeThreshold: 20
+                sleepWindowInMilliseconds: 5000
+                errorThresholdPercentage: 50
+                forceOpen: false
+                forceClosed: true
+            metrics:
+                rollingStats:
+                    timeInMilliseconds: 10000
+                    numBuckets: 10
+                rollingPercentile:
+                    enabled: true
+                    timeInMilliseconds: 60000
+                    numBuckets: 6
