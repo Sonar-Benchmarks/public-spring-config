@@ -1,0 +1,18 @@
+# Source: https://github.com/zsy0216/cloud2020/tree/cac5d1dc2ce1f9ef540e2e89226445f62db10817/cloud-alibaba-provider-payment9003/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 9003
+
+spring:
+  application:
+    name: nacos-payment-provider
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 # 配置Nacos地址
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

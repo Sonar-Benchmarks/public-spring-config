@@ -1,0 +1,7 @@
+# Source: https://github.com/kgunnerud/monorepo-maven-example/tree/77a3a45175162dc89a634c7a92215aa7b7566fcc/apps/bar/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server.port: 8080
+
+example.libs.utils.auditing.enabled: true
+
+spring.config.import: classpath:common-app.yaml

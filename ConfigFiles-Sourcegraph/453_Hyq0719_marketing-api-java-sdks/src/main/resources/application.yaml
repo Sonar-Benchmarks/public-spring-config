@@ -1,0 +1,5 @@
+# Source: https://github.com/Hyq0719/marketing-api-java-sdks/tree/e70b52d96845e9a25eaacd39398baef319ed20a0/spring-boot-demo/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  profiles:
+    active: test

@@ -1,0 +1,14 @@
+# Source: https://github.com/AndreyYermolenko/BabushkinPogreb/tree/df8dc8fe17d8ba00fc6f5bab1085920b0d58b345/rest-service/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 8086
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/pogreb
+    username: userok
+    password: p@ssw0rd
+  jpa:
+    generate-ddl: true
+
+salt: Pq12GSnZ5CwkrmutojxQbMl3cRi8speFya760ONUYKgThHAWJIfLdD9V4XEvzB

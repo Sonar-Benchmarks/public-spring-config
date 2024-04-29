@@ -1,0 +1,15 @@
+# Source: https://github.com/knowledgefactory4u/KnowledgeFactory/tree/bbd67fa8f04f997e95203933630b75930b977a5e/springboot-azure/spring-boot-azure-key-vault/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          property-source-enabled: true
+          property-sources[0]:
+            credential:
+              client-secret: <Client Secret Value>
+              client-id: <Client ID>
+            profile:
+              tenant-id: <Tenant ID>
+            endpoint: <Vault URI>

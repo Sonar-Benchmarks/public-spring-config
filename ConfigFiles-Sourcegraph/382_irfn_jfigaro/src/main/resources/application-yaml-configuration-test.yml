@@ -1,0 +1,7 @@
+# Source: https://github.com/irfn/jfigaro/tree/0e7e4e2e4364988527494583789fb5651957d8f5/src/test/resources/application-yaml-configuration-test.yml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+shouldLoadConfig: foo
+shouldLoadConfigBasedOnEnvironment: foo
+shouldUseDefaultConfiWhenSpecificValueIsNotSet: defaultFoo
+test:
+  shouldLoadConfigBasedOnEnvironment: bar

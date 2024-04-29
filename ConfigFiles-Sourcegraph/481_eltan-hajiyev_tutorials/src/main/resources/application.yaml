@@ -1,0 +1,23 @@
+# Source: https://github.com/eltan-hajiyev/tutorials/tree/2b49987abd49c6dbd4f0332268ba1f74045fe049/feign-client-load-balance/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+
+
+feign.client.config.default.loggerLevel: full
+feign.httpclient.connection-timeout: 2000
+spring.cloud.loadbalancer.retry.enabled: true
+
+logging.level.com.github.elten400: debug
+logging.level.root: off
+logging.level.org.springframework.cloud.openfeign: info
+
+spring:
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            test-feign-service:
+              - uri: http://service1:8080
+              - uri: http://service2:8080
+
+
