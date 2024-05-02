@@ -1,0 +1,9 @@
+# Source: https://github.com/zengpi/pi-cloud/tree/293ecf5bee70d79e21a1319674bcf0586adeed78/pi-common/pi-common-security/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # issuer-uri: http://pi:9731/auth
+          public-key-location: classpath:key.pub

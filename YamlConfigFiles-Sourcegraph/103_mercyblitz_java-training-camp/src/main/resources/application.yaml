@@ -1,0 +1,19 @@
+# Source: https://github.com/mercyblitz/java-training-camp/tree/c5cb72d0e5a2822c986e57e2d6c5ad5d45accfd7/stage-1/src/biz-project/biz-gateway/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  application:
+    name: gateway
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+
+server:
+  port: 10000
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:12345/eureka

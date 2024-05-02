@@ -1,0 +1,10 @@
+# Source: https://github.com/johanhaleby/occurrent/tree/5493026d2f3c576f37edf1754d73fbadb31c490c/example/domain/rps/decider-web/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+#logging.level.org.springframework: DEBUG
+spring:
+  data:
+    mongodb:
+      uuid-representation: standard # So that Spring MongoDB stores UUID's as strings
+  threads:
+    virtual:
+      enabled: true

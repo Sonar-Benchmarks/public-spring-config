@@ -1,0 +1,7 @@
+# Source: https://github.com/trinodb/benchto/tree/95177ab1a4fc5261579fc428c1d81d9aa9d3084a/benchto-driver/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+benchmark-service:
+  url: http://localhost:8080
+
+environment:
+  name: DEFAULT

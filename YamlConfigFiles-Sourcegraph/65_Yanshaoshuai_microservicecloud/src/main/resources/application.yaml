@@ -1,0 +1,4 @@
+# Source: https://github.com/Yanshaoshuai/microservicecloud/tree/63cfb72b160c2f1bb5afe6d00ff5efaad121ac19/microservicecloud-consumer-hystrix-dashboard/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 9001

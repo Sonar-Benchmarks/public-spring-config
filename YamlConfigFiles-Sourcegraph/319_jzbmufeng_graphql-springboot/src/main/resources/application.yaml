@@ -1,0 +1,9 @@
+# Source: https://github.com/jzbmufeng/graphql-springboot/tree/b60aaac7c1b88899c98d990cbe81e84743b4275e/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+
+graphiql:
+  enabled: true
+
+
+server:
+  port: 8080

@@ -1,0 +1,30 @@
+# Source: https://github.com/huaweicloud/Sermant/tree/af3dbc5b2b28b206d214aa5bb5b886c49a969882/sermant-integration-tests/tag-transmission-test/servicecomb-provider-demo/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+# override common configurations in common module
+servicecomb-config-order: 10
+
+servicecomb:
+  service:
+    application: servicecomb-test
+    name: servicecomb-provider
+    version: 1.2.0
+    registry:
+      # Default using local service center
+      address: http://localhost:30100
+      # address: https://cse.cn-south-1.myhuaweicloud.com
+      instance:
+        watch: false
+
+  nacos:
+    serverAddr: http://localhost:8848
+    group: servicecomb
+    dataId: servicecomb-1
+    namespace: public
+    contentType: properties
+    addPrefix: false
+
+  rest:
+    address: 0.0.0.0:9059  # should be same with server.port to use web container
+
+server:
+  port: 9059

@@ -1,0 +1,4 @@
+# Source: https://github.com/springrunner/learn-spring-programming/tree/ddc003225df820420c07cd5bf834956f6b393a99/spring-test-tutorials/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+logging.level:
+  org.springframework.web: debug

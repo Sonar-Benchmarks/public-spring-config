@@ -1,0 +1,7 @@
+# Source: https://github.com/shuigedeng/taotao-cloud-project/tree/5cb124923faaa0ba9ddce01534583a7a9f049a43/taotao-cloud-microservice/taotao-cloud-modulith-ddd/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  jpa:
+    open-in-view: false
+    show-sql: true
+    defer-datasource-initialization: true

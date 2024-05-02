@@ -1,0 +1,11 @@
+# Source: https://github.com/AnoyiX/grpc-spring-boot-starter/tree/43df844dead4f2e2a30e8caa804a2c880e6ea650/samples-client/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 8081
+
+spring:
+  grpc:
+    remote-servers:
+    - server: user
+      host: 127.0.0.1
+      port: 6565

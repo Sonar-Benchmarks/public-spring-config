@@ -1,0 +1,13 @@
+# Source: https://github.com/dromara/MaxKey/tree/38c09792c04420e9d464eaa75b9d4105f324cb62/integrations/cas-springboot-demo/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 8989
+cas:
+  server-url-prefix: http://sso.maxkey.top/sign/authz/cas/
+  server-login-url: http://sso.maxkey.top/sign/authz/cas/login
+  client-host-url: http://127.0.0.1:8989/
+  validation-type: cas
+#  拦截的URL地址
+  authentication-url-patterns:
+    - /test1/index
+    - /test1/index1

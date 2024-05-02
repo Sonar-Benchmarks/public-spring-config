@@ -1,0 +1,25 @@
+# Source: https://github.com/huaweicloud/Sermant/tree/af3dbc5b2b28b206d214aa5bb5b886c49a969882/sermant-integration-tests/spring-test/spring-common-demos/spring-common-gateway/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  application:
+    name: spring-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: rest
+          uri: lb://rest-consumer
+          predicates:
+            - Path=/rest/**
+        - id: feign
+          uri: lb://feign-consumer
+          predicates:
+            - Path=/feign/**
+      discovery:
+        locator:
+          enable: true
+          lowerCaseServiceIdd: true
+      default-filters:
+        - StripPrefix=1
+
+server:
+  port: 8001

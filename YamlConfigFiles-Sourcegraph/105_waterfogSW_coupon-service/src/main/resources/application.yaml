@@ -1,0 +1,40 @@
+# Source: https://github.com/waterfogSW/coupon-service/tree/5b3afc8b2b82d68a6f962bfa70f9b93067eaed91/coupon-bootstrap/worker/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 8081
+  shutdown: graceful
+spring:
+  profiles:
+    active: local
+    include:
+      - persistence
+      - usecase
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  docker:
+    compose:
+      enabled: true
+      file: ./coupon-bootstrap/worker/compose.yaml
+kafka:
+  consumer:
+    bootstrap-servers: localhost:9092
+    group-id: coupon-worker
+    topic:
+      coupon-create: coupon-create
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  docker:
+    compose:
+      enabled: false
+kafka:
+  consumer:
+    bootstrap-servers: kafka:9092
+    group-id: coupon-worker
+    topic:
+      coupon-create: coupon-create

@@ -1,0 +1,25 @@
+# Source: https://github.com/shepherdviolet/spring-boot-template/tree/e34109b3af8711e7a1dd616fa2f58cce30041bbc/web/archetype/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+
+spring:
+  application:
+    name: ${app.id}
+  ## default profile
+  profiles:
+    active: win
+  ## Jackson config
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+  ## i18n message
+  messages:
+    basename: msg/messages,msg/errors
+    encoding: UTF-8
+  ## MVC config for web app
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+
+

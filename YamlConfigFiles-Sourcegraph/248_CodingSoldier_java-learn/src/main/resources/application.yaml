@@ -1,0 +1,23 @@
+# Source: https://github.com/CodingSoldier/java-learn/tree/d27b1e5726d09e0bef8597e81877dc87aad2eb45/project/rabbitmq/springboot-producer01/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 9090
+
+# mq都是用本地
+spring:
+  rabbitmq:
+    host: mqserverin.vanrui.com
+    port: 5672
+    username: chenpq05
+    password: chenpq05
+    publisher-confirms: true
+    virtual-host: /
+## mq都是用本地
+#spring:
+#  rabbitmq:
+#    host: 172.16.84.29
+#    port: 5672
+#    username: admin
+#    password: 123456
+#    publisher-confirms: true
+#    virtual-host: ryx

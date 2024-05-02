@@ -1,0 +1,12 @@
+# Source: https://github.com/itlab1024/Spring-Security-OAuth2-Tutorial/tree/290e45ae748e718061bd12267f38e24b32fac45f/oauth2-server/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 8080
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/spring-authorization-server
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: qwe!@#123

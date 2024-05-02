@@ -1,0 +1,23 @@
+# Source: https://github.com/holunda-io/holunda/tree/99f381c735533af9d100a16dde077749a62c58c4/task-assignment-with-dmn/application/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+
+spring:
+  profiles:
+    active: default
+  application:
+    name: holunda
+  jpa:
+    generate-ddl: false
+    hibernate.ddl-auto: validate
+    show-sql: true
+
+# Camunda
+camunda:
+  bpm:
+    database:
+      schema-update: false
+    id-generator: prefixed
+    admin-user:
+      id: admin
+    filter:
+      create: All

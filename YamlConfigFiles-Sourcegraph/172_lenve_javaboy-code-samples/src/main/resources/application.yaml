@@ -1,0 +1,27 @@
+# Source: https://github.com/lenve/javaboy-code-samples/tree/5e7af1d93a4acc6c50c2ca5ec1e80ee9da42d057/version-demo/gateway/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      discovery:
+        password: nacos
+        username: nacos
+        server-addr: 110.41.0.197:8848
+        namespace: public
+    gateway:
+      discovery:
+        locator:
+#          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: v1_provider
+          uri: lb://provider
+          predicates:
+            - Path=/p/**
+            - Header=Accept,.*;?version=1\.0(|;.*)
+          filters:
+            - StripPrefix=1
+server:
+  port: 8082

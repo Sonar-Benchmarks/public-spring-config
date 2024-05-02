@@ -1,0 +1,6 @@
+# Source: https://github.com/zmyzheng/TweetMap/tree/e426ba06cec9004ba95a3b3520a179b4ad9f0ec7/rest-api-server/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200

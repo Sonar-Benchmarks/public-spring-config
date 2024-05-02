@@ -1,0 +1,5 @@
+# Source: https://github.com/miotech/kun-scheduler/tree/eb11176896d3867ea3fa219a1223c8917461927e/kun-app/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  profiles:
+    active: ${APP_CONFIG_ENV:local}

@@ -1,0 +1,4 @@
+# Source: https://github.com/iofu728/blog/tree/4114ad0ba7865ab85d99012cbf8e9df1fba3f2c3/blog-backend/blog-collector/out/production/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 8848
