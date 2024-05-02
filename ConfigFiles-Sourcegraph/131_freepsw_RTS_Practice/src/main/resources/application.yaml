@@ -1,8 +1,0 @@
-# Source: https://github.com/freepsw/RTS_Practice/tree/5f061172c09a3f0b8cc1ba6d93ec3ddcf8233cfc/02.kaka_practice/etc/apache-kafka-with-java-master/Chapter4/4.4 spring-kafka/spring-kafka-batch-listener/out/production/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-spring:
-  kafka:
-    consumer:
-      bootstrap-servers: my-kafka:9092
-    listener:
-      type: BATCH

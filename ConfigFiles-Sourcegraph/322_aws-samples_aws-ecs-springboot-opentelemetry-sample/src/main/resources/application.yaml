@@ -1,2 +1,0 @@
-# Source: https://github.com/aws-samples/aws-ecs-springboot-opentelemetry-sample/tree/bf090abd45fce11c285136be0f6f0aa2ea41ac5c/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"

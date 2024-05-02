@@ -1,8 +1,0 @@
-# Source: https://github.com/zhangjiwei1221/blog/tree/4119b51ececdb5ca8859b2e8e1a1e2ce9e9271d4/stomp/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-server:
-  port: 443
-  ssl.key-store: classpath:keystore.jks
-  ssl.key-store-password: 123456
-  ssl.key-password: 123456
-  ssl.key-alias: tomcat

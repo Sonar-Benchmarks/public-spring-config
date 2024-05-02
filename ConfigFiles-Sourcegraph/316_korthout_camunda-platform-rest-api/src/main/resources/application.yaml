@@ -1,8 +1,0 @@
-# Source: https://github.com/korthout/camunda-platform-rest-api/tree/375144716dfdd7dbbee592d3389a1e476c7c072f/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-server:
-  port: 8080
-zeebe:
-  client:
-    worker:
-      defaultName: "default"

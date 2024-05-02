@@ -1,8 +1,0 @@
-# Source: https://github.com/my-dlq/blog-example/tree/a2758b27cdd55d23a36ac7751dea4952e72248f7/springboot/springboot-log4j2-example/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-## 基础设置
-spring:
-  application:
-    name: springboot-log4j2-example
-
-

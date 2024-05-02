@@ -1,8 +1,0 @@
-# Source: https://github.com/Snailclimb/jsoncat/tree/0cbb829854b9866e066faf5f63bf8fe302cb3537/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-jsoncat:
-  contributors: 3
-  authers: SnailClimb,hello-tom,yueyang
-
-project:
-  info: javaguide

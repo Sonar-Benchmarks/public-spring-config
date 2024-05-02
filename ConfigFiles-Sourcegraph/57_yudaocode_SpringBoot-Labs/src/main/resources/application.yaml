@@ -1,7 +1,0 @@
-# Source: https://github.com/yudaocode/SpringBoot-Labs/tree/6c12efaed06d12907a0f40dd2ad1f7020aec8798/lab-62/lab-62-sofarpc-annotations-demo/lab-62-sofarpc-annotations-demo-user-rpc-service-consumer/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-spring:
-  application:
-    name: user-service-consumer # 应用名
-
-com.alipay.sofa.rpc.registry.address: zookeeper://127.0.0.1:2181 # SOFARPC 注解中心

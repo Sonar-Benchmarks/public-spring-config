@@ -1,8 +1,0 @@
-# Source: https://github.com/arnosthavelka/spring-advanced-training/tree/ce0388f62009e510e6eabcd9100b7e6a81b9261f/sat-elk/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-spring:
-  application:
-    name: @pom.artifactId@
-  elasticsearch:
-    rest:
-      uris: oxygen-arnost.ifs.dev.fra.aws.dbgcloud.io:9200

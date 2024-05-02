@@ -1,7 +1,0 @@
-# Source: https://github.com/solov1113/ecommerce-springboot-react/tree/d71a50af1c30d0faa3a2028c76e5c79e560ae80d/auth-service/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-spring:
-  application:
-    name: auth-service
-  config:
-    import: optional:configserver:http://localhost:8081

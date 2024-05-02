@@ -1,9 +1,0 @@
-# Source: https://github.com/joaquin-alfaro/graphql-gateway/tree/0a0c14be81d160d802f02cc7424426bc4b68b7b2/graphql-gateway-server/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-server:
-  port: 8080
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"

@@ -1,4 +1,0 @@
-# Source: https://github.com/my-dlq/blog-example/tree/a2758b27cdd55d23a36ac7751dea4952e72248f7/java/completable-future-example/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-server:
-  port: 8080

@@ -1,8 +1,0 @@
-# Source: https://github.com/PacktPublishing/Spring-5.0-By-Example/tree/2712184c383143a674ff54d435594b318e33b344/Chapter03/cms-mongo-non-reactive/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-spring:
-  data:
-    mongodb:
-      database: cms
-      host: localhost
-      port: 27017

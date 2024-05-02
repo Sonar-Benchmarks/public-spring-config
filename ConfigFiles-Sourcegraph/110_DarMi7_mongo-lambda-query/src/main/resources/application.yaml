@@ -1,9 +1,0 @@
-# Source: https://github.com/DarMi7/mongo-lambda-query/tree/c28f7ba7d07233eabaf7e1abefb3c33ba8089159/demo/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-spring:
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/geo
-
-server:
-  port: 8888

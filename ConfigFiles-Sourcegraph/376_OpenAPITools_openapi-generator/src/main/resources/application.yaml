@@ -1,5 +1,0 @@
-# Source: https://github.com/OpenAPITools/openapi-generator/tree/a5d463d90fb579e828070ab2fd74104bb3dd9bc8/samples/server/petstore/java-helidon-server/se/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-server:
-  port: 8080
-  host: petstore.swagger.io

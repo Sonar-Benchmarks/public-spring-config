@@ -1,8 +1,0 @@
-# Source: https://github.com/LarryDpk/pkslow-samples/tree/7b345576ce02ddef29d0721e6af092b2ca4af287/kubernetes/configmap-springboot/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-server:
-  port: 8080
-pkslow:
-  name: Larry
-  age: 18
-  webSite: www.pkslow.com

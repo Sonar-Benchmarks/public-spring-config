@@ -1,2 +1,0 @@
-# Source: https://github.com/micronaut-projects/micronaut-data/tree/fcd0ea496271d16ad85661bca4dc8465b7ce8798/data-azure-cosmos/src/test/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"

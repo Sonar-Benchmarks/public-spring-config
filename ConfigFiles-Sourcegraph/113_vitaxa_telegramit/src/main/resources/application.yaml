@@ -1,8 +1,0 @@
-# Source: https://github.com/vitaxa/telegramit/tree/2e7fdb9e1e3edf2638d7dbb0895b4f8a10fbaa43/telegramit-sample/spring/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-server:
-  error:
-    include-stacktrace: never
-
-telegramit:
-  token: YOUR_TOKEN

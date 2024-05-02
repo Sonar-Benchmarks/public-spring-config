@@ -1,7 +1,0 @@
-# Source: https://github.com/lenve/javaboy-code-samples/tree/5e7af1d93a4acc6c50c2ca5ec1e80ee9da42d057/minio_demo/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-minio:
-  endpoint: http://localhost:9001
-  accessKey: javaboy
-  secretKey: 123@45678
-  nginxHost: http://local.javaboy.org:8888

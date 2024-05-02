@@ -1,6 +1,0 @@
-# Source: https://github.com/daggerok/spring-5-examples/tree/11340b9fe8b0b53445d7ed869d409d378999e334/boot-jsp/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-spring:
-  profiles:
-    include:
-    - spring-boot

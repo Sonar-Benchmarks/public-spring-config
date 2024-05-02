@@ -1,8 +1,0 @@
-# Source: https://github.com/amrutprabhu/grafana-prometheus/tree/8613065490d3a4c426172b3f91831573c0151ceb/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-management:
-  endpoints:
-    web:
-      exposure:
-        include:
-        - prometheus

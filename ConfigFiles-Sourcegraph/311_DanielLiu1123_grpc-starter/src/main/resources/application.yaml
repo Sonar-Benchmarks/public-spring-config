@@ -1,7 +1,0 @@
-# Source: https://github.com/DanielLiu1123/grpc-starter/tree/ec6b80bcdd22aba2b37549d29361e7bc7c9b3f91/examples/refresh/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-grpc:
-  client:
-    refresh:
-      enabled: true
-    base-packages: [ io.grpc ]

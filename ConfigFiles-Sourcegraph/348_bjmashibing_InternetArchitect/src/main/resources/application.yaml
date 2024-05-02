@@ -1,11 +1,0 @@
-# Source: https://github.com/bjmashibing/InternetArchitect/tree/f1b7054c19fffdfb70fce0f0cfa8e63547d047cc/03 OA账户权限管理/14 开发-RBAC前后端、mybatis多表、thymeleaf/SpringBootMVC06OAProject4/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-server:
-  port: 8081
-
-
-spring:  datasource:    url:   jdbc:mysql://localhost:3306/ssm?characterEncoding=utf8&useSSL=false&serverTimezone=UTC
-    username: root
-    password: 840416
-
-    

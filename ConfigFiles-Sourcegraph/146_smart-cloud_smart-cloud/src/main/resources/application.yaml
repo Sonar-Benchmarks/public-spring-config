@@ -1,7 +1,0 @@
-# Source: https://github.com/smart-cloud/smart-cloud/tree/828b62415e0bb0668377ec4a384bdeb5558e4fbf/smart-utility/src/test/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-server:
-  port: 40007
-spring:
-  messages:
-    basename: i18n/messages

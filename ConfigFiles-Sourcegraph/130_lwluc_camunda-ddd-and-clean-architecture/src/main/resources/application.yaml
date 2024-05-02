@@ -1,7 +1,0 @@
-# Source: https://github.com/lwluc/camunda-ddd-and-clean-architecture/tree/72624493603bc7d33b85d277d44ec254ea7e261a/loan-agreement/src/test/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-spring.datasource.url: jdbc:h2:file:./camunda-h2-database
-
-camunda.bpm.admin-user:
-  id: admin
-  password: pw

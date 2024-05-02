@@ -1,7 +1,0 @@
-# Source: https://github.com/bancolombia/bin-stash/tree/0d3c9880dc269d3d0619a98c79e92663fdb0a8b9/examples/centralized/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-
-stash:
-  redis:
-    host: localhost
-    port: 6379

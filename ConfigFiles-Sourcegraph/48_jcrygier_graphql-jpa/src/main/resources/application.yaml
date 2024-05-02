@@ -1,8 +1,0 @@
-# Source: https://github.com/jcrygier/graphql-jpa/tree/0aab3d31074d9045509bc69a2db21d0716d7f9e0/src/test/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-spring:
-  jpa:
-    hibernate.ddl-auto: create-drop
-    show-sql: true
-  h2:
-    console.enabled: true

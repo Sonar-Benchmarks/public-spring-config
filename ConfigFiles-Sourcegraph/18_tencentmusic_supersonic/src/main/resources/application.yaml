@@ -1,7 +1,0 @@
-# Source: https://github.com/tencentmusic/supersonic/tree/6da82b6b949ef44ff03f65378ca8303341eb1e65/launchers/headless/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-spring:
-  profiles:
-    active: local
-  application:
-    name: headless

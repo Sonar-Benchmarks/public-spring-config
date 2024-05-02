@@ -1,8 +1,0 @@
-# Source: https://github.com/Zhou1998ZQ/springboot-summary/tree/0472bd7546604d231b54a696c2848dcd08226d68/demo-swagger/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-
-springdoc:
-  swagger-ui:
-    path: /swagger/index.html
-  api-docs:
-    path: /swagger/v3/api-docs

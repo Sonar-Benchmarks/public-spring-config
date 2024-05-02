@@ -1,9 +1,0 @@
-# Source: https://github.com/davehancock/thymeleaf-reactjs-graalvm/tree/d9f582198bb8fd55b35757eaea21c05c43a8bde6/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-
-spring:
-  thymeleaf:
-    template-resolver-order: 10
-
-ssr:
-  componentDir: public/generated/server

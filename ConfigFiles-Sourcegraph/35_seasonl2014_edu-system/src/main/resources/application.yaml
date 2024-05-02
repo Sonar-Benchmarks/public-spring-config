@@ -1,5 +1,0 @@
-# Source: https://github.com/seasonl2014/edu-system/tree/177b6ef31d69c4e4d365132a8ee755371f9b61f0/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-spring:
-  profiles:
-    active: xuedendev

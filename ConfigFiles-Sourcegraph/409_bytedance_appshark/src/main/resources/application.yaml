@@ -1,9 +1,0 @@
-# Source: https://github.com/bytedance/appshark/tree/4f854b062ae001e1313f93343c7e2e1e234ecf47/ui/server/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-server:
-  port: 8081
-spring:
-  application:
-    name: app_shark
-  profiles:
-    active: @spring.profiles.active@

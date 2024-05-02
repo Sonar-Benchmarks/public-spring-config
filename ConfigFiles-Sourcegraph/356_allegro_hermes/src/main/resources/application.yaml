@@ -1,5 +1,0 @@
-# Source: https://github.com/allegro/hermes/tree/eacfaf526573c7b1c880422ab6eaab5940f082e1/hermes-frontend/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-spring:
-  profiles:
-    default: local

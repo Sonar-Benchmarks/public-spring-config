@@ -1,4 +1,0 @@
-# Source: https://github.com/djnzx/spring-steps/tree/6c0b2127220cec211d475cfa707808036b1d3b04/step30s/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-server:
-  port: 8081

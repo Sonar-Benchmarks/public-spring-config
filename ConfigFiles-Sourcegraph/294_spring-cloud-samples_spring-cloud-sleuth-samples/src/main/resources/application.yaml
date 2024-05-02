@@ -1,4 +1,0 @@
-# Source: https://github.com/spring-cloud-samples/spring-cloud-sleuth-samples/tree/0daaa8de247d0fcf9ceb98e25a44ac81c49ed0e8/acceptance-tests/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-# For tests
-logging.level.org.springframework.cloud.sleuth: DEBUG

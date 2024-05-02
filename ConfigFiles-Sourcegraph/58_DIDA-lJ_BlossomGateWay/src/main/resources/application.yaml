@@ -1,4 +1,0 @@
-# Source: https://github.com/DIDA-lJ/BlossomGateWay/tree/8bdd750fddb8313e97aae106682f139860a4c583/BlossomGateway-HttpServer/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-server:
-  port: 8080

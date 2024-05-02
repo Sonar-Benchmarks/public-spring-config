@@ -1,6 +1,0 @@
-# Source: https://github.com/cvzhanshi-ursula/wechatpush/tree/3a8720b2af3d70f5e49d800a63557e520c3609e1/src/main/resources/application.yaml
-# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
-server:
-  port: 8889
-
-
