@@ -1,0 +1,11 @@
+# Source: https://github.com/MrSorrow/e3-springboot/tree/c442606c7e99e2a6ef18847a4f1c72d03448927c/e3-sso-web/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+#tomcat conf
+server:
+  port: 8085
+#dubbo conf
+dubbo:
+  application:
+    name: e3-sso-web
+  registry:
+      address: zookeeper://192.168.223.128:2181

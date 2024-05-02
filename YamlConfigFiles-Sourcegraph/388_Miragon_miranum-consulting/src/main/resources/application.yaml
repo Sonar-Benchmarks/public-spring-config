@@ -1,0 +1,4 @@
+# Source: https://github.com/Miragon/miranum-consulting/tree/114cf9ebe31797366b859761089fa4f1b6a6fcf0/restaurant-showcase/payment/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 8882

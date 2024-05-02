@@ -1,0 +1,42 @@
+# Source: https://github.com/Glaxier0/discord-bot-reddit-java/tree/c38b488bf2cdda55e25a33ad8e8a522e14ea1fc5/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  datasource:
+   url: jdbc:postgresql://localhost:5432/reddit_bot
+   username: postgres
+   password: postgres
+  main:
+    web-application-type: none
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+logging:
+  level:
+    root: info
+
+# noinspection SpringBootApplicationYaml
+reddit:
+  username:
+  refresh:
+    token:
+  client:
+    id:
+    secret:
+# noinspection SpringBootApplicationYaml
+discord:
+  bot:
+    token:
+  admin:
+    server:
+      id: your_admin_server_id
+    user:
+      id: your_discord_id
+# noinspection SpringBootApplicationYaml
+firebase:
+  storage:
+    bucket:
+      name:
+  adminsdk:
+    file:
+      name:

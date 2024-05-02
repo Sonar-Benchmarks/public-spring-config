@@ -1,0 +1,18 @@
+# Source: https://github.com/fancyyawn/blog-hbs-cloud-microservice-multi-db/tree/6c84da5acf8b07ab3afdde3161d1593da9aec6f6/blog-service-comment/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 9003
+
+spring:
+  application:
+    name: blog-comment
+  data:
+    mongodb:
+      database: blog-microservice
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka
+
+spring.sleuth.sampler.percentage: 1.0

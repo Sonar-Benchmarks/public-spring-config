@@ -1,0 +1,8 @@
+# Source: https://github.com/roskenet/spring-javafx-examples/tree/1ca516f33e38042db23722f805e97374fe57171f/part_2/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+    jmx: 
+        enabled: false
+
+javafx:
+    title: MyCoolApp (Pt 2)

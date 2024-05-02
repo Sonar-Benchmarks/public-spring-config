@@ -1,0 +1,7 @@
+# Source: https://github.com/operator-framework/josdk-spring-boot-starter/tree/f3f67247e241c982a2957136873176b7c049db02/samples/spring-boot-auto-config/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+javaoperatorsdk:
+  reconcilers:
+    customservicereconciler:
+      retry:
+        maxAttempts: 3

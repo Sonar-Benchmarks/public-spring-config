@@ -1,0 +1,18 @@
+# Source: https://github.com/LearningJournal/Confluent-Kafka-with-Spring-Boot/tree/b157b2ff7ac9a2976dc9bc6620ce11f5c68bf551/11-KafkaSyncReply/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  kafka:
+    bootstrap-server: localhost:9092
+    consumer:
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            value:
+              default:
+                type: guru.learningjournal.spring.kafka.examples.models.Invoice
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

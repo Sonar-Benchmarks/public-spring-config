@@ -1,0 +1,22 @@
+# Source: https://github.com/arhohuttunen/spring-boot-test-examples/tree/1919678c8f20f4d96388ba4749555dde6ddd08e2/spring-security-testing/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+  security:
+    user:
+      name: username
+      password: password
+      roles: ADMIN
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

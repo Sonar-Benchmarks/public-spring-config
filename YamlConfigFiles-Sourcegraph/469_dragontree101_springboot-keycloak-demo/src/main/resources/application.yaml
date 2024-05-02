@@ -1,0 +1,6 @@
+# Source: https://github.com/dragontree101/springboot-keycloak-demo/tree/5523bcbb2747e5f33e110643484002c1ee097e28/family-app/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  profiles:
+    active: test
+#    active: production

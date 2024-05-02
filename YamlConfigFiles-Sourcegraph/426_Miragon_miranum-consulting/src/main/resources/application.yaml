@@ -1,0 +1,11 @@
+# Source: https://github.com/Miragon/miranum-consulting/tree/114cf9ebe31797366b859761089fa4f1b6a6fcf0/process-example/process-example-camunda-7/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 5050
+
+camunda:
+  bpm:
+    client:
+      base-url: http://localhost:8080/engine-rest
+  autoDeploy:
+    enabled: false

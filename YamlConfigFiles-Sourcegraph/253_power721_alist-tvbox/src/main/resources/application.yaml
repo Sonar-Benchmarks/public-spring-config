@@ -1,0 +1,96 @@
+# Source: https://github.com/power721/alist-tvbox/tree/03cfa3c5fc0a535197ba2b7ad331b9e431af353e/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+  datasource:
+    url: jdbc:h2:file:~/.config/atv/data
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      INDENT_OUTPUT: true
+      FAIL_ON_EMPTY_BEANS: false
+  jpa:
+    hibernate:
+      # possible values: validate | update | create | create-drop
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+    open-in-view: false
+  sql:
+    init:
+      mode: always
+
+server:
+  error:
+    include-message: always
+  port: 4567
+  tomcat:
+    remote_ip_header: x-forwarded-for
+    protocol_header: x-forwarded-proto
+    port-header: X-Forwarded-Port
+    use-forward-headers: true
+
+app:
+  sort: true
+  secretKey: "MjdiOGMwYTUtZWQ4OS00NWNiLWI1ZmQtY2FlNmFmOWJlNmQ3"
+  subtitles:
+    - srt
+    - ass
+    - vtt
+    - ttml
+  formats:
+    - dff
+    - dsf
+    - mp3
+    - m4v
+    - vob
+    - aac
+    - wav
+    - wma
+    - cda
+    - flac
+    - f4v
+    - m4a
+    - mid
+    - mka
+    - mp2
+    - mpa
+    - mpc
+    - ape
+    - ofr
+    - ogg
+    - ra
+    - wv
+    - tta
+    - ac3
+    - dts
+    - tak
+    - webm
+    - wmv
+    - mpeg
+    - mov
+    - ram
+    - swf
+    - mp4
+    - avi
+    - rm
+    - rmvb
+    - flv
+    - mpg
+    - mkv
+    - m3u8
+    - ts
+    - 3gp
+    - asf
+  sites:
+    - name: 本地
+      url: ${ALIST_URL:http://127.0.0.1:5244}
+      searchable: true

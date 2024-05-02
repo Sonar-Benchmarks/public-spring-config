@@ -1,0 +1,5 @@
+# Source: https://github.com/petrelevich/jvm-digging/tree/bdb70fc8c2b67e832f61773dbc5e949f25d74424/spring-aop/springproxy/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  aop:
+    proxy-target-class: false

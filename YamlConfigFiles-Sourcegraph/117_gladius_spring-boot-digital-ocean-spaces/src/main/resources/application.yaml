@@ -1,0 +1,26 @@
+# Source: https://github.com/gladius/spring-boot-digital-ocean-spaces/tree/93c648cd1c2888c6c3d5859edce2c7b87324ee61/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+## DO properties
+do:
+  spaces:
+    key: ${DO_SPACE_KEY}
+    secret: ${DO_SPACE_SECRET}
+    endpoint: ${DO_SPACE_ENDPOINT}
+    region: ${DO_SPACE_REGION}
+    bucket: ${DO_SPACE_BUCKET}
+      
+
+## Database Properties
+spring:
+  datasource:
+    url: jdbc:h2:file:${PATH_TO_DB_FILE};DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true

@@ -1,0 +1,10 @@
+# Source: https://github.com/knowledgefactory4u/kotlin-springboot-app/tree/65c876401a4cb91945ce6768d4d972b98a96c21d/kotlin-spring-oauth2-google/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: <client-id>
+            client-secret: <client-secret>

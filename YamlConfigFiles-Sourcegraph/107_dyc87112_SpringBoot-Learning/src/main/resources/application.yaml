@@ -1,0 +1,33 @@
+# Source: https://github.com/dyc87112/SpringBoot-Learning/tree/4212d163da816c6fa5b28d59130318dac2379a73/2.x/chapter1-2/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+# 默认激活dev配置
+spring:
+  profiles:
+    active: "dev"
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "dev"
+
+name: dev.didispace.com
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "test"
+
+name: test.didispace.com
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+
+name: prod.didispace.com

@@ -1,0 +1,14 @@
+# Source: https://github.com/entropy-cloud/nop-entropy/tree/c610aca14cc7c0492f0c024a19c6b50f973e5cb0/nop-demo/nop-rpc-server-demo/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 8091
+spring:
+  application:
+    name: rpc-demo-producer
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+        server-addr: 127.0.0.1:8848
+        metadata:
+          version: 2.0.0

@@ -1,0 +1,24 @@
+# Source: https://github.com/caohanzong/Course-scheduling-system/tree/de3be1e76ed3e08d1144c7eb6aba8b9dad42ab07/tams-server/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+server:
+  port: 12010
+
+spring:
+  profiles:
+    active: @profileActive@
+  jackson:
+    time-zone: GMT+8
+
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+    banner: false
+  type-aliases-package: com.lhd.tams.**.model
+
+logging:
+  config: classpath:log-logback.xml
+  custom:
+    path: ./logs

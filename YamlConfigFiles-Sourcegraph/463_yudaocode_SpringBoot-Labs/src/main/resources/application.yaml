@@ -1,0 +1,5 @@
+# Source: https://github.com/yudaocode/SpringBoot-Labs/tree/6c12efaed06d12907a0f40dd2ad1f7020aec8798/lab-47/lab-47-demo/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+yunai:
+  server:
+    port: 8888 # 自定义 HttpServer 端口

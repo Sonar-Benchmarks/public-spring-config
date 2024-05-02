@@ -1,0 +1,20 @@
+# Source: https://github.com/jsl1992/JiChat/tree/c0b257db318a73ab6801b9b1200d6821396e526f/jichat-modules/chat-client/src/main/resources/application.yaml
+# Sourcegraph query: "context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)"
+
+spring:
+  # Application 的配置项
+  application:
+    name: chat-client
+  profiles:
+    active: dev
+
+
+
+  # Swagger 配置项
+swagger:
+  title: JiChat 客户端-接口
+  description: 客户端接口
+  author: ji
+  version: 1.0.0
+  base-package: com.ji.jichat.client.controller
+
