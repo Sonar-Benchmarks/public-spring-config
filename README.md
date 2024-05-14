@@ -1,6 +1,6 @@
 # public-spring-config
 
-Set of Spring configurations collected from various public projects.
+Combination of Spring configurations files either collected from various public project or handcraft for check validation on peachee.
 Spring configuration files are either .properties or .yaml files.
 
 ## ConfigFiles-Sourcegraph
@@ -8,5 +8,7 @@ The configuration files were obtained using a slightly modified version of the [
 
 The following query was used:
 ```
-context:global (lang:yaml OR lang:Java Properties) file:resources/application.(yaml|properties)
+context:global (lang:yaml OR lang:"Java Properties") file:resources/application.(yaml|properties)
 ```
+## ConfigFiles-SpecificCheck
+Handcrafted files to validate specific checks.
