@@ -1,0 +1,5 @@
+debug: true
+server:
+  port: 8443
+  url: https://local.myurl.com
+  version: v1.0.0

@@ -1,0 +1,9 @@
+server:
+  port: 8443
+  url: https://local.myurl.com
+  version: v1.0.0
+spring:
+  servlet:
+    multipart:
+      max-file-size: 9000000
+      max-request-size: 9000000
