@@ -1,0 +1,123 @@
+micronaut:
+  application:
+    name: mmo_server
+  server:
+    port: 8081
+  router:
+    static-resources:
+      default:
+        enabled: true
+        mapping: /**
+        paths: classpath:public
+  executors:
+    consumer:
+      type: fixed
+      nThreads: 15
+    io:
+      type: fixed
+      nThreads: 75
+jackson:
+  serialization:
+    writeDatesAsTimestamps: false
+jpa:
+  default:
+    entity-scan:
+      classpath: true
+      packages:
+        - 'com.org.mmo_server.repository.model'
+
+kafka:
+  streams:
+    default:
+      processing.guarantee: "exactly_once"
+      auto.offset.reset: "earliest"
+  bootstrap:
+    servers: 127.0.0.1:9093
+  security:
+    protocol: SASL_PLAINTEXT
+  sasl:
+    mechanism: PLAIN
+    jaas:
+      config: org.apache.kafka.common.security.plain.PlainLoginModule required username="kafka" password="password123";
+  consumers:
+    mmo-server:
+      bootstrap:
+        servers: 127.0.0.1:9093
+      session:
+        timeout:
+          ms: 30000
+      auto:
+        offset:
+          reset: earliest
+
+mongodb:
+#  Set username/password as env vars
+  uri: mongodb://mongo_mmo_server:mongo_password@localhost:27017/mmo_server?authSource=admin
+  options:
+    maxConnectionIdleTime: 15000
+    readConcern: majority
+#  For reactive MongoDB driver:
+  cluster:
+    maxWaitQueueSize: 5
+  connectionPool:
+    maxSize: 20
+
+# MongoDB collections
+mongo-database:
+  database-name: "mmo-server"
+  player-character-collection: "characters"
+  items-collection: "items"
+  item-instances-collection: "item-instances"
+  dropped-items-collection: "dropped-items"
+  inventory-collection: "inventory"
+  equip-collection: "equip"
+  player-motion: "playerMotion"
+  mob-instance: "mobInstance"
+  actor-stats: "actorStats"
+  actor-status: "actorStatus"
+  actor-skills: "actorSkills"
+  actionbar: "actionbar"
+
+redisson:
+  single-server-config:
+    address: "redis://127.0.0.1:6379"
+  threads: 3
+  netty-threads: 6
+
+redis:
+  uri: redis://localhost
+  io-thread-pool-size: 5
+  computation-thread-pool-size: 4
+#  ssl: true
+  timeout: 2s
+#  valueSerializer: io.micronaut.jackson.serialize.JacksonObjectSerializer
+  caches:
+    default:
+      value-serializer: io.micronaut.jackson.serialize.JacksonObjectSerializer
+    actor-stats-cache:
+      value-serializer: io.micronaut.jackson.serialize.JacksonObjectSerializer
+      maximumSize: 1000
+    actor-aggregated-statuses:
+      maximumSize: 1000
+      value-serializer: io.micronaut.jackson.serialize.JacksonObjectSerializer
+    actor-aggregated-derived:
+      maximumSize: 1000
+      value-serializer: io.micronaut.jackson.serialize.JacksonObjectSerializer
+    actor-motion-cache:
+      maximumSize: 1000
+      value-serializer: io.micronaut.jackson.serialize.JacksonObjectSerializer
+    actor-status-cache:
+      maximumSize: 1000
+      value-serializer: io.micronaut.jackson.serialize.JacksonObjectSerializer
+    actor-equip-cache:
+      maximumSize: 1000
+      value-serializer: io.micronaut.jackson.serialize.JacksonObjectSerializer
+    actor-equip-cache-map:
+      maximumSize: 1000
+      value-serializer: io.micronaut.jackson.serialize.JacksonObjectSerializer
+    udp-session-cache:
+      maximumSize: 1000
+      value-serializer: io.micronaut.jackson.serialize.JacksonObjectSerializer
+
+feature-flags:
+  enableUdp: true

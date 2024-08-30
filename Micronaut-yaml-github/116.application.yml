@@ -1,0 +1,23 @@
+micronaut:
+  application:
+    name: hack4lawAssistantKsef
+  metrics:
+    export:
+      azuremonitor:
+        enabled: false
+        instrumentationKey: ${AZUREMONITOR_INSTRUMENTATION_KEY}
+        step: PT1M
+    enabled: true
+netty:
+  default:
+    allocator:
+      max-order: 3
+
+ksef:
+  token: d4be2a49291b43f321e99d15dbf91c4ab31db20d363f6fa04e59c3adef316f0b
+  environment: test
+  nip: 6891152920
+
+auth:
+  user: hack4law
+  password: d95DaH34jcoP

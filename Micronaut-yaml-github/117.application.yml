@@ -1,0 +1,52 @@
+micronaut:
+  application:
+    name: micronaut
+  server:
+    port: 8080
+    thread-selection: auto # https://github.com/micronaut-projects/micronaut-core/issues/3651
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      redoc:
+        paths: classpath:META-INF/swagger/views/redoc
+        mapping: /redoc/**
+      rapidoc:
+        paths: classpath:META-INF/swagger/views/rapidoc
+        mapping: /rapidoc/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+  jcache:
+    enabled: false
+jackson:
+  bean-introspection-module: true
+
+noop-cache.enabled: ${ENABLED_CACHE:false}
+
+redis:
+  uri: redis://${REDIS_HOST:localhost}
+  caches:
+    stores:
+      expire-after-write: 15m
+    stores-all-name:
+      expire-after-write: 15m
+    stores-find-by-borough:
+      expire-after-write: 15m
+    stores-find-by-name:
+      expire-after-access: 15m
+    stores-find-by-borough-and-name:
+      expire-after-access: 15m
+    borough-all-names:
+      expire-after-access: 15m
+  timeout: 5s
+  cache:
+    value-serializer: io.micronaut.jackson.serialize.JacksonObjectSerializer
+
+services:
+  minsal:
+    url: ${MINSAL_URL:`https://farmanet.minsal.cl`}
+    path: ${MISNAL_PATH:`/maps/index.php/ws/getLocalesRegion`}
+    param: ${MINSAL_PARAM:`id_region`}
+    value: ${MINSAL_VALUE:7}

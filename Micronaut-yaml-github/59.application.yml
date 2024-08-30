@@ -1,0 +1,142 @@
+micronaut:
+  application:
+    name: mentoringBackend
+  scheduling:
+    enabled: true
+  email:
+    mailer:
+      defaultMailer: gmail
+      gmail:
+        host: smtp.gmail.com
+        port: 587
+        username: ${MENTORING_NOTIFICATION_EMAIL}
+        password: ${MENTORING_NOTIFICATION_EMAIL_PASSWORD}
+        tls: true
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+    versioning:
+      enabled: true
+      default-version: 1
+      header:
+        enabled: true
+        names:
+          - 'X-API-VERSION'
+          - 'Accept-Version'
+  server:
+    compression:
+      enabled: true
+      min-response-size: 2048   # Optional: Minimum response size to trigger compression (default is 2048 bytes)
+      mime-types: # Optional: Customize the list of MIME types to compress
+        - text/html
+        - application/json
+    port: 8087
+    context-path: /api
+    cors:
+      enabled: true
+      configurations:
+        mycors:
+          allowed-origins: ${ALLOWED_ORIGINS}
+          allowed-methods:
+            - GET
+            - POST
+            - PATCH
+            - PUT
+            - DELETE
+            - OPTIONS
+            - PUT
+            - HEAD
+          allowed-headers:
+            - Content-Type
+            - Authorization
+          exposed-headers:
+            - Location
+            - Content-Disposition
+          max-age: 1800
+          allow-credentials: true
+---
+#tag::security[]
+micronaut:
+  security:
+    authentication: bearer # <1>
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: '"${JWT_GENERATOR_SIGNATURE_SECRET}"'
+#end::security[]
+---
+#tag::refresh[]
+micronaut:
+  security:
+    token:
+      jwt:
+        generator:
+          refresh-token:
+            secret: '"${JWT_GENERATOR_SIGNATURE_SECRET}"'
+          access-token:
+            expiration: 6000
+#end::refresh[]
+---
+# management endpoints settings
+endpoints:
+  swagger:
+    enabled: true
+  all:
+    enabled: false
+    sensitive: false
+  stop:
+    enabled: false
+---
+netty:
+  default:
+    allocator:
+      max-order: 3
+---
+# JSON settings
+jackson:
+  property-naming-strategy: LOWER_CAMEL_CASE
+  serialization:
+    writeDatesAsTimestamps: false
+    writeDatesWithZoneId: true
+---
+# DB sources
+datasources:
+  default:
+    url: jdbc:mariadb://${MENTORING_DB_HOST}:${MENTORING_DB_PORT}/mentoring
+    username: ${MENTORING_DB_USERNAME}
+    password: ${MENTORING_DB_PASSWORD}
+    schema-generate: NONE
+    db-type: mariadb
+    dialect: MYSQL
+    driver-class-name: org.mariadb.jdbc.Driver
+    maximum-pool-size: 50
+    minimum-idle: 5
+---
+#liquibase
+liquibase:
+  datasources:
+    default:
+      enabled: true
+      change-log: classpath:db/liquibase-changelog.xml
+      drop-first: false
+---
+# micronaut-data-jpa
+jpa:
+  default:
+    properties:
+      hibernate:
+        show_sql: false
+metrics:
+  enabled: true
+  export:
+    prometheus:
+      enabled: true
+---
+custom:
+  app:
+    env: ${ENV}
+    base-url: ${BASE_URL_BACKEND}

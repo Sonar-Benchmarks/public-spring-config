@@ -1,0 +1,167 @@
+#tag::micronaut[]
+micronaut:
+
+  application:
+    name: fandango
+
+  server:
+    port: 8585
+    max-request-size: '20MB'
+    multipart:
+      max-file-size: '20MB'
+
+  metrics:
+    enabled: ${METRICS_ENABLED:false}
+    export:
+      prometheus:
+        enabled: true
+        step: PT1M
+        descriptions: true
+
+  openapi:
+    views:
+      spec:
+        swagger:
+          enabled: ${SWAGGER_ENABLED:true}
+        swagger-ui:
+          enabled: ${SWAGGER_ENABLED:true}
+          theme: flattop
+
+  router:
+    static-resources:
+
+      default:
+        mapping: "/**"
+        paths: [ "classpath:static" ]
+        enabled: ${UI_ENABLED:true}
+      swagger:
+        mapping: "/swagger/**"
+        paths: [ "classpath:META-INF/swagger" ]
+        enabled: ${SWAGGER_ENABLED:true}
+      swagger-ui:
+        mapping: "/swagger-ui/**"
+        paths: [ "classpath:META-INF/swagger/views/swagger-ui" ]
+        enabled: ${SWAGGER_ENABLED:true}
+
+  security:
+    basic-auth:
+      enabled: ${BASIC_AUTH_ENABLED:true}
+
+    intercept-url-map:
+
+      - pattern: /
+        httpMethod: GET
+        access:
+          - isAnonymous()
+
+      - pattern: /css/**
+        httpMethod: GET
+        access:
+          - isAnonymous()
+
+      - pattern: /js/**
+        httpMethod: GET
+        access:
+          - isAnonymous()
+
+      - pattern: /images/**
+        httpMethod: GET
+        access:
+          - isAnonymous()
+
+      - pattern: /swagger/**
+        httpMethod: GET
+        access:
+          - isAnonymous()
+
+      - pattern: /swagger-ui/**
+        httpMethod: GET
+        access:
+          - isAnonymous()
+
+      - pattern: /api/**
+        httpMethod: GET
+        access:
+          - isAnonymous()
+
+      - pattern: /api/**
+        httpMethod: POST
+        access:
+          - isAuthenticated()
+
+      - pattern: /api/**
+        httpMethod: DELETE
+        access:
+          - isAuthenticated()
+
+    enabled: true
+    token:
+      propagation:
+        header:
+          enabled: true
+#end::micronaut[]
+
+#tag::consul[]
+consul:
+  client:
+    config:
+      enabled: ${CONSUL_ENABLED:false}
+    registration:
+      enabled: ${CONSUL_ENABLED:false}
+      check:
+        enabled: false
+      fail-fast: false
+    defaultZone: "${CONSUL_HOST:localhost}:${CONSUL_PORT:8500}"
+    health-check: false
+
+#tag::consul[]
+
+#tag::endpoints[]
+endpoints:
+  prometheus:
+    sensitive: false
+  health:
+    discovery-client:
+      enabled: ${CONSUL_ENABLED:false}
+#end::endpoints[]
+
+#tag::mongodb[]
+mongodb:
+  uri: "mongodb://${MONGO_HOST:localhost}:${MONGO_PORT:27017}"
+  database: ${MONGO_DATABASE:fandango}
+  imageCollection: images
+  imageResizedCollection: resized
+  thumbnailCollection: thumbnails
+  fileCollection: files
+  cluster:
+    maxWaitQueueSize: 5
+  connectionPool:
+    maxSize: 20
+#end::mongodb[]
+
+#tag::image[]
+image:
+  # Default image thumbnail generator width size
+  thumbnailSize: 300
+#end::image[]
+
+#tag::authentication[]
+authentication:
+  user: ${BASIC_AUTH_USER:user}
+  password: ${BASIC_AUTH_PASS:password}
+#end::authentication[]
+
+#tag::jackson[]
+jackson:
+
+  bean-introspection-module: true
+
+  serialization:
+    indentOutput: true
+    writeDatesAsTimestamps: false
+    failOnEmptyBeans: false
+
+  deserialization:
+    useBigIntegerForInts: true
+    failOnUnknownProperties: false
+#end::jackson[]

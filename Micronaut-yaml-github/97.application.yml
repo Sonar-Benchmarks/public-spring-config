@@ -1,0 +1,49 @@
+micronaut:
+  application:
+    name: micronaut-template
+    default-charset: UTF-8
+  server:
+    port: 8080
+
+  metrics:
+    enabled: true
+    export:
+      prometheus:
+        enabled: true
+        step: PT1M
+        descriptions: true
+
+
+jackson:
+  date-format: yyyy-MM-dd'T'HH:mm:ss.SSSXXX
+  serialization:
+    write-dates-as-timestamps: false
+  deserialization:
+    adjust-dates-to-context-time-zone: false
+  datetime:
+    enabled: true
+
+
+endpoints:
+  health:
+    enabled: true
+    sensitive: false
+    details-visible: ANONYMOUS
+  prometheus:
+    enabled: true
+    sensitive: false
+  beans:
+    enabled: false
+  info:
+    enabled: false
+  refresh:
+    enabled: false
+  routes:
+    enabled: false
+  loggers:
+    enabled: false
+  env:
+    enabled: false
+  threaddump:
+    enabled: false
+

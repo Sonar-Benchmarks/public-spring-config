@@ -1,0 +1,105 @@
+gcp:
+  project-id: ${GCP_PROJECT_ID}
+
+micronaut:
+  server:
+    multipart:
+      enabled: true
+      max-file-size: 8_000_000 # 8mb
+  application:
+    name: Libre311
+  object-storage:
+    gcp:
+      default:
+        bucket: ${STORAGE_BUCKET_ID:`your-client-id-here.apps.googleusercontent.com`}
+  http:
+    services:
+      auth:
+        url: ${AUTH_BASE_URL}
+  security:
+    token:
+      enabled: true
+      jwt:
+        enabled: true
+        signatures:
+          jwks:
+            unity:
+              url: ${AUTH_JWKS}
+    intercept-url-map:
+      - pattern: /info
+        http-method: GET
+        access:
+          - isAnonymous()
+      - pattern: /swagger-ui/**
+        http-method: GET
+        access:
+          - isAnonymous()
+      - pattern: /swagger/**
+        http-method: GET
+        access:
+          - isAnonymous()
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+  data:
+    pageable:
+      size-parameter-name: page_size
+datasources:
+  default:
+    db-type: ${LIBRE311_DB_TYPE}
+jpa:
+  default:
+    entity-scan:
+      packages: "app.model"
+    properties:
+      hibernate:
+        dialect: org.hibernate.spatial.dialect.mysql.MySQL8SpatialDialect
+        database-platform: org.hibernate.spatial.dialect.mysql.MySQL8SpatialDialect
+        hbm2ddl:
+          auto: ${LIBRE311_AUTO_SCHEMA_GEN:update}
+#        show_sql: true
+#        format_sql: true
+#        use_sql_comments: true
+#        type: trace
+netty:
+  default:
+    allocator:
+      max-order: 3
+app:
+  service-id: ${LIBRE311_SERVICE_ID}
+  discovery:
+    changeset: ${LIBRE311_DISCOVERY_CHANGESET_DATETIME:`2012-09-14T08:00:00-07:00`}
+    contact: ${LIBRE311_DISCOVERY_CONTACT_MESSAGE:`Contact admin@test.test for assistance`}
+    key-service: "Visit [endpoint here] to request an API Key"
+    endpoints:
+      - specification: "http://wiki.open311.org/GeoReport_v2"
+        url: ${LIBRE311_DISCOVERY_PRODUCTION_URL:`http://localhost:8080/api`}
+        changeset: ${LIBRE311_DISCOVERY_CHANGESET_DATETIME:`2012-09-14T08:00:00-07:00`}
+        type: "production"
+        formats:
+          - "text/xml"
+          - "application/json"
+      - specification: "http://wiki.open311.org/GeoReport_v2"
+        url: ${LIBRE311_DISCOVERY_TEST_URL:`http://localhost:8080/api`}
+        changeset: ${LIBRE311_DISCOVERY_CHANGESET_DATETIME:`2012-09-14T08:00:00-07:00`}
+        type: "test"
+        formats:
+          - "text/xml"
+          - "application/json"
+  image-storage:
+    bucket-url-format: "https://storage.googleapis.com/%s/"
+    bucket:  ${STORAGE_BUCKET_ID:`your-client-id-here.apps.googleusercontent.com`}
+  recaptcha:
+    secret: ${RECAPTCHA_SECRET:`recaptchaSecret`}
+  safesearch:
+    key: ${SAFESEARCH_KEY:`safesearchKey`}
+
+flyway:
+  datasources:
+    default:
+      enabled: true

@@ -1,0 +1,41 @@
+micronaut:
+  application:
+    name: lidar-converter-server
+  server:
+    port: 8080
+    cors:
+      enabled: true
+    max-request-size: '1000MB'
+    multipart:
+      max-file-size: '1000MB'
+#    context-path: /lidar-converter-server
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      redoc:
+        paths: classpath:META-INF/swagger/views/redoc
+        mapping: /redoc/**
+      rapidoc:
+        paths: classpath:META-INF/swagger/views/rapidoc
+        mapping: /rapidoc/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+lidar:
+  converter:
+    inputDirectory: ${LIDAR_CONVERTER_INPUT_DIRECTORY:/input}
+    potree:
+#      outputDirectory: /data/lidar
+      outputDirectory: ${LIDAR_CONVERTER_OUTPUT_DIRECTORY:/output}
+    entwine:
+#      outputDirectory:  /data/lidar
+      outputDirectory: ${LIDAR_CONVERTER_OUTPUT_DIRECTORY:/output}
+  indexer:
+    # endpoint: http://ptsv2.com
+    # path: /t/8op9m-1591810729/post   
+#    endpoint: http://host.docker.internal:8080
+    endpoint: ${LIDAR_INDEXER_URL:`http://lidar-indexer:8080`}
+    postPath: ${LIDAR_INDEXER_POST_PATH:/lidarProducts/createLidarProduct}
+    putPath: ${LIDAR_INDEXER_PUT_PATH:/lidarProducts/updateById}

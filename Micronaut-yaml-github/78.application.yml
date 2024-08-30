@@ -1,0 +1,16 @@
+micronaut:
+  application:
+    name: GameRepository
+
+datasources:
+  default:
+    url: ${JDBC_DATABASE_URL:`jdbc:postgresql://localhost:5432/postgres`}
+    driverClassName: org.postgresql.Driver
+    username: ${JDBC_DATABASE_USERNAME:`postgres`}
+    password: ${JDBC_DATABASE_PASSWORD:`postgres`}
+
+liquibase:
+  enabled: true
+  datasources:
+    default:
+      change-log: 'classpath:liquibase-changelog.xml'

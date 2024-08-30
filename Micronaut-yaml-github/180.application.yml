@@ -1,0 +1,179 @@
+micronaut:
+  server:
+    multipart:
+      max-file-size: 30000000
+    port: ${SERVER_PORT:1337}
+    context-path: /admreg
+    max-request-size: 30000000
+  application:
+    name: hm-grunndata-register
+    thread-selection: auto
+  executors:
+    consumer:
+      type: fixed
+      nThreads: 1
+    io:
+      type: fixed
+      nThreads: 100
+  security:
+    enabled: true
+    redirect:
+      enabled: false
+      login-failure: "login-failure"
+      login-success: "login-success"
+    intercept-url-map:
+      - pattern: /swagger/**
+        http-method: GET
+        access:
+          - isAnonymous()
+      - pattern: /swagger-ui/**
+        access:
+          - isAnonymous()
+    endpoints:
+      login:
+        enabled: true
+        path: /login
+      logout:
+        enabled: true
+        path: /logout
+    authentication: cookie
+    token:
+      generator:
+        access-token:
+          expiration: ${ACCESS_TOKEN_EXPIRATION:28800}
+      cookie:
+        enabled: true
+        cookie-max-age: 8h
+        cookie-domain: ${COOKIE_DOMAIN:localhost}
+        cookie-secure: true
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: ${JWT_GENERATOR_SECRET:MustBeAVeryLongSecretAndUsedThisForTestOnly}
+              jws-algorithm: HS256
+  metrics:
+    enabled: true
+    sensitive: false
+    binders:
+      uptime:
+        enabled: true
+      processor:
+        enabled: true
+      jvm:
+        enabled: true
+      web:
+        enabled: true
+      logback:
+        enabled: true
+    export:
+      prometheus:
+        enabled: true
+        step: PT1M
+        descriptions: true
+  data:
+    pageable:
+      max-page-size: 1000
+  caches:
+    suppliers:
+      charset: 'UTF-8'
+    agreements:
+      charset: 'UTF-8'
+    agreementposts:
+      charset: 'UTF-8'
+  http:
+    client:
+      connect-timeout: 10s
+      read-timeout: 60s
+      event-loop-group: http
+  netty:
+    event-loops:
+      http:
+        num-threads: 25
+        prefer-native-transport: true
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+        enabled: ${SWAGGER_ENABLED:true}
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+        enabled: ${SWAGGER_ENABLED:true}
+  openapi:
+    schema:
+      io.micronaut.data.model.Pageable: no.nav.hm.grunndata.register.openapi.OpenApiPageable
+endpoints:
+  metrics:
+    enabled: true
+    sensitive: false
+  prometheus:
+    sensitive: false
+    enabled: true
+  flyway:
+    enabled: false
+  all:
+    path: "/internal"
+
+jackson:
+  bean-introspection-module: true
+  serialization:
+    indentOutput: true
+
+datasources:
+  default:
+    url: ${DB_JDBC_URL:`jdbc:tc:postgresql:14:///register?TC_TMPFS=/testtmpfs:rw&TC_INITSCRIPT=file:src/test/resources/postgres/postgres-init.sql&TC_REUSABLE=true`}
+    driverClassName: ${DB_DRIVER:org.testcontainers.jdbc.ContainerDatabaseDriver}
+    username: ${DB_USERNAME:register}
+    password: ${DB_PASSWORD:register}
+    maximum-pool-size: 8
+    minimum-idle: 0
+    pool-name: default
+
+flyway:
+  datasources:
+    default:
+      locations: classpath:db
+
+rapidsandrivers:
+  enabled: ${RAPIDSANDRIVERS_ENABLED:false}
+
+kafka:
+  topic: teamdigihot.hm-grunndata-v1
+  consumerGroupId: hm-grunndata-register-g1
+  trustStorePath: ${KAFKA_TRUSTSTORE_PATH:}
+  trustStorePassword: ${KAFKA_CREDSTORE_PASSWORD:}
+  keystorePath: ${KAFKA_KEYSTORE_PATH:}
+  keystorePassword: ${KAFKA_CREDSTORE_PASSWORD:}
+  health:
+    enabled: false
+media:
+  upload:
+    url: ${MEDIA_UPLOAD_URL:`http://localhost:8081`}
+
+grunndata:
+  db:
+    url: ${GRUNNDATA_DB_URL:`http://hm-grunndata-db`}
+  import:
+    url: ${GRUNNDATA_IMPORT_URL:`http://localhost:3333/import`}
+    token: ${GRUNNDATA_IMPORT_TOKEN:`bearer token123`}
+
+schedulers:
+  enabled: ${SCHEDULERS_ENABLED:false}
+
+baseversion:
+    scheduler:
+        enabled: ${BASEVERSION_SCHEDULER_ENABLED:false}
+
+import:
+  autoapprove: ${IMPORT_AUTOAPPROVE:false}
+
+digihotSortiment:
+  bestillingsordning: ${BESTILLINGSORDNING_URL:`https://navikt.github.io/digihot-sortiment/bestillingsordning_sortiment.json`}
+  digitalSoknadSortiment: ${DIGITAL_SOKNAD_SORTIMENT_URL:`https://navikt.github.io/digihot-sortiment/sortiment_av_apostid_per_kategori_local2.json`}
+  paakrevdGodkjenningskurs: ${PAAKREVD_GODKJENNINGSKURS_URL:`https://navikt.github.io/digihot-sortiment/paakrevde_godkjenningskurs.json`}
+  produkttype: ${PRODUKTTYPE_URL:`https://navikt.github.io/digihot-sortiment/produkttype.json`}
+
+elector:
+  path: ${ELECTOR_PATH:localhost}

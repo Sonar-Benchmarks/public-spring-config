@@ -1,0 +1,39 @@
+micronaut:
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+      rapidoc:
+        paths: classpath:META-INF/swagger/views/rapidoc
+        mapping: /rapidoc/**
+  server:
+    cors:
+      enabled: true
+      configurations:
+        web:
+          allowed-origins-regex:
+            - ${CORS_ALLOWED_ORIGIN:`^http(|s):\/\/micronaut\.io$`}
+          allowed-methods:
+            - GET
+  starter:
+    github:
+      clientId: ${GITHUB_OAUTH_APP_CLIENT_ID}
+      clientSecret: ${GITHUB_OAUTH_APP_CLIENT_SECRET}
+      tokenPermissions: public_repo,read:user,workflow
+
+  http:
+    services:
+      github-oauth:
+        url: https://github.com
+      github-api-v3:
+        url: https://api.github.com
+gcp:
+  http:
+    client:
+      auth:
+        patterns:
+          - /analytics/**

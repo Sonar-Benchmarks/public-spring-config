@@ -1,0 +1,22 @@
+micronaut:
+  application:
+    name: oaut2OktaExample
+  security:
+    authentication: cookie
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: '"${JWT_GENERATOR_SIGNATURE_SECRET:hello}"'
+    oauth2:
+      clients:
+        default:
+          client-id: ${clientid}
+          client-secret: ${client-secret}
+          openid:
+            issuer: ${issuer domain}
+    endpoints:
+      logout:
+        enabled:
+          true

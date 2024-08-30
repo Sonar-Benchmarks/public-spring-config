@@ -1,0 +1,34 @@
+micronaut:
+  application:
+    name: gimme_that
+  session:
+    http:
+      cookie: true
+      header: true
+  security:
+    authentication: cookie
+#    oauth2:
+#      clients:
+#        default:
+#          client-id: ${OAUTH_CLIENT_ID}
+#          client-secret: ${OAUTH_CLIENT_SECRET}
+datasources:
+  default:
+    url: jdbc:mysql://localhost:3306/gimme_db
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: ${GIMME_DB_USER:root}
+    password: ${GIMME_DB_PW:''}
+dataSource:
+  url: jdbc:mysql://localhost:3306/gimme_db
+  driverClassName: com.mysql.cj.jdbc.Driver
+  username: ${GIMME_DB_USER:root}
+  password: ${GIMME_DB_PW:''}
+  pooled: true
+  jmxExport: true
+hibernate:
+  hbm2ddl:
+    auto: update
+  cache:
+    queries: false
+    use_second_level_cache: false
+    use_query_cache: false

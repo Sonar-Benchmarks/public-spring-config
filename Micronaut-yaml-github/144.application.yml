@@ -1,0 +1,38 @@
+micronaut:
+  application:
+    name: stravastore
+  server:
+    port: 10051
+    cors:
+      enabled: true
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui:
+        enabled: true
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+
+flyway:
+  datasources:
+    default:
+      enabled: true
+
+netty:
+  default:
+    allocator:
+      max-order: 3
+
+strava:
+  maxPerPage: 30
+  emptyDbMonths: 3
+  fetchUrl: ${FETCH_URL:`http://localhost:10050/stravaFetch`}
+
+# consul does not work with serde right now, see - https://github.com/micronaut-projects/micronaut-discovery-client/issues/385
+#consul:
+#  client:
+#    defaultZone: ${CONSUL_HOST:localhost}:${CONSUL_PORT:8500}
+#    registration:
+#      enabled: false

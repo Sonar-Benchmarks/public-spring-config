@@ -1,0 +1,51 @@
+micronaut:
+  application:
+    name: knostr
+  server:
+    cors:
+      enabled: true
+    idle-timeout: 45m
+    read-idle-timeout: 45m
+    write-idle-timeout: 45m
+  metrics:
+    enabled: true
+  otel:
+    enabled: false
+  caches:
+    limit-list:
+      expire-after-write: 10m
+
+endpoints:
+  all:
+    port: 8082
+    sensitive: false
+
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/knostr
+    username: knostr
+    password: root
+    driver-class-name: org.postgresql.Driver
+    dialect: POSTGRES
+    db-type: postgres
+
+jpa:
+  default:
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
+
+logger:
+  levels:
+    io.micronaut.data.query: INFO
+
+flyway:
+  datasources:
+    default:
+      enabled: true
+
+---
+limits:
+  enabled: false
+  external-file-location: ./limits.yml

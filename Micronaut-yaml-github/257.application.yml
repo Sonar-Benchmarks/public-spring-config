@@ -1,0 +1,85 @@
+micronaut:
+  application:
+    name: bookstore-service
+  server:
+    cors:
+      enabled: true
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+  security:
+    enabled: false
+    authentication: bearer
+    scope: 'openid profile offline_access'
+    client_id: bookstore
+    issuer: http://localhost:8082/realms/local-test
+    token:
+      roles-name: resource_access.bookstore.roles
+      jwt:
+        enabled: true
+        signatures:
+          jwks:
+            default:
+              url: http://localhost:8082/realms/local-test/protocol/openid-connect/certs
+    intercept-url-map:
+      - pattern: ${micronaut.server.context-path:/}/swagger/**
+        access:
+          - isAnonymous()
+      - pattern: ${micronaut.server.context-path:/}/swagger-ui/**
+        access:
+          - isAnonymous()
+      - pattern: /**
+        access:
+          - isAuthenticated()
+
+liquibase:
+  datasources:
+    default:
+      change-log: classpath:/db/changelog/changelog-root.yml
+      enabled: true
+      drop-first: true
+      
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/bookstore-example
+    username: postgres
+    password: password
+    driverClassName: org.postgresql.Driver
+
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: none
+        show_sql: true
+        jdbc:
+          time_zone: UTC
+
+netty:
+  default:
+    allocator:
+      max-order: 3
+
+jackson:
+  time-zone: UTC
+  serialization-inclusion: ALWAYS
+  serialization:
+    indent-output: true
+    write-dates-as-timestamps: false
+    use-big-decimal-for-floats: true
+  deserialization:
+    useBigDecimalForFloats: true
+
+kafka:
+  enabled: true
+  bootstrap:
+    servers: localhost:9092
+  producers:
+    default:
+      retries: 5

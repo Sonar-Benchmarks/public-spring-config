@@ -1,0 +1,150 @@
+micronaut:
+  server:
+    idle-timeout: 20m
+    read-idle-timeout: 20m
+    write-idle-timeout: 20m
+    port: ${APPLICATION_SERVER_PORT:7080}
+    # sets the request size to 100MB
+    max-request-size: 104857600
+    application:
+      name: "webrtc-observer"
+  heartbeat:
+    enabled: true
+  metrics:
+    enabled: ${METRICS_ENABLED:True}
+    export:
+      prometheus:
+        enabled: true
+        descriptions: true
+        step: PT1M
+  security:
+    enabled: false
+---
+logger:
+  levels:
+    root: INFO
+---
+endpoints:
+  all:
+    port: ${APPLICATION_MANAGEMENT_PORT:7081}
+  prometheus:
+    enabled: true
+    sensitive: false
+  health:
+    enabled: true
+    sensitive: false
+  info:
+    enabled: true
+    sensitive: false
+  logout:
+    get-allowed: false
+
+---
+observer:
+  sources:
+    acceptSfuSamples: true
+    acceptClientSamples: true
+    useServerTimestamp: false
+    rest:
+      enabled: true
+
+    websocket:
+      minRemotePeers: 0
+      enabled: true
+
+  repository:
+    useBackups: false
+    callMaxIdleTimeInS: 300
+    clientsMaxIdle: 300
+    peerConnectionsMaxIdle: 300
+    inboundTracksMaxIdle: 300
+    outboundTracksMaxIdle: 300
+
+    sfuMaxIdleTimeInS: 300
+    sfuTransportMaxIdleTimeInS: 300
+    sfuInboundRtpPadMaxIdleTimeInS: 300
+    sfuOutboundRtpPadMaxIdleTimeInS: 300
+    sfuSctpChannelMaxIdleTimeInS: 300
+
+  buffers:
+    samplesCollector:
+      maxItems: 100
+      maxTimeInMs: 1000
+    debouncers:
+      maxItems: 10000
+      maxTimeInMs: 1000
+    reportsCollector:
+      maxItems: 5000
+      maxTimeInMs: 2000
+
+  security:
+    printConfigs: True
+    obfuscations:
+      hashAlgorithm: SHA-256
+      hashSalt: "MySalt"
+
+  metrics:
+    prefix: "observertc"
+    serviceIdTagName: "service"
+    mediaUnitTagName: "mediaUnit"
+    evaluatorMetrics:
+      enabled: true
+    reportMetrics:
+      enabled: true
+    sinkMetrics:
+      enabled: true
+    sourceMetrics:
+      enabled: true
+    repositoryMetrics:
+      enabled: true
+    clientSamplesMetricConfig:
+      enabled: true
+
+
+  evaluators:
+    clientSamplesAnalyser:
+      dropUnmatchedReports: false
+    sfuSamplesAnalyser:
+      dropUnmatchedInternalInboundReports: false
+      dropUnmatchedInboundReports: false
+      dropUnmatchedOutboundReports: false
+    callUpdater:
+      enabled: true
+      callIdAssignMode: master
+    obfuscator:
+      enabled: false
+      iceAddresses: none
+      roomId: none
+      userId: none
+
+  # setting this to {} by default gives you hard time to debug why your custom sinks from other config files not working :(
+  #  sinks: {}
+  hamok:
+#    discovery: {}
+#    endpoint: {}
+
+    storageGrid:
+      raftMaxLogEntriesRetentionTimeInMinutes: 5
+      heartbeatInMs: 150
+      followerMaxIdleInMs: 10000
+      peerMaxIdleInMs: 10000
+      sendingHelloTimeoutInMs: 1500
+      applicationCommitIndexSyncTimeoutInMs: 60_000
+      requestTimeoutInMs: 3000
+    memberNamesPool:
+      - "Lisa"
+      - "Bart"
+      - "Homer"
+      - "Marge"
+      - "Maggie"
+      - "Barney"
+      - "Mo"
+      - "Ned"
+      - "Milhouse"
+      - "Grampa"
+      - "Krusty"
+      - "Smithers"
+      - "Ralph"
+      - "Tony"
+      - "Jacqueline"
+      - "Nelson"

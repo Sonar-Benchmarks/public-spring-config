@@ -1,0 +1,63 @@
+micronaut:
+  application:
+    name: artinaut
+  security:
+    enabled: true
+    basic-auth:
+      enabled: true
+    intercept-url-map:
+      - pattern: /api/v1/**
+        access:
+          - ADMIN
+      - pattern: /repos/**
+        access:
+          - isAnonymous()
+          - isAuthenticated()
+
+datasources:
+  default:
+    url: "jdbc:${DB_TYPE:mariadb}://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:artinaut}"
+    driverClassName: org.mariadb.jdbc.Driver
+    username: "${DB_USER:artinaut}"
+    password: "${DB_PWD:secret}"
+jpa:
+  default:
+    entity-scan:
+      packages: 'io.wangler.artinaut'
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: validate
+        show_sql: false
+        dialect: io.wangler.artinaut.hibernate.MariaDB107Dialect
+        physical_naming_strategy: io.wangler.artinaut.hibernate.JpaPhysicalNamingStrategy
+        implicit_naming_strategy: io.wangler.artinaut.hibernate.JpaImplicitNamingStrategy
+
+flyway:
+  datasources:
+    default:
+      baseline-on-migrate: true
+      baseline-version: "1"
+
+netty:
+  default:
+    allocator:
+      max-order: 3
+
+endpoints:
+  all:
+    path: /endpoints
+  health:
+    enabled: true
+
+artinaut:
+  file-store:
+    path: "${ARTINAUT_FILESTORE:/Users/saw/dev/private/artinaut/build}"
+  security:
+    password-encoder:
+      iteration-count: 65536
+      key-length: 128
+      salt: "@rtIn@ut"
+  http:
+    read-timeout: 30s
+    max-content-length: 52428800 # 1024 * 1024 * 50 MB

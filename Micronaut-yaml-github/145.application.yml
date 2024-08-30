@@ -1,0 +1,18 @@
+micronaut:
+  application:
+    name: aws-lambda-graal-kotlin
+jackson:
+  bean-introspection-module: true
+  date-format: yyyy-MM-dd HH:mm:ss
+#  indentOutput: true TODO PR to update docs?
+#  writeDatesAsTimestamps: true TODO PR to update docs?
+
+rss:
+#  baseurl: https://www.blu-ray.com
+#  path: /rss/newreleasesfeed.xml
+#  baseurl: https://movieweb.com
+#  path: /rss/new-movies/
+#  baseurl: https://www.metacritic.com
+#  path: /rss/movies
+  baseurl: https://www.bigscreen.com
+  path: /xml/nowshowing_new.xml

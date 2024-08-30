@@ -1,0 +1,26 @@
+micronaut:
+  server:
+    port: ${server.port}
+    host: ${server.host}
+  router:
+    static-resources:
+      default:
+        enabled: true
+        mapping: "/**"
+        paths: "file:frontend"
+  application:
+    name: liberty_Web
+  caches:
+    caffeine:
+      enabled: true
+      specs:
+        mojang-cache:
+          maximum-size: ${caffeine.mojang.maxSize}
+          expires-after-write: ${caffeine.mojang.expiration}
+        requests:
+          maximum-size: ${caffeine.requests.maxSize}
+          expires-after-write: ${caffeine.requests.expiration}
+netty:
+  default:
+    allocator:
+      max-order: 3

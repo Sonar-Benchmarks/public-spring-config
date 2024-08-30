@@ -1,0 +1,47 @@
+micronaut:
+  server:
+    port: 8181
+  metrics:
+    binders.jvm.enabled: true #optional true by default
+    binders.uptime.enabled: true #optional true by default
+    binders.processor.enabled: true #optional true by default
+    binders.files.enabled: true #optional true by default
+    binders.logback.enabled: true #optional true by default
+    enabled: true #optional true by default
+    statsd:
+      enabled: true
+      flavor: datadog
+      step: PT1M
+      host: localhost
+      port: 8125
+  application:
+    name: metrics-example
+
+  router.static.resources:
+    enabled: true
+    mapping: /**
+    paths:
+    - classpath:static
+
+example.metric.filters.enabled: false
+
+
+datasources:
+  default:
+    url: jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: ""
+    driverClassName: org.h2.Driver
+    maximumPoolSize: 100
+    minimumIdle: 10
+    cachePrepStmts: false
+    poolName: Default-Pool
+  secondary:
+    url: jdbc:h2:mem:secondary;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: ""
+    driverClassName: org.h2.Driver
+    maximumPoolSize: 99
+    minimumIdle: 9
+    cachePrepStmts: false
+    poolName: Secondary-Pool

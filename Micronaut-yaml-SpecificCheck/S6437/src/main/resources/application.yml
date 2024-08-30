@@ -1,0 +1,29 @@
+micronaut:
+  application:
+    name: app
+  ssl:
+    key:
+      password: password
+  server:
+    ssl:
+      key-store:
+        password: pass
+  http:
+    client:
+      ssl:
+        trust-store:
+          password: password
+    services:
+      dev:
+        proxy-password-password: password
+acme:
+  account-key: password
+azure:
+  credential:
+    storage-shared-key:
+      connection-string: DefaultEndpointsProtocol=https;AccountName=myazurestorageaccount;AccountKey=abc123def456ghi789jkl012mno345pqr678stu901vwx234yz567abdef564321;EndpointSuffix=core.windows.net
+rabbitmq:
+  uri: 'http://myuser:mypassword@myurl:myport'
+aws:
+  client:
+    proxy-password: '${password}'

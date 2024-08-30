@@ -1,0 +1,42 @@
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/postgres
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: 'postgres'
+    schema-generate: NONE
+    dialect: POSTGRES
+    schema: 'product-catalog'
+
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: validate
+
+kafka:
+  bootstrap:
+    servers: "${KAFKA_HOST:localhost}:${KAFKA_PORT:9092}"
+
+micronaut:
+  application:
+    name: product-catalog
+  security:
+    authentication: bearer
+    token:
+      jwt:
+        enabled: true
+        signatures:
+          jwks:
+            keycloak:
+              url: http://localhost:8081/auth/realms/Fridgy/protocol/openid-connect/certs
+    enabled: false
+  server:
+    port: 8101
+
+flyway:
+  datasources:
+    default:
+      enable: true
+      schemas: 'product-catalog'

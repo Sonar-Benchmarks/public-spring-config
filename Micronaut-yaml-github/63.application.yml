@@ -1,0 +1,43 @@
+micronaut:
+  application:
+    name: cassius
+  security:
+    enabled: true
+    token:
+      jwt:
+        enabled: true
+        signatures:
+          jwks:
+            auth0:
+              url: https://merricklabs.us.auth0.com/.well-known/jwks.json
+
+strava:
+  challengeVerifyToken:
+  clientId:
+  clientSecret:
+  refreshToken:
+
+gcp:
+  bucketName:
+
+bigQuery:
+  datasetName: strava_bigquery
+  tableName: activities
+
+endpoints:
+  all:
+    enabled: false
+  health:
+    enabled: true
+
+jackson:
+  mapper:
+    ACCEPT_CASE_INSENSITIVE_ENUMS: true
+  bean-introspection-module: true
+  serializationInclusion: NON_NULL
+  deserialization:
+    failOnUnknownProperties: false
+
+logger:
+  levels:
+    io.github.davidmerrick.strava: DEBUG

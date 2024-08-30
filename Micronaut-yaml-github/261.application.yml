@@ -1,0 +1,26 @@
+micronaut:
+  application:
+    name: customerService
+
+grpc:
+  server:
+    port: 50052
+
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/customerdatabase
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: password
+
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+        show_sql: false
+
+flyway:
+  datasources:
+    default:
+      enabled: true

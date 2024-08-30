@@ -1,0 +1,55 @@
+micronaut:
+  application:
+    name: buyOycTicketService
+  server:
+    port: 8084
+    context-path: /api/yucca-ticket
+
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+
+r2dbc:
+  datasources:
+    default:
+      schema-generate: NONE
+      dialect: POSTGRES
+      url: r2dbc:postgresql://kong@${POSTGRESQL_HOST}:5432/yucca?currentSchema=ticket
+      username: kong
+      password: kong
+
+flyway:
+  datasources:
+    default:
+      enabled: true
+  cleanDisabled: false
+
+jackson:
+  serialization:
+    indentOutput: true
+    writeDatesAsTimestamps: false
+  deserialization:
+    failOnUnknownProperties: false
+
+redis:
+    uri: redis://${REDIS_HOST}
+    timeout: 30s
+
+buy.oyc.catering:
+    url:
+     drink: /api/yucca-catering/api/drink
+     meal: /api/yucca-catering/api/meal
+    port: 8000
+    host: ${KONG_SERVICE_IP}
+
+buy.oyc.concert:
+    url: /api/yucca-concert/api
+    port: 8000
+    host: ${KONG_SERVICE_IP}
+
+buy.oyc.parking:
+    url: /api/yucca-parking/api
+    port: 8000
+    host: ${KONG_SERVICE_IP}

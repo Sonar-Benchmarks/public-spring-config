@@ -1,0 +1,31 @@
+micronaut:
+  application:
+    name: wonky
+  security:
+    intercept-url-map:
+      -
+        pattern: /static/**
+        http-method: GET
+        access:
+          - isAnonymous()
+      - pattern: /**
+        http-method: GET
+        access:
+          - isAnonymous()
+  router:
+    static-resources:
+      default:
+        enabled: true
+        mapping: /**
+        paths:
+          - classpath:html
+      static:
+        enabled: true
+        mapping: /static/**
+        paths:
+          - classpath:html
+  server:
+    port: 8080
+tracing:
+  jaeger:
+    enabled: true

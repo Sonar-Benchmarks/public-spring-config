@@ -1,0 +1,28 @@
+micronaut:
+  application:
+    name: micronautKafkaEvent
+netty:
+  default:
+    allocator:
+      max-order: 3
+kafka.bootstrap.servers: localhost:9092
+kafka:
+  event:
+    topic: event-stream
+    group-id: event-stream
+    poison:
+      topic: event-stream-poison
+  producers:
+    default:
+      retries: 5
+      topic: event-stream
+    deadLetter:
+      topic: event-stream-dead-letter
+    poison:
+      topic: event-stream-poison
+  consumers:
+    event-stream:
+      key:
+        deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value:
+        deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer

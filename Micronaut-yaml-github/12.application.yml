@@ -1,0 +1,37 @@
+micronaut:
+  application:
+    name: youtube3
+  server:
+    port: 8080
+    multipart:
+      disk: true
+      max-file-size: 4489312220
+    max-request-size: 4489312220
+
+datasources:
+  default:
+    driver-class-name: org.mariadb.jdbc.Driver
+    db-type: mariadb
+    jdbc-url: jdbc:mariadb://mariadb:3306/citizix_db
+    username: citizix_user
+    password: An0thrS3crt
+    dialect: MYSQL
+
+netty:
+  default:
+    allocator:
+      max-order: 3
+
+jpa:
+  default:
+    properties:
+      hibernate:
+        bytecode:
+          provider: none
+        hbm2ddl:
+          #it is necessary because we want to create table
+          auto: create
+        show_sql: true
+
+rabbitmq:
+  host: rabbitmq
