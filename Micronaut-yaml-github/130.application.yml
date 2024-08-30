@@ -1,0 +1,48 @@
+micronaut:
+  application:
+    name: nagamochi
+  security:
+    authentication: session
+    endpoints:
+      login:
+        enabled: true
+      logout:
+        enabled: true
+    intercept-url-map:
+      - access: isAnonymous()
+        pattern: /swagger/**
+      - access: isAnonymous()
+        pattern: /swagger-ui/**
+    redirect:
+      enabled: false
+  session:
+    http:
+      cookie-same-site: lax
+  server:
+    netty:
+      access-logger:
+        enabled: true
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+datasources:
+  default:
+    url: ${DB_URL}
+    driverClassName: org.postgresql.Driver
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    dialect: postgres
+    maximum-pool-size: 10
+netty:
+  default:
+    allocator:
+      max-order: 3
+flyway:
+  datasources:
+    default:
+      enabled: true

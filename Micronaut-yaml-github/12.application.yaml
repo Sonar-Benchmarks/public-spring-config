@@ -1,0 +1,47 @@
+micronaut:
+  server:
+    port: 7080
+  application:
+    name: ${project.artifactId}
+
+  metrics:
+    enabled: true
+    export:
+      prometheus:
+        step: PT2s
+        descriptions: false
+
+  http:
+    client:
+      read-timeout: 30s
+
+---
+endpoints:
+  metrics:
+    enabled: true
+  health:
+    enabled: true
+  info:
+    enabled: true
+    sensitive: false
+
+---
+loggers:
+  levels:
+    ROOT: TRACE
+
+---
+general:
+  brokerUrl: "http://localhost:1026"
+  aqSimulations:
+    - id: "urn:ngsi:AirQualityObserved:test"
+
+---
+keycloak:
+  enabled: false
+  username: user
+  password: pwd
+  clientId: id
+  clientSecret: sec
+  realm: fiware-server
+  url: http://localhost:8080

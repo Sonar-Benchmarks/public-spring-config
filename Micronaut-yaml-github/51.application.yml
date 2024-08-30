@@ -1,0 +1,53 @@
+micronaut:
+  application:
+    name: micronauth
+  server:
+    port: 8080
+    cors:
+      enabled: true
+  security:
+    authentication: bearer
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: ${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}
+        generator:
+          refresh-token:
+            secret: ${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}
+          access-token:
+            expiration: 360
+    endpoints:
+      oauth:
+        path: /auth/refresh
+      login:
+        path: /auth
+      keys:
+        path: /auth/keys
+      refresh:
+        enabled: true
+        sensitive: false
+
+datasources:
+  default:
+    jdbc-url: ${DB_URL:jdbc:mysql://mysql:3306/dbAuth}
+    dialect: MYSQL
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: ${DB_USER:developer}
+    password: ${DB_PASS:password}
+
+jpa:
+  default:
+    entity-scan:
+      packages: 'com.example'
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        show_sql: true
+
+netty:
+  default:
+    allocator:
+      max-order: 3

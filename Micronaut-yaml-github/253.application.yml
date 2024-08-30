@@ -1,0 +1,46 @@
+micronaut:
+  application:
+    name: gallery
+  server:
+    port: 8081
+  netty:
+    max-request-size: 10MB
+    event-loops:
+      other:
+        num-threads: 30
+        prefer-native-transport: true
+    cors:
+      enabled: true
+
+  security:
+    token:
+      jwt:
+        signatures:
+          secret:
+            validation:
+              secret: ${JWT_GENERATOR_SIGNATURE_SECRET} # fix this; wrong
+
+---
+r2dbc:
+  datasources:
+    default:
+      dialect: MYSQL
+      url: ${GALLERY_R2DBC_URL}
+      username: ${GALLERY_JDBC_USER}
+      password: ${GALLERY_JDBC_PASSWORD}
+      maximum-pool-size: 100
+datasources:
+  default:
+    url: ${GALLERY_JDBC_URL}
+    username: ${GALLERY_JDBC_USER}
+    password: ${GALLERY_JDBC_PASSWORD}
+    sql-dialect: ${GALLERY_JDBC_DIALECT}
+#    url: ${BACKUP_GALLERY_JDBC_URL} # for building backup tables
+#    username: ${BACKUP_GALLERY_JDBC_USER}
+#    password: ${BACKUP_GALLERY_JDBC_PASSWORD}
+
+---
+flyway:
+  datasources:
+    default:
+      enabled: true

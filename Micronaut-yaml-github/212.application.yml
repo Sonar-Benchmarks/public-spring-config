@@ -1,0 +1,41 @@
+---
+micronaut:
+  application:
+    name: micronaut-data-liquibase-example
+
+---
+datasources:
+  default:
+    url: jdbc:postgresql://127.0.0.1:5432/example
+    driverClassName: org.postgresql.Driver
+    username: example
+    password: example
+    schema-generate: NONE
+    dialect: org.hibernate.dialect.PostgreSQL10Dialect
+
+jpa:
+  default:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        bytecode:
+          provider: none
+        hbm2ddl:
+          auto: none
+        show_sql: true
+
+endpoints:
+  liquibase:
+    enabled: true
+    sensitive: false
+
+liquibase:
+  datasources:
+    default:
+      enabled: true
+      drop-first: true
+      async: false
+      change-log: 'classpath:db/changelog-master.yml'
+      database-change-log-table: 'liquibase_change_log'
+      database-change-log-lock-table: 'liquibase_change_log_lock'
+

@@ -1,0 +1,17 @@
+micronaut:
+  application:
+    name: wge
+
+  router:
+    static-resources:
+      default:
+        enabled: true
+        mapping: /**
+        paths: classpath:static/wge/browser
+
+datasources:
+  default:
+    password: ${POSTGRES_PASSWORD:wge_password}
+    url: ${POSTGRES_URL:`jdbc:postgresql://localhost:5432/postgres`}
+    username: ${POSTGRES_USER:wge_user}
+    driver-class-name: ${POSTGRES_DRIVER:org.postgresql.Driver}

@@ -1,0 +1,24 @@
+micronaut:
+  application:
+    name: ontology
+    version: 0.1
+
+elasticSearch:
+# Use localhost for iterative local development and es for docker based development
+  servers:
+    - es
+#    - localhost
+  indexName: ontology-local
+
+ontologyFiles:
+  files:
+    -
+      name: doid.owl
+      type: disease
+      prefix:
+      fileType: OWL
+    -
+      name: data-use.owl
+      type: organization
+      prefix:
+      fileType: OWL

@@ -1,0 +1,137 @@
+micronaut:
+  application: &app
+    name: marvel
+  metrics:
+    binders:
+      jdbc:
+        enabled: true
+    enabled: true
+  router:
+    static-resources:
+      swagger:
+        paths:   classpath:META-INF/swagger
+        mapping: /swagger/**
+      redoc:
+        paths:   classpath:META-INF/swagger/views/redoc
+        mapping: /redoc/**
+      rapidoc:
+        paths:   classpath:META-INF/swagger/views/rapidoc
+        mapping: /rapidoc/**
+      swagger-ui:
+        paths:   classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+#      default:
+#        enabled: true
+#        mapping: /**
+#        paths:   classpath:META-INF/resources
+#      webjars:
+#        enabled: true
+#        mapping: /webjars/**
+#        paths:   classpath:META-INF/resources/webjars
+#      swagger-ui:
+#        paths:   classpath:META-INF/swagger/views/swagger-ui
+#        mapping: /swagger-ui/**
+  server:
+    cors:
+      enabled: true
+datasources:
+  default:
+    url: ${JDBC_URL:`jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;DATABASE_TO_UPPER=FALSE`}
+    username: &db-user ${JDBC_USER:sa}
+    password: &db-pass ${JDBC_PASSWORD:""}
+    driver-class-name: ${JDBC_DRIVER:org.h2.Driver}
+jackson:
+  bean-introspection-module: true
+jpa:
+  default:
+    properties: &jpa
+      hibernate: &conn-props
+        bytecode.use_reflection_optimizer:          true
+#        cache.use_query_cache:                      true
+        cache.use_second_level_cache:               false
+        connection.characterEncoding:               utf8
+        connection.CharSet:                         utf8
+        connection.generateSimpleParameterMetadata: true
+        connection.handling_mode:                   DELAYED_ACQUISITION_AND_RELEASE_AFTER_TRANSACTION
+        connection.isolation:                       2
+        connection.pool_size:                       33
+        connection.profileSQL:                      true
+        connection.rewriteBatchedStatements:        true
+        connection.useBatchMultiSend:               true
+        connection.useUnicode:                      true
+        current_session_context_class:              org.springframework.orm.hibernate5.SpringSessionContext
+#        current_session_context_class:              io.micronaut.transaction.hibernate5.MicronautSessionContext
+        #enhancer.enableAssociationManagement:       true
+        #enhancer.enableDirtyTracking:               true
+        #enhancer.enableLazyInitialization:          true
+        event.merge.entity_copy_observer:           log
+        format_sql:                                 true
+        generate_statistics: &stats                 true
+        hbm2ddl.auto: &hbm2ddl                      create-drop
+        implicit_naming_strategy: &implicit         com.example.marvel.convention.jpa.naming.ImplicitNamingStrategyImpl
+        jdbc.batch_size:                            33
+        jdbc.fetch_size:                            200
+        jdbc.use_streams_for_binary:                true
+        max_fetch_depth:                            5
+        physical_naming_strategy: &physical         com.example.marvel.convention.jpa.naming.PhysicalNamingStrategyImpl
+        query.in_clause_parameter_padding:          true
+        query.plan_parameter_metadata_max_size:     2048
+        query.substitutions:                        true 1, false 0, yes 'Y', no 'N'
+        show_sql:                                   false
+        statement_cache.size:                       100
+        use_sql_comments:                           true
+endpoints:
+  all:
+    port: 8085
+    enabled:   true
+    sensitive: false
+
+spring:
+  application:
+    <<: *app
+  datasource:
+    url: &db-url ${JDBC_URL:jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;DATABASE_TO_UPPER=FALSE}
+    username: *db-user
+    password: *db-pass
+  jpa:
+    open-in-view: false
+    properties: *jpa
+
+quarkus:
+  application:
+    <<: *app
+  datasource:
+    db-kind: h2 #this is essential!
+    jdbc:
+      url: *db-url
+    username: *db-user
+    password: *db-pass
+  hibernate-orm:
+    database:
+      generation: *hbm2ddl
+    implicit-naming-strategy: *implicit
+    metrics:
+      enabled: *stats
+    physical-naming-strategy: *physical
+  log:
+    category:
+      "io.quarkus.category":
+        level: INFO
+      "io.quarkus.arc.processor":
+        level: DEBUG
+      "org.hibernate.SQL":
+        level: TRACE
+      "org.hibernate.resource.jdbc":
+        level: TRACE
+      "org.hibernate.persister.entity":
+        level: DEBUG
+      "org.hibernate.type.descriptor.sql":
+        level: TRACE
+      "org.hibernate.loader.plan.build.spi":
+        level: TRACE
+      "org.hibernate.engine.internal.Cascade":
+        level: TRACE
+      "org.mariadb.jdbc.internal.logging.ProtocolLoggingProxy":
+        level: TRACE
+    console:
+      color: true

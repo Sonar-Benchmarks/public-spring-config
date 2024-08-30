@@ -1,0 +1,55 @@
+micronaut:
+  application:
+    name: LastkatkaBot
+  server:
+    port: 8080
+  metrics:
+    enabled: true
+    export:
+      prometheus:
+        enabled: true
+        step: PT1M
+        descriptions: true
+  executors:
+    scheduled:
+      type: scheduled
+      core-pool-size: 3
+
+endpoints:
+  prometheus:
+    sensitive: false
+  health:
+    enabled: true
+    sensitive: false
+
+jackson:
+  serializationInclusion: ALWAYS
+
+datasources:
+  default:
+    url: jdbc:postgresql://${DBHOST:localhost}:${DBPORT:5432}/${DBNAME:lastkatkabot}
+    username: ${DBUSER:lastkatkabot}
+    password: ${DBPASS:sa}
+    driver-class-name: org.postgresql.Driver
+    schema-generate: NONE
+    dialect: POSTGRES
+
+
+flyway:
+  datasources:
+    default:
+      enabled: true
+
+bot:
+  username: ${BOT_USERNAME} # bot username without @
+  token: ${BOT_TOKEN} # telegram bot token
+
+  timezone: "Europe/Kiev" # timezone for /pair, /wish and other time-based features
+
+  mainAdminId: ${MAIN_ADMIN_ID} # id of main admin
+  notificationChannelId: ${NOTIFICATION_CHANNEL_ID} # id of channel/group where feedbacks and error logs will be sent
+
+  locale:
+    adminLocale: en
+    defaultLocale: en
+    supportedLocales: [ "en", "ru", "uk" ]

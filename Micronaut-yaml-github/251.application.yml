@@ -1,0 +1,27 @@
+micronaut:
+  application:
+    name: jsonblob
+  metrics:
+    enabled: true
+    export:
+      newrelic:
+        enabled: false
+  router:
+    static-resources:
+        json-blob:
+          paths:
+            - classpath:static-resources
+  server:
+    cors:
+      enabled: true
+      configurations:
+        web:
+          exposedHeaders:
+            - X-Requested-With
+            - X-jsonblob
+            - X-Hello-Human
+            - Location
+            - Date
+            - Content-Type
+            - Accept
+            - Origin

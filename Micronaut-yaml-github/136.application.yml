@@ -1,0 +1,31 @@
+micronaut:
+  application:
+    name: ms-micro-naut
+  server:
+    port: ${random.port}
+
+eureka:
+  client:
+    registration:
+      enabled: true
+      hostname: "${MS_MICRO_NAUT_SERVICE_HOST:localhost}"
+      port: "${micronaut.server.port}"
+      instance-id: "${MS_MICRO_NAUT_SERVICE_HOST:localhost}"
+      vip-address: "${micronaut.application.name}"
+      ip-address: "${MS_MICRO_NAUT_SERVICE_IP_ADDR:127.0.0.1}"
+      registerWithEureka: true
+      fetchRegistry: true
+      status-page-url: "http://${MS_MICRO_NAUT_SERVICE_HOST:localhost}:${micronaut.server.port}/info"
+      health-check-url: "http://${MS_MICRO_NAUT_SERVICE_HOST:localhost}:${micronaut.server.port}/health"
+    default-zone: "${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}"
+
+endpoints:
+  routes:
+    enabled: true
+    sensitive: false
+  metrics:
+    enabled: true
+    sensitive: false
+  all:
+    enabled: true
+    sensitive: false

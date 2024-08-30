@@ -1,0 +1,22 @@
+micronaut:
+  application:
+    name: rinhaBackend2023Q3
+  server:
+    port: ${SERVER_PORT:8080}
+
+datasources:
+  hikari:
+    url: ${DATABASE_URL:`jdbc:postgresql://localhost:5432/arena`}
+    username: ${DATABASE_USER:dbaccess}
+    password: ${DATABASE_PASSWORD:pgsql}
+    db-type: postgres
+    sql-dialect: POSTGRES
+    maximum-pool-size: 150
+    driver-class-name: org.postgresql.Driver
+jpa:
+  default:
+    entity-scan:
+      packages: com.rinha.backend.infrastructure
+
+problem:
+  enabled: true

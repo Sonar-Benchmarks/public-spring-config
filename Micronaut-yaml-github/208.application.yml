@@ -1,0 +1,147 @@
+micronaut:
+  application:
+    name: variantstore
+  server:
+    port: ${variantstore-port:8080}
+    ssl:
+      enabled: ${variantstore-ssl-enabled:false}
+      buildSelfSigned: ${variantstore-ss-selfsigned:false}
+    maxRequestSize: 500MB
+    multipart:
+      maxFileSize: 500MB
+    thread-selection: AUTO
+  router:
+    static-resources:
+      webjars:
+        paths: classpath:META-INF/resources/webjars
+        mapping: /webjars/**
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+      rapidoc:
+        paths: classpath:META-INF/swagger/views/rapidoc
+        mapping: /rapidoc/**
+      css:
+        paths: classpath:static/css
+        mapping: /css/**
+  security:
+    enabled: ${variantstore-security-enabled:true}
+    authentication: ${variantstore-authentication-mode:idtoken}
+    intercept-url-map:
+      - pattern: /swagger/**
+        http-method: GET
+        access:
+          - isAnonymous()
+      - pattern: /swagger-ui/**
+        http-method: GET
+        access:
+          - isAnonymous()
+      - pattern: /rapidoc/**
+        http-method: GET
+        access:
+          - isAnonymous()
+      - pattern: /webjars/**
+        http-method: GET
+        access:
+          - isAnonymous()
+      - pattern: /css/**
+        http-method: GET
+        access:
+          - isAnonymous()
+    endpoints:
+      login:
+        enabled: true
+      logout:
+        enabled: true
+        get-allowed: true
+      oauth:
+        enabled: true
+    session:
+      enabled: true
+    token:
+      jwt:
+        enabled: true
+    oauth2:
+      enabled: ${variantstore-oauth2-enabled:false}
+      default-provider: keycloak
+      clients:
+        keycloak:
+          client-id: ${variantstore-oauth2-client-id}
+          client-secret: ${variantstore-oauth2-client-secret}
+          openid:
+            issuer: ${variantstore-oauth2-issuer}
+          authorization:
+            url: ${variantstore-oauth2-auth-url}
+          token:
+            url: ${variantstore-oauth2-token-url}
+            auth-method: client-secret-jwt
+datasources:
+  variantstore_postgres:
+    url: jdbc:postgresql://${db-host:""}/${db-name:""}?currentSchema=variantstore
+    username: ${db-user:""}
+    password: ${db-pwd:""}
+    driverClassName: org.postgresql.Driver
+  transactions:
+    url: jdbc:postgresql://${db-transaction-host:""}/${db-transaction-name:""}?currentSchema=transactions
+    username: ${db-transaction-user:""}
+    password: ${db-transaction-pwd:""}
+    driverClassName: org.postgresql.Driver
+  #variantstore_mariadb:
+  #  url: jdbc:mariadb://${db-host:""}/${db-name:""}?maxPoolSize=30&pool=true&useServerPrepStmts=false&rewriteBatchedStatements=true
+  #  username: ${db-user:""}
+  #  password: ${db-pwd:""}
+  #  driverClassName: org.mariadb.jdbc.Driver
+  #transactions_mariadb:
+  #  url: jdbc:mariadb://${db-transaction-host:""}/${db-transaction-name:""}?maxPoolSize=30&pool=true&useServerPrepStmts=false&rewriteBatchedStatements=true
+  #  username: ${db-transaction-user:""}
+  #  password: ${db-transaction-pwd:""}
+  #  driverClassName: org.mariadb.jdbc.Driver
+database:
+  specifier: variantstore-postgres
+  max-variants-per-batch: ${max-number-variants-per-batch:250000}
+flyway:
+  datasources:
+    variantstore_postgres:
+      enabled: true
+      baselineOnMigrate: true
+      locations: classpath:db/postgresql
+      default-schema: variantstore
+      schemas: variantstore
+    transactions:
+      enabled: true
+      baselineOnMigrate: true
+      locations: classpath:db/transactions
+      default-schema: transactions
+      schemas: transactions
+    variantstore_mariadb:
+      enabled: false
+      baselineOnMigrate: true
+      locations: classpath:db/mariadb
+      default-schema: variantstore
+      schemas: variantstore
+    transactions_mariadb:
+      enabled: false
+      baselineOnMigrate: true
+      locations: classpath:db/transactions_mariadb
+      default-schema: transactions
+      schemas: transactions
+endpoints:
+  health:
+    enabled: true
+    sensitive: false
+    details-visible: ANONYMOUS
+  routes:
+    enabled: true
+    sensitive: false
+  loggers:
+    enabled: true
+    sensitive: false
+  info:
+    enabled: true
+    sensitive: false
+  flyway:
+    enabled: true
+    sensitive: false

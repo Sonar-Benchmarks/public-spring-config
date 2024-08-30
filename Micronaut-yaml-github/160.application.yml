@@ -1,0 +1,22 @@
+micronaut:
+  application:
+    name: tour
+    router:
+      static-resources:
+        swagger:
+          paths: classpath:META-INF/swagger
+          mapping: /swagger/**
+cassandra:
+  default:
+    basic:
+      contact-points:
+        - 172.17.0.2:9042
+      session-keyspace: travel
+      load-balancing-policy:
+        local-datacenter: datacenter1
+nats:
+  addresses:
+    - "nats://localhost:4222"
+endpoints:
+  health:
+    enabled: true

@@ -1,0 +1,64 @@
+micronaut:
+  application:
+    name: flutter_api
+
+  metrics:
+    enabled: true
+    export:
+      prometheus:
+        enabled: true
+        descriptions: true
+        step: PT1M
+
+  session:
+    http:
+      cookie-same-site: Strict
+
+  security:
+    enabled: true
+    authentication: session
+    session:
+      enabled: true
+    redirect:
+      login-success: "/login-success"
+      login-failure: "/login-failure"
+    endpoints:
+      login:
+        enabled: true
+        path: "/login"
+      logout:
+        enabled: true
+        path: "/logout"
+        get-allowed: true
+    intercept-url-map:
+      - pattern: /graphql
+        access:
+          - isAuthenticated()
+      - pattern: /graphiql
+        access:
+          - isAnonymous()
+      - pattern: /swagger/**
+        access:
+          - isAnonymous()
+      - pattern: /swagger-ui/**
+        access:
+          - isAnonymous()
+      - pattern: /api/**
+        access:
+          - isAuthenticated()
+
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+
+graphql:
+  enabled: true
+  path: /graphql
+  graphiql:
+    enabled: true
+    path: /graphiql

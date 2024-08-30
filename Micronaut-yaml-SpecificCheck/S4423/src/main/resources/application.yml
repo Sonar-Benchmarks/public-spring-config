@@ -1,0 +1,20 @@
+micronaut:
+  server:
+    ssl:
+      protocol: TLSv1.0
+  ssl:
+    protocol: TLSv1.1
+    protocols:
+      - TLSv1.1
+  http:
+    client:
+      ssl:
+        protocol: TLSv1.1
+        protocols:
+          - TLSv1.1
+    services:
+      something:
+        ssl:
+          protocol: TLSv1.1
+          protocols:
+            - TLSv1.2

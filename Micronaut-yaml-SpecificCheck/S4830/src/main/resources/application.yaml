@@ -1,0 +1,9 @@
+micronaut:
+  http:
+    client:
+      ssl:
+        insecure-trust-all-certificates: 'TRUE'
+    services:
+      something:
+        ssl:
+          insecure-trust-all-certificates: true

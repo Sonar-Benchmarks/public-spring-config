@@ -1,0 +1,39 @@
+micronaut:
+  server:
+    cors:
+      enabled: true
+      configurations:
+        ui:
+          allowed-origins:
+            - http://localhost:3000
+            - https://localhost:3000
+            - https://brotherhood-br.vercel.app
+  application:
+    name: brotherhood
+netty:
+  default:
+    allocator:
+      max-order: 3
+jackson:
+  dateFormat: yyyy-MM-dd
+  serialization:
+    writeDatesAsTimestamps: false
+google:
+  clientId: '43960775230-1o1aqgh85sn56nr1ai1kjktp62gf9ihc.apps.googleusercontent.com'
+datasources:
+  default:
+    url: jdbc:postgresql://34.68.187.182:5432/brotherhood
+    username: brotherhood
+    password: 9c=s]kSC1?5Y4M'j
+    driverClassName: org.postgresql.Driver
+    schema: public
+jpa:
+  default:
+    entity-scan:
+      packages:
+        - 'com.brotherhood.domain.entity'
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        show_sql: true

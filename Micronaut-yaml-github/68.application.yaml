@@ -1,0 +1,74 @@
+micronaut:
+  application:
+    name: glomgold
+  server:
+    port: ${PORT:8080}
+  router:
+    static-resources:
+      default:
+        enabled: true
+        mapping: "/**"
+        paths: "classpath:public"
+  security:
+    authentication: bearer
+    endpoints:
+      login:
+        path: /api/login
+      logout:
+        path: /api/logout
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: '"${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}"'
+    intercept-url-map:
+      - pattern: /api/auth/**
+        access: isAuthenticated()
+      - pattern: /api/panel/**
+        access: isAuthenticated()
+      - pattern: /api/users/**
+        access:
+          - ROLE_ADMIN
+      - pattern: /api/items/**
+        access:
+          - ROLE_ADMIN
+      - pattern: /api/management/health
+        access: isAnonymous()
+      - pattern: /api/management/**
+        access:
+          - ROLE_ADMIN
+      - pattern: /api/login
+        access: isAnonymous()
+      - pattern: /api/logout
+        access: isAnonymous()
+      - pattern: /**
+        access: isAnonymous()
+
+jackson:
+  serializationInclusion: NON_NULL
+  serialization:
+    writeDatesAsTimestamps: false
+  deserialization:
+    useBigDecimalForFloats: true
+
+endpoints:
+  all:
+    path: "/api/management"
+    enabled: true
+    sensitive: true
+
+netty:
+  default:
+    allocator:
+      max-order: 3
+
+liquibase:
+  enabled: true
+  datasources:
+    liquibase:
+      change-log: classpath:db/liquibase-changelog.xml
+
+glomgold:
+  random:
+    seed: 42

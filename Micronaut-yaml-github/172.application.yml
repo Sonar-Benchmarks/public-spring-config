@@ -1,0 +1,25 @@
+micronaut:
+  application:
+    name: minecraftServerUi
+  serde.jackson.pretty-print : true
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+  security:
+    enabled: true
+    intercept-url-map:
+      - pattern: /swagger/**
+        access:
+          - isAnonymous()
+      - pattern: /swagger-ui/**
+        access:
+          - isAnonymous()
+    basic-auth:
+      enabled: true
+
+base-directory: ../minecraft

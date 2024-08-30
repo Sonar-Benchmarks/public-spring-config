@@ -1,0 +1,44 @@
+micronaut:
+  caches:
+    caffeine:
+      maximum-size: 20
+cachly:
+  paths:
+    ifpresent-process-definitions:
+      storage: my-cache
+      serializer: kryo
+    process-definitions:
+      storage: my-cache
+      serializer: kryo
+    load-timestamp:
+      storage: my-cache
+      serializer: kryo
+    map:
+      storage: my-cache
+      serializer: kryo
+    users:
+      storage: my-cache
+      serializer: kryo
+    root:
+      storage: my-cache
+      serializer: kryo
+    this:
+      storage: my-cache
+      serializer: kryo
+    actual:
+      storage: my-cache
+      serializer: kryo
+    callbacks:
+      storage: my-cache
+      serializer: kryo
+  ehcache:
+    my-cache:
+      disk:
+        persist: true
+ehcache:
+  storage-path: "data"
+  caches:
+    my-cache:
+      enabled: true
+      disk:
+        max-size: 10Mb

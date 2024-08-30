@@ -1,0 +1,67 @@
+micronaut:
+  application:
+    name: ${project.artifactId}
+  #  server:
+  #    port: 9090
+
+  http:
+    services:
+      orion:
+        path: ngsi-ld/v1
+        url: http://localhost:1026
+
+  metrics:
+    enabled: true
+    export:
+      prometheus:
+        step: PT2s
+        descriptions: false
+
+jackson:
+  date-format: YYYY-MM-dd'T'hh:mm:ss.ssss
+  time-zone: UTC
+  serializationInclusion: NON_NULL
+  serialization:
+    indentOutput: true
+
+
+endpoints:
+  metrics:
+    enabled: true
+  health:
+    enabled: true
+
+simulator:
+  companies:
+    # PADERBORN
+    - name: PaderConstructions
+      cranes:
+        - name: crane-paderborn-1
+          model: "Euro SSG 130"
+          latitude: 5
+          longitude: 5
+          currentCost: 38.1
+        - name: crane-paderborn-2
+          model: "Euro SSG 130"
+          latitude: 5
+          longitude: 5
+    # DRESDEN
+    - name: SaxonyBuilding
+      cranes:
+        - name: crane-dresden-1
+          model: "Euro SSG 144"
+          latitude: 3
+          longitude: 3
+          currentCost: 45.02
+        - name: crane-dresden-2
+          model: "Euro SSG 130"
+          latitude: 3
+          longitude: 3
+          healtStatus: UNHEALTHY
+          currentCost: 45.02
+    - name: HT-Berlin
+      cranes:
+        - name: crane-berlin-1
+          model: "Euro SSG 130"
+          latitude: 1
+          longitude: 1

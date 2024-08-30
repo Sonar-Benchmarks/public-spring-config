@@ -1,0 +1,20 @@
+micronaut:
+  application:
+    name: micronautEventProcessor
+netty:
+  default:
+    allocator:
+      max-order: 3
+app:
+  event:
+    groupId: product-stream-group-01
+    topic: product-stream
+    should-dead-letter-unhandled: true
+    dead-letter:
+      topic: "product-stream-dead-letter"
+    retry:
+      topic: product-stream-retry
+    error:
+      topic: event-processor-error
+      # all these exceptions will dead-letter
+      exceptions: UniqueConstraintException,DuplicateKeyException,IllegalArgumentException

@@ -1,0 +1,35 @@
+micronaut:
+    application:
+        name: Leika
+    router:
+        static-resources.swagger.enabled: true
+        static-resources.swagger.paths: classpath:META-INF/swagger
+        static-resources.swagger.mapping: /swagger/**
+
+server:
+    server-header: "${SERVER_HEADER:micronaut-hello-kotlin}"
+
+endpoints:
+    info:
+        enabled: true
+        sensitive: false
+    health:
+        enabled: true
+        sensitive: false
+
+redis:
+    uri: "redis://${REDIS_HOST:localhost}:${REDIS_PORT:6379}"
+
+tracing:
+    jaeger:
+        enabled: true
+        sampler:
+            probability: 1
+
+
+
+conferences:
+    organization: demomon
+    apiversion: v1
+
+

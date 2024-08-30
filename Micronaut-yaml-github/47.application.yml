@@ -1,0 +1,29 @@
+micronaut:
+  application:
+    name: micronautguide
+    run-env: local
+
+netty:
+  default:
+    allocator:
+      max-order: 3
+
+jackson:
+  property-naming-strategy: SNAKE_CASE
+  serialization-inclusion: ALWAYS # Include empty arrays in JSON output
+  serialization:
+    indent-output: true # Pretty-print JSON
+
+confluent:
+  config:
+    - name: events
+      host: ${REGISTRY_HOST:}
+      kafka:
+        secrets:
+            api_key: ${REGISTRY_API_KEY:}
+            api_secret: ${REGISTRY_API_SECRET:}
+      secrets:
+        - api_key: ${REGISTRY_API_KEY:}
+          api_secret: ${REGISTRY_API_SECRET:}
+
+

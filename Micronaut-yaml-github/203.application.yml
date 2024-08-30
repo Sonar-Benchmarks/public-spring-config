@@ -1,0 +1,23 @@
+micronaut:
+  application:
+    name: micronaut-ignite-sample
+  server:
+    port: 8080
+ignite:
+  enabled: true
+  discovery-spi:
+    static-ip-finder:
+      addresses:
+        - "localhost:47500"
+        - "localhost:47501"
+      enabled: true
+  cache-configurations:
+    pet-store:
+      query-entities:
+        - key-field-name: "id"
+          key-type: "java.lang.Long"
+          value-type: "org.pollend.demo.Pet"
+          fields:
+            breed:  "java.lang.String"
+            id: "java.lang.Long"
+            name: "java.lang.String"

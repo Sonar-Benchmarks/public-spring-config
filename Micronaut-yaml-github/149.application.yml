@@ -1,0 +1,25 @@
+### micronaut ###
+micronaut:
+  application:
+    name: poc
+  server:
+    port: 80
+  security:
+    authentication: bearer
+  token:
+    jwt:
+      signatures:
+        secret:
+          generator:
+            secret: ${JWT_GENERATOR_SIGNATURE_SECRET:BB36D3765316D495DCDCC5B86DF45}
+            base64: true
+            access-token:
+              expiration: 60
+
+### aws ###
+aws:
+  accessKeyId: ${AWS_KEY_ID:id}
+  secretKey: ${AWS_SECRET_KEY:secret-key}
+  sessionToken: ${AWS_SESSION_TOKEN:token}
+  region: ${AWS_REGION:eu-west-1}
+  endpoint: http://${AWS_HOST:localhost}:${AWS_PORT:4566}
