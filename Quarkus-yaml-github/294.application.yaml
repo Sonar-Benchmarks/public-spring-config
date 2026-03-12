@@ -1,0 +1,125 @@
+greeting:
+  application-name: sumo
+
+quarkus:
+  #  ssl:
+  #    native: true
+
+  ## logging ##
+  log:
+    console:
+      enable: true
+      format: "%d{HH:mm:ss} %-5p [%c{2.}] (%t) %s%e%n"
+      min-level: DEBUG
+      color: true
+
+  ## Security ##
+  oidc:
+    #    enabled: false
+    #    realm-name: oidc_okta
+    #    security-constraints.1.roles: Everyone
+    #    security-constraints.1.web-resources: /*
+
+    #Default JWT for local testing
+    #    default-claims:
+    #      enabled: true
+    #      subject: test@quarkus.io
+    #      groups: Everyone,Administrator
+    #      claims.test: test
+
+    #External IDP
+    #    issuer: https://someorg.okta.com
+    #    client-id: XXXXXXXXXXX
+    #    client-secret: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+    #    auth-server-url: http://${AUTH_SERVER_HOST:localhost}:${AUTH_SERVER_PORT:8180}/auth/realms/quarkus
+    auth-server-url: https://accounts.google.com
+    application-type: service
+    client-id: 399994557022-f5p50d6oc04g49rjhu4r0o20ljujlt0f.apps.googleusercontent.com
+    credentials:
+      secret:
+    #    connection-delay: 25S
+    token:
+      issuer: https://accounts.google.com
+    authentication:
+      scopes: email,profile,openid
+      user-info-required: true
+
+  #  https://edwin.baculsoft.com/2020/08/securing-quarkus-metric-api/
+  #  http.auth.permission.authenticated.paths: /admin/user-info,/admin/health,/admin/reboot-services
+  #  http.auth.permission.authenticated.policy: authenticated
+
+  ## swagger ##
+  swagger-ui:
+    oauth2-redirect-url: "http://localhost:8080/q/swagger-ui/oauth2-redirect.html"
+
+  ## native ##
+  #  native:
+  #    container-build: true
+  #  jib:
+  #    base-native-image: quay.io/quarkus/ubi-quarkus-native-image:20.2.0-java11
+
+  ## docker ##
+  container-image:
+    build: true
+    group: xmlking # optional, default to the system user name
+  #    name: greeting-service  #optional, defaults to the application name
+  #    tag: 1.6.5  #optional, defaults to the application version
+  #    insecure: false
+  #    registry: us.gcr.io
+  #    username: xmlking
+  #    password:
+
+  ## kubernetes ##
+  kubernetes:
+    part-of: micro-apps
+    name: greeting-service
+    #    version: 1.6.5
+    labels: # to add additional custom labels
+      foo: bar
+
+---
+## application specific ##
+greeting:
+  application:
+    name: greeting
+
+---
+## dev profile ##
+"%dev":
+  quarkus:
+    http:
+      access-log:
+        enabled: true
+    log:
+      console:
+        json: false
+      category:
+        "io.grpc":
+          min-level: INFO
+        "io.quarkus.oidc":
+          min-level: DEBUG
+        "io.quarkus.security":
+          min-level: TRACE
+        "io.quarkus.smallrye":
+          min-level: TRACE
+        "io.smallrye.jwt":
+          min-level: TRACE
+        "io.vertx":
+          min-level: TRACE
+        "io.undertow.request.security":
+          min-level: TRACE
+        "org.keycloak":
+          min-level: TRACE
+        "io.quarkus.mongodb.panache.runtime":
+          min-level: DEBUG
+
+---
+"%test":
+  quarkus:
+    log:
+      console:
+        json: false
+  oidc:
+    enabled: false
+    http.auth.permission.authenticated.policy: permit

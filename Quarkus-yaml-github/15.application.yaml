@@ -1,0 +1,36 @@
+quarkus:
+  oidc:
+    auth-server-url: https://jung-garde.ch:8543/realms/quarkus
+    client-id: backend-service
+    credentials:
+      secret: ${KC_SECRET}
+  mongodb:
+    database: jung-garde
+    connection-string: mongodb://mongodb:27017
+    credentials:
+      username: ${MONGO_USER}
+      password: ${MONGO_PASSWORD}
+  http:
+    root-path: /jung-garde
+    limits:
+      max-body-size: 650M
+#    ssl:
+#      certificate:
+#        files: /etc/ssl/fullchain.pem
+#        key-files: /etc/ssl/privkey.pem
+    cors:
+      ~: true
+      origins:
+        - "https://jung-garde.ch"
+        - "https://www.jung-garde.ch"
+
+mp:
+  jwt:
+    verify:
+      issuer: https://jung-garde.ch:8543/realms/quarkus
+      publickey:
+        location: https://jung-garde.ch:8543/realms/quarkus/protocol/openid-connect/token
+
+variable:
+  path:
+    disk: /data/disk/

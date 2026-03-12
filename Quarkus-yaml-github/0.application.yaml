@@ -1,0 +1,25 @@
+quarkus:
+  datasource:
+    db-kind: h2
+    jdbc:
+      url: jdbc:h2:mem:default
+
+  resteasy-reactive:
+    path: /api/
+
+  hibernate-orm:
+    database:
+      generation: drop-and-create
+
+  jacoco:
+    excludes: ["**/entity/**/*", "**/dto/**/*", "**/repository/**/*", "**/constant/**/*", "**/exception/**/*"]
+
+  log:
+    level: INFO
+    category:
+      org.hibernate:
+        level: INFO
+
+  swagger-ui:
+    always-include: true
+    default-models-expand-depth: -1

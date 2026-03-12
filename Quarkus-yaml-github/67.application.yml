@@ -1,0 +1,23 @@
+quarkus:
+  banner:
+    enabled: false
+  package:
+    type: native
+#  container-image:
+#    build: true # set false for non image building procedure, should be removed for Buildpack to avoid build in build.
+  datasource:
+    db-kind: postgresql
+    username: postgres
+    password: postgres
+    reactive:
+      url: postgresql://localhost:5432/a2b?currentSchema=a2b # for non-container solution replace 'postgres-a2b' with 'localhost'
+#  jib:
+#    base-jvm-image: "gcr.io/distroless/java21-debian12"
+#    base-native-image:
+  native:
+#    container-build: true
+#    compression:
+#      level: 10 # fastest, 10 is the higher read: https://quarkus.io/guides/upx
+#  buildpack:
+#    jvm-builder-ima3ge: paketo-buildpacks/amazon-corretto:7 # no default image is provided.
+#    native-builder-image:

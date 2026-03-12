@@ -1,0 +1,34 @@
+quarkus:
+  application:
+    name: ui-super-heroes
+  quinoa:
+    package-manager-install: 
+      ~: true
+      node-version: 16.16.0
+    build-dir: dist/super-heroes
+    dev-server:
+      port: 4200
+  http:
+    port: ${FIGHTS_UI_PORT}
+    cors:
+      ~: true
+      origins: ${CORS_ORIGINS}
+      methods: ${CORS_METHODS}
+      headers: "Content-Type, Accept, X-Requested-With, remember-me"
+      access-control-max-age: "3600"
+      access-control-allow-credentials: true
+  otel:
+    resource:
+      attributes: "app=${quarkus.application.name},application=ui-super-heroes,system=quarkus-super-heroes"
+    exporter:
+      otlp:
+        traces:
+          endpoint: ${OTEL_URL}
+  log:
+    level: "INFO"
+    console:
+      enable: true
+      level: "INFO"
+      darken: 1
+  devservices:
+    enabled: false

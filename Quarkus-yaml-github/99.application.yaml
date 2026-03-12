@@ -1,0 +1,22 @@
+quarkus:
+  log:
+    level: INFO
+    category:
+      io.quarkiverse:
+        level: DEBUG
+    console:
+      color: false
+  redis:
+    devservices: # See more at https://quarkus.io/guides/redis-dev-services
+      enabled: true
+      port: 36379
+  cache:
+    redis:
+      single-server-config:
+        enabled: true
+        address: redis://localhost:36379
+        password: null
+      ttl:
+        ping-response: 3600000
+      creation: ON_STARTUP
+

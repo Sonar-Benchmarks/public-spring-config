@@ -1,0 +1,82 @@
+# ###########################
+# Configurations
+
+
+greeting:
+  message: "hello"
+
+remote-user-client/mp-rest/url: 'http://127.0.0.1:5000/api/protected'
+remote-user-client/mp-rest/scope: javax.inject.RequestScoped
+
+# ###########################
+quarkus:
+  # ### Container
+  container-image:
+    builder: jib
+
+  # ### Database default configuration using H2
+  datasource:
+    metrics:
+      enabled: true
+    db-kind: h2
+    jdbc:
+      url: jdbc:h2:mem:testdb
+  
+  hibernate-orm:
+    database:
+    # schema in H2 not supported
+#      default-schema: 'quarkuspg'
+      generation: 
+        ~: 'drop-and-create'
+        create-schemas: true
+    scripts:
+      generation:
+        ~: 'drop-and-create'
+        create-target: './work/create-ddl.sql'
+        drop-target: './work/drop-ddl.sql'
+
+  # ### OpenID Connect  
+  oidc:
+    enabled: true
+#    authentication:
+#      user-info-required: true
+#      scopes: openid
+    auth-server-url: http://localhost:8180/auth/realms/quarkus
+    #auth-server-url: http://localhost:8180/auth/realms/quarkus
+    #application-type: web-app
+
+    # ##### Set this parameters in the custom application properties or via env vars
+    #auth-server-url: http://example.com
+    #client-id: 47test
+    #tenant-id: 4ctest
+    #credentials:
+    #  secret: Zmtest
+    #authentication:
+      # redirect path which is registered in the IdP
+    #  redirect-path: /secured
+      # if redirect and callback URI are different, restore
+    #  restore-path-after-redirect: true
+    
+  oidc-client:
+    
+    # ##### Set this parameters in the custom application properties or via env vars
+    #auth-server-url: https://example2.com
+    #client-id: 472test2
+    #tenant-id: 4cftest2
+    #credentials:
+    #  secret: ZmZtest2
+
+  # ### Logging
+  log:
+    level: TRACE
+    category:
+      "io.quarkus.oidc.runtime.OidcProvider":
+        level: TRACE
+        min-level: TRACE
+
+# default String deserializer, internally Cloud Event structure will be recognized and parsed
+mp.messaging.incoming.importantevents.value.deserializer: org.apache.kafka.common.serialization.StringDeserializer    
+
+"%test":
+  quarkus.oidc.auth-server-url: http://localhost:8180/auth/realms/quarkus
+

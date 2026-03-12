@@ -1,0 +1,19 @@
+quarkus:
+  http:
+    port: 38093  # Different port for validators when run standalone
+  application:
+    name: engine-validators
+  generate-code:
+    grpc:
+      scan-for-proto: com.rokkon.pipeline:protobuf,com.google.api.grpc:proto-google-common-protos
+  log:
+    level: INFO
+    category:
+      "com.rokkon":
+        level: DEBUG
+
+# Ensure beans are discoverable
+  index-dependency:
+    engine-validators:
+      group-id: com.rokkon.pipeline
+      artifact-id: engine-validators

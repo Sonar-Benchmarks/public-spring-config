@@ -1,0 +1,74 @@
+quarkus:
+  package:
+    type: uber-jar
+  application:
+    name: "backend-dummy-project"
+  http:
+    root-path: /backend-dummy-project
+    so-reuse-port: true
+    tcp-quick-ack: true
+    tcp-cork: true
+    tcp-fast-open: true
+    port: 8084
+    cors:
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+      access-control-max-age: PT3M
+  vertx:
+    max-event-loop-execute-time: 25M
+    prefer-native-transport: true
+  mongodb:
+    connection-string: mongodb://LocalDeveloper:f8104adbecc0ec@localhost:27017
+    database: db_todos
+  devservices:
+    enabled: false
+  datasource:
+    db-kind: oracle
+    username: LocalDeveloper
+    password: mxMVFk1TkRsaE1EUTJOelZ
+    active: true
+    reactive:
+      url: ["vertx-reactive:oracle:thin:@localhost:1521/devlocal"]
+  hibernate-orm:
+    database:
+      generation: update
+    log:
+      sql: true
+  log:
+    console:
+      enable: true
+    level: INFO
+  index-dependency:
+    java:
+      group-id: 'com.my.dummy.project'
+      artifact-id: 'backend-dummy-project'
+  swagger-ui:
+    enable: true
+    path: '/backend-dummy-project/swagger-ui'
+  scheduler:
+    enabled: true
+    start-mode: forced
+
+rabbitmq:
+  host: amqp
+  port: 5672
+  username: LocalRabbitMQMessagingQueue
+  password: af3c4d5d01d790acc
+
+mp:
+  messaging:
+    connector:
+      smallrye-rabbitmq:
+        host: localhost
+        port: 5672
+        username: LocalRabbitMQMessagingQueue
+        password: af3c4d5d01d790acc
+    incoming:
+      "todos.queue":
+        connector: smallrye-rabbitmq
+        durable: true
+        deserializer: io.quarkus.kafka.client.serialization.ObjectMapperDeserializer
+    outgoing:
+      "todos.exchange":
+        connector: smallrye-rabbitmq
+        address: "todos.queue"
+

@@ -1,0 +1,32 @@
+quarkus:
+
+  http:
+    port: 3042
+
+  log:
+    level: INFO
+
+  jackson:
+    default-view-inclusion: false
+
+  mongodb:
+    connection-string: mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}?authSource=admin
+    database: quarkus-device-data-pipeline
+
+mp:
+  messaging:
+
+    # RabbitMQ
+    incoming:
+      raw-message:
+        connector: smallrye-rabbitmq
+        queue: model-queue
+        exchange: raw-message-exchange
+        exchange-type: topic
+        routing-key: raw.#
+        auto-bind-exchange: true
+        declare: true
+        host: ${RABBITMQ_HOST:localhost}
+        port: ${RABBITMQ_PORT:5672}
+        username: ${RABBITMQ_CLIENT_USERNAME}
+        password: ${RABBITMQ_CLIENT_PASSWORD}

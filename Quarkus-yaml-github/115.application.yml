@@ -1,0 +1,36 @@
+johnwick:
+  regular-order:
+    cleaning-interval: 1m
+    max-age: PT3M # 3 minutes
+  head-hunt:
+    price-increase-interval: 1m
+    price-increase-factor: 2
+
+quarkus:
+  http:
+    auth:
+      basic: true
+  datasource:
+    db-kind: postgresql
+    username:
+    password:
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/johnwick
+  flyway:
+    migrate-at-start: true
+
+"%dev":
+  quarkus:
+    datasource:
+      db-kind: postgresql
+      username: postgres
+      password: postgres
+      jdbc:
+        url: jdbc:postgresql://localhost:5432/johnwick
+    flyway:
+      clean-at-start: true
+    hibernate-orm:
+      log:
+        sql: true
+    log:
+      level: INFO

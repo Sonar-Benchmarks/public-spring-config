@@ -1,0 +1,18 @@
+quarkus:
+  wiremock:
+    devservices:
+      extension-scanning-enabled: true
+  rest-client:
+    logging:
+      scope: request-response
+    name-service:
+      uri:
+        http://localhost:${quarkus.wiremock.devservices.port}
+  log:
+    category:
+      "org.jboss.resteasy.reactive.client.logging":
+        level: DEBUG
+      "org.jboss.resteasy.reactive.server.handlers":
+        level: DEBUG
+      "io.quarkiverse.wiremock":
+        level: DEBUG

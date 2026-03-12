@@ -1,0 +1,17 @@
+"%prod":
+  quarkus:
+    datasource:
+      devservices:
+        enabled: false
+      db-kind: postgresql
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
+      jdbc:
+        url: jdbc:${quarkus.datasource.db-kind}://${DB_HOST}/${DB_NAME}
+        min-size: ${DB_MIN_SIZE:2}
+        max-size: ${DB_MAX_SIZE:8}
+quarkus:
+  datasource:
+    devservices:
+      enabled: true
+      image-name: docker.io/postgres:16.0-alpine3.18@sha256:d171d14965e28764824b33974d038aea3a6be3bf0ced3c8656c848df9b7218c5

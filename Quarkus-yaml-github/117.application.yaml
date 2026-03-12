@@ -1,0 +1,33 @@
+quarkus:
+  http:
+    port: ${PORT:8080}
+  datasource:
+    url: jdbc:postgresql://localhost/APPLICATION
+    driver: org.postgresql.Driver
+    username: devops
+    password: devops
+    min-size: 3
+    max-size: 13
+  hibernate-orm:
+    database:
+      generation: none # drop-and-create
+    dialect: org.hibernate.dialect.PostgreSQLDialect
+  resteasy:
+    path: /api
+  swagger-ui:
+    always-include: true
+
+
+"%test":
+  quarkus:
+    datasource:
+      url: jdbc:tc:postgresql:9.6.12://docker/APPLICATION
+      driver: org.testcontainers.jdbc.ContainerDatabaseDriver
+      min-size: 3
+      max-size: 13
+    hibernate-orm:
+      database:
+        generation: update # drop-and-create
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+    resteasy:
+      path: /api

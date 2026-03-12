@@ -1,0 +1,25 @@
+quarkus:
+  http:
+    test-port: 6580
+  log:
+    category:
+      "io.spoud.agoora":
+        level: DEBUG
+  devservices:
+    enabled: false
+
+agoora:
+  property-templates:
+    kafka-topic: '{ "kafka.manager.url": "https://km.sdm.spoud.io/clusters/sdm/topics/{TOPIC_NAME}", "agoora.url": "https://blabla/{RESOURCE_ID}" }'
+    kafka-consumer-group: '{ "kafka.manager.url": "https://km.sdm.spoud.io/clusters/sdm/consumer-group/{CONSUMER_GROUP_NAME}/{TOPIC_NAME}", "agoora.url": "https://blabla/{RESOURCE_ID}" }'
+  scrapper:
+    max-samples: 10
+    profiling:
+      enabled: true
+  registry:
+    confluent:
+      url:
+      api-key:
+      api-secret:
+      public-url: https://my-url/{TOPIC}/ui
+

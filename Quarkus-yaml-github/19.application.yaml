@@ -1,0 +1,64 @@
+mp:
+  jwt:
+    verify:
+      publickey:
+        location: /home/lab/github/O11y-with-quarkus/rbac-jwt/jwt/publicKey.pem
+      issuer: https://itachi.com/issuer
+      audiences: photo-api
+quarkus:
+  native:
+    resources:
+      includes: /home/lab/github/O11y-with-quarkus/rbac-jwt/jwt/publicKey.pem
+  smallrye-jwt:
+    enabled: true
+  log:
+    level: ERROR
+    console:
+      async:
+        enable: true
+  liquibase:
+    migrate-at-start: true
+    change-log: db/db.changelog-master.yaml
+    database-change-log-lock-table-name: DATABASECHANGELOGLOCK
+    database-change-log-table-name: DATABASECHANGELOG
+    default-schema-name: dev
+    liquibase-schema-name: dev
+  hibernate-orm:
+    database:
+      default-schema: dev
+    log:
+      sql: false
+    schema-management:
+      strategy: none
+  datasource:
+    db-kind: postgresql
+    username: docker
+    password: 123456
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/user_mgm?currentSchema=dev
+smallrye:
+  jwt:
+    sign:
+      key:
+        location: /home/lab/github/O11y-with-quarkus/rbac-jwt/jwt/privateKey.pem
+    encrypt:
+      key:
+        location: /home/lab/github/O11y-with-quarkus/rbac-jwt/jwt/publicKey.pem
+    new-token:
+      lifespan: 300
+      audience: photo-api
+      issuer: https://itachi.com/issuer
+      signature-algorithm: RS256
+jwt:
+  expire-milliseconds: ${smallrye.jwt.new-token.lifespan}
+
+"%dev":
+  quarkus:
+    live-reload:
+      password: changeit
+      url: http://0.0.0.0:8080
+    package:
+      jar:
+        # https://quarkus.io/guides/maven-tooling#configuration-reference
+        # The "mutable JAR" packaging type (for remote development mode).
+        type: mutable-jar

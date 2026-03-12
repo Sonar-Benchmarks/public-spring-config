@@ -1,0 +1,80 @@
+agoora-endpoint: local.spoud.io
+agoora-insecure: false
+agoora-cluster: default
+agoora-transport-path: /default/postgres
+
+agoora:
+  scrapper:
+    samples-size: 500
+    initial-delay: PT10S
+    interval: PT15M
+    state:
+      enabled: true
+    profiling:
+      enabled: true
+    hooks:
+      enabled: true
+  transport:
+    agoora-path: ${agoora-transport-path}
+  auth:
+    server-url: https://${agoora-endpoint}/auth/
+    realm: spoud
+    user:
+      name: to-be-defined
+      token: to-be-defined
+  logistics:
+    endpoint: ${agoora-endpoint}
+    insecure: ${agoora-insecure}
+  hooks:
+    endpoint: ${agoora-endpoint}
+    insecure: ${agoora-insecure}
+  schema:
+    endpoint: ${agoora-endpoint}
+    insecure: ${agoora-insecure}
+  looker:
+    endpoint: ${agoora-endpoint}
+    insecure: ${agoora-insecure}
+  blob:
+    endpoint: ${agoora-endpoint}
+    insecure: ${agoora-insecure}
+  profiler:
+    endpoint: localhost:8089
+    insecure: true
+
+quarkus:
+  arc:
+    # Needed for the grpc interceptors
+    remove-unused-beans: fwk
+  datasource:
+    jdbc:
+      url: jdbc:postgresql://127.0.0.1:5432/agoora-logistics
+    db-kind: postgresql
+    username: postgres
+    password: postgres
+  http:
+    port: 8280
+  log:
+    category:
+      "io.spoud.agoora":
+        level: INFO
+  ssl:
+    native: true
+  native:
+    container-build: true
+    additional-build-args:
+      - --allow-incomplete-classpath
+#      - --report-unsupported-elements-at-runtime
+
+"%dev":
+  agoora-endpoint: local.spoud.io
+  agoora-insecure: true
+  agoora-cluster: default
+  agoora-transport-path: /default/postgres
+  agoora:
+    scrapper:
+      initial-delay: 3s
+    auth:
+      server-url: http://${agoora-endpoint}/auth/
+      user:
+        name: agoora_t_ca7cfb09-35dc-4c8a-a4c3-6be73934fd88
+        token: coG7jpnBBdl3eEYYmo1gONQUabwkDR5p

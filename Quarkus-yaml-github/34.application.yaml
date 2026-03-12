@@ -1,0 +1,101 @@
+# Quarkus will choose application.yaml over application.properties.
+quarkus:
+  package:
+    type: uber-jar
+  application:
+    name: "indy-tracking-service"
+  oidc:
+    enabled: true
+    auth-server-url: "https://localhost:8543/realms/indy"
+    client-id: indy
+    credentials:
+      secret: secret
+    tls:
+      verification: none
+    token:
+      issuer: any
+  oidc-client:
+    auth-server-url: "keycloak_server_url/realms/your_realm"
+    client-id: your_client_id
+    credentials:
+      secret: your_secret
+    refresh-token-time-skew: 60
+    early-tokens-acquisition: false
+
+"%dev":
+  quarkus:
+    kubernetes-config:
+      enabled: false
+    log:
+      level: INFO
+      category:
+        "org.commonjava.indy.service.tracking":
+          level: TRACE
+      console:
+        enable: true
+      file:
+        enable: true
+        path: "/tmp/indy-tracking-service.log"
+        format: "%d{HH:mm:ss} %-5p [%c{2.}] (%t) %s%e%n"
+        rotation:
+          max-backup-index: 5
+          max-file-size: 10M
+  tracking:
+    baseDir: "data"
+    track:
+      group:
+        content: true
+
+  kafka:
+    bootstrap:
+      servers: "localhost:9092"
+
+  mp:
+    messaging:
+      emitter:
+        # the default buffer size for emitter's OnOverflow buffer strategy of back-pressure control
+        default-buffer-size: 1024
+      incoming:
+        file-event-in:
+          connector: smallrye-kafka
+          topic: file-event
+          value:
+            deserializer: org.commonjava.event.file.FileEventDeserializer
+        promote-event-in:
+          connector: smallrye-kafka
+          topic: promote-complete
+          value:
+            deserializer: org.commonjava.indy.service.tracking.handler.PathsPromoteCompleteEventDeserializer
+
+"%test":
+  quarkus:
+    log:
+      level: INFO
+      category:
+        "org.commonjava.indy.service.tracking":
+          level: DEBUG
+      console:
+        enable: true
+    oidc:
+      enabled: false
+  tracking:
+    content-service:
+      url: "http://localhost:8081/api"
+    baseDir: "data"
+    track:
+      group:
+        content: true
+    deletionAdditionalGuardCheck: true
+  cassandra:
+    enabled: true
+    host: localhost
+    port: 9042
+    user: cassandra
+    pass: cassandra
+    keyspace: folo
+    keyspaceReplicas: 1
+  indy_security:
+    enabled: false
+  kafka:
+    bootstrap:
+      servers: "localhost:9092"

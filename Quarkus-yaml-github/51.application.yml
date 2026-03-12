@@ -1,0 +1,124 @@
+quarkus:
+  application:
+    name: gamemanager
+  vertx:
+    max-worker-execute-time: 5m
+    max-event-loop-execute-time: 1m
+  rest-client:
+    game:
+      uri: http://localhost:${game-manager.game.app-http-port}
+      logging:
+        scope: request-response
+    intellij:
+      uri: ${quarkus.langchain4j.mcp.intellij.url}
+      logging:
+        scope: request-response
+  langchain4j:
+    openai:
+      api-key: ${OPENAI_API_KEY:change-me}
+      timeout: 15s
+#      api-key: not-needed
+#      base-url: http://localhost:11434/v1
+      chat-model:
+        model-name: gpt-5-mini
+#        model-name: qwen3:4b
+    mcp:
+      intellij:
+#        transport-type: stdio
+#        command: "/Users/edeandre/Applications/IntelliJ\ IDEA.app/Contents/jbr/Contents/Home/bin/java,-classpath,/Users/edeandre/Applications/IntelliJ\ IDEA.app/Contents/plugins/mcpserver/lib/mcpserver-frontend.jar:/Users/edeandre/Applications/IntelliJ\ IDEA.app/Contents/lib/util-8.jar:/Users/edeandre/Applications/IntelliJ\ IDEA.app/Contents/lib/module-intellij.libraries.ktor.client.cio.jar:/Users/edeandre/Applications/IntelliJ\ IDEA.app/Contents/lib/module-intellij.libraries.ktor.client.jar:/Users/edeandre/Applications/IntelliJ\ IDEA.app/Contents/lib/module-intellij.libraries.ktor.network.tls.jar:/Users/edeandre/Applications/IntelliJ\ IDEA.app/Contents/lib/module-intellij.libraries.ktor.io.jar:/Users/edeandre/Applications/IntelliJ\ IDEA.app/Contents/lib/module-intellij.libraries.ktor.utils.jar:/Users/edeandre/Applications/IntelliJ\ IDEA.app/Contents/lib/module-intellij.libraries.kotlinx.io.jar:/Users/edeandre/Applications/IntelliJ\ IDEA.app/Contents/lib/module-intellij.libraries.kotlinx.serialization.core.jar:/Users/edeandre/Applications/IntelliJ\ IDEA.app/Contents/lib/module-intellij.libraries.kotlinx.serialization.json.jar,com.intellij.mcpserver.stdio.McpStdioRunnerKt"
+#        roots: projectDir=${game-manager.game.root-checkout-dir}
+#        tool-execution-timeout: 10s
+        environment:
+          IJ_MCP_SERVER_PORT: 64342
+          IJ_MCP_SERVER_PROJECT_PATH: ${game-manager.game.root-checkout-dir}
+        transport-type: http
+        url: http://localhost:64342/sse
+  http:
+    test-port: 0
+    cors:
+      enabled: true
+      origins: "*"
+  undertow:
+    record-request-start-time: true
+  dev-ui:
+    cors:
+      enabled: true
+  flyway:
+    migrate-at-start: true
+    baseline-version: 1.0.0
+    baseline-description: Initial version
+  tls:
+    trust-all: true
+  hibernate-orm:
+    physical-naming-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+  jackson:
+    serialization-inclusion: non-empty
+  swagger-ui:
+    always-include: true
+  jgit:
+    devservices:
+      enabled: false
+  otel:
+    logs:
+      enabled: true
+    metrics:
+      enabled: true
+    exporter:
+      otlp:
+        endpoint: https://otlp-gateway-prod-us-east-2.grafana.net/otlp
+        protocol: http/protobuf
+        headers: Authorization=Basic ${GRAFANA_AUTH_TOKEN:change-me}
+  datasource:
+    metrics:
+      enabled: true
+    jdbc:
+      telemetry: true
+
+'%dev':
+  quarkus:
+    datasource:
+      dev-ui:
+        allow-sql: true
+
+'%dev,test':
+  quarkus:
+    log:
+      category:
+        "dev.langchain4j.mcp":
+          level: DEBUG
+        "io.quarkiverse.langchain4j.mcp":
+          level: DEBUG
+    langchain4j:
+      log-requests: true
+      log-responses: true
+    compose:
+      devservices:
+        enabled: false
+    flyway:
+      clean-at-start: true
+    hibernate-orm:
+      log:
+        bind-parameters: true
+        sql: true
+        format-sql: true
+        highlight-sql: true
+
+'%test':
+  quarkus:
+    otel:
+      logs:
+        enabled: false
+    observability:
+      enabled: false
+    micrometer:
+      export:
+        otlp:
+          enabled: "${%test.quarkus.observability.enabled}"
+
+'%prod':
+  quarkus:
+    datasource:
+      username: events
+      password: events
+      jdbc:
+        url: jdbc:postgresql://localhost:5432/events

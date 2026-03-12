@@ -1,0 +1,208 @@
+# Database Configuration
+quarkus:
+  datasource:
+    db-kind: postgresql
+    username: ${DB_USER:lerne-lama}
+    password: ${DB_PASSWORD}
+    jdbc:
+      url: ${DB_URL:jdbc:postgresql://localhost:5432/lerne_lama_db}
+  
+  hibernate-orm:
+    database:
+      generation: none
+    log:
+      sql: false
+
+  # REST Client Configuration for Vertex AI
+  rest-client:
+    vertex-ai:
+      url: https://us-east5-aiplatform.googleapis.com
+      read-timeout: 120000
+      connect-timeout: 120000
+      # logging:
+      #   scope: request-response
+      #   body-limit: 1000000
+  
+  # Jackson configuration
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    charset: UTF-8
+  
+  # Enable REST client logging (commented out for normal operation)
+  # log:
+  #   level:
+  #     "io.quarkus.rest.client": DEBUG
+  #     "org.jboss.resteasy.reactive.client": DEBUG
+  #     "com.gepardec.lernelamalesen.infrastructure.adapter.llm": DEBUG
+  #     "org.apache.http.wire": DEBUG
+  #     "org.apache.http.headers": DEBUG
+  #     "org.jboss.logging": DEBUG
+
+# Vertex AI Configuration
+vertex:
+  ai:
+    project-id: ${VERTEX_AI_PROJECT_ID:your-project-id}
+    location: ${VERTEX_AI_LOCATION:us-central1}
+    model: ${VERTEX_AI_MODEL:gemini-1.5-pro-vision-001}
+    publisher: ${VERTEX_AI_PUBLISHER:google}
+    access-token: ${VERTEX_AI_ACCESS_TOKEN}
+    billing:
+      project: ${VERTEX_AI_PROJECT_ID:your-project-id}
+    credentials:
+      path: ${VERTEX_AI_CREDENTIALS_PATH}
+
+# LLM Prompts Configuration
+llm:
+  prompt:
+    system: >
+      You are an OCR system for "Vorfallserhebungsbogen" forms from Österreichische Gesundheitskasse.
+
+      CRITICAL CHECKBOX RULES:
+      - ANY visible mark in or near a checkbox means "true" (checkmark, cross, dot, shade, circle, scribble)
+      - Light or faint marks still count as "true"
+      - Empty checkbox means ""
+      - Strikethrough or crossed-out mark means ""
+      - For Ja/Nein pairs: Ja marked = "true", Nein marked = "false", neither = ""
+
+      CRITICAL TEXT RULES:
+      - This is Austrian German medical context
+      - Fix obvious typos using context
+      - Common locations: Wien, Graz, Linz, Salzburg, Innsbruck, Praterstern, Hauptstraße, Ringstraße
+      - Medical terms expected: Sturz, Schmerzen, Unfall, Prellung, Kreislauf, Schwindel
+      - Dates: DD.MM.YYYY or D.M.YY format or free format like "heute", "gestern", "22. Juni"
+      - Time periods must be German: "2 Stunden", "1 Tag", "30 Minuten", not English
+      - If handwriting unclear, guess based on Austrian context
+      - Use final text after strikethroughs/corrections
+      - Keep field sequence as it appears in the form
+
+      REFERENCE IMAGES:
+      - Image 1 shows how checkboxes can be marked
+      - Image 2 shows common handwritten terms in these forms
+      - Main image is the form to extract from
+
+      SPECIFIC FIELD RULES:
+      - frage1_ortDesEreignisses: Expect Austrian location
+      - frage3: Single checkboxes, each can be "true" or ""
+      - frage4, 6, 7, 8, 9: Ja/Nein pairs use "true"/"false"/""
+      - frage7_zeitraumDesKonsums: MUST be duration like "2 Stunden", "1 Tag"
+      - frage8_polizeidienststelle: Expect "Wien", "Polizeiinspektion [City]" or "PI [City]"
+      - If Ja/Nein is "false" but "Wenn ja" fields are filled, still extract those fields as written
+
+      JSON SCHEMA:
+      {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "SchadensmeldungFormular",
+        "type": "object",
+        "properties": {
+          "frage1": {
+            "type": "object",
+            "properties": {
+              "frage1_datumUhrzeit": {"type": "string"},
+              "frage1_ortDesEreignisses": {"type": "string"},
+              "frage1_keinKonkretesEreignis": {"type": "string"},
+              "frage1_artDerErkrankungBeschwerden": {"type": "string"}
+            }
+          },
+          "frage2": {
+            "type": "object",
+            "properties": {
+              "frage2_datumFruehereVerletzung": {"type": "string"}
+            }
+          },
+          "frage3": {
+            "type": "object",
+            "properties": {
+              "frage3_vorfallsort_beruflicheTaetigkeit": {"type": "string"},
+              "frage3_vorfallsort_arbeitsweg": {"type": "string"},
+              "frage3_vorfallsort_berufskrankheit": {"type": "string"},
+              "frage3_vorfallsort_schulveranstaltung": {"type": "string"},
+              "frage3_vorfallsort_freizeit": {"type": "string"},
+              "frage3_vorfallsort_sonstige": {"type": "string"},
+              "frage3_vorfallsort_sonstige_text": {"type": "string"},
+              "frage3_vorfallsart_verkehrsunfall": {"type": "string"},
+              "frage3_vorfallsart_raufhandel": {"type": "string"},
+              "frage3_vorfallsart_arztlicherBehandlungsfehler": {"type": "string"},
+              "frage3_vorfallsart_sportunfall": {"type": "string"},
+              "frage3_vorfallsart_verletzungDurchEinTier": {"type": "string"},
+              "frage3_vorfallsart_glatteissturz": {"type": "string"},
+              "frage3_vorfallsart_gebrauchEinesFehlerhaftenProdukts": {"type": "string"},
+              "frage3_vorfallsart_stromBlitz": {"type": "string"},
+              "frage3_vorfallsart_sonstigerVorfall": {"type": "string"},
+              "frage3_vorfallsart_sonstigerVorfall_text": {"type": "string"}
+            }
+          },
+          "frage4": {
+            "type": "object",
+            "properties": {
+              "frage4_fremdesVerschulden": {"type": "string"},
+              "frage4_schuldiger": {"type": "string"}
+            }
+          },
+          "frage5": {
+            "type": "object",
+            "properties": {
+              "frage5_schilderungDesEreignisses": {"type": "string"}
+            }
+          },
+          "frage6": {
+            "type": "object",
+            "properties": {
+              "frage6_raufhandelOderAuseinandersetzung": {"type": "string"}
+            }
+          },
+          "frage7": {
+            "type": "object",
+            "properties": {
+              "frage7_konsumVonAlkoholSuchtgiftMedikamenten": {"type": "string"},
+              "frage7_artUndMengeDesKonsums": {"type": "string"},
+              "frage7_zeitraumDesKonsums": {"type": "string"}
+            }
+          },
+          "frage8": {
+            "type": "object",
+            "properties": {
+              "frage8_polizeiAufnahme": {"type": "string"},
+              "frage8_polizeidienststelle": {"type": "string"},
+              "frage8_aktenzahl": {"type": "string"}
+            }
+          },
+          "frage9": {
+            "type": "object",
+            "properties": {
+              "frage9_gerichtlichesVerfahrenAnhaengig": {"type": "string"},
+              "frage9_gerichtOderStaatsanwaltschaft": {"type": "string"},
+              "frage9_aktenzahl": {"type": "string"}
+            }
+          }
+        }
+      }
+
+      Return ONLY the complete JSON object. No explanations. All fields must be strings. Empty or unreadable fields return as "".
+    
+    user: >
+      Extract all fields from this Vorfallserhebungsbogen form. Try to leave text not changed, as it was written by user. Correct only obvious mistakes.
+
+# Test Configuration
+"%test":
+  quarkus:
+    datasource:
+      db-kind: h2
+      username: sa
+      password: 
+      jdbc:
+        url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1
+    hibernate-orm:
+      database:
+        generation: drop-and-create
+
+# Development Configuration  
+"%dev":
+  quarkus:
+    hibernate-orm:
+      database:
+        generation: update
+      log:
+        sql: false
+    log:
+      level: INFO

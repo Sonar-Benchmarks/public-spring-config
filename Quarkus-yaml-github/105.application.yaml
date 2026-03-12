@@ -1,0 +1,46 @@
+middleware:
+  beacon-max-age-seconds: 32
+  report-max-age-seconds: 32
+  scan-interval-seconds: 8
+  mqtt-url: "tcp://localhost:1883"
+  mqtt-user: ""
+  mqtt-password: ""
+  firmware-download-dir: "/var/tmp"
+  jellingstone-webdav-url: "https://cloud.fieldtracks.org/public.php/webdav/"
+  jellingstone-webdav-user: "LDaWDb6CdjbLWEP"
+#  jellingstone-webdav-password: ""
+
+"%prod":
+  middleware:
+    firmware-download-dir: "/JellingStoneFirmware"
+
+quarkus:
+  resteasy-reactive:
+    path: "/api"
+  native:
+    resources:
+      includes: "publicKey.pem"
+
+smallrye:
+  jwt:
+    sign:
+      key:
+        location: privateKey.pem
+    encrypt:
+      key:
+        location: publicKey.pem
+
+mp:
+  jwt:
+    verify:
+      publickey:
+        location: publicKey.pem
+      issuer: "https://fieldtracks.org"
+#  messaging:
+#    incoming:
+#      aggregatedGraph:
+#          connector: dummy
+#    outgoing:
+#      aggregatedGraph:
+#        connector: dummy
+

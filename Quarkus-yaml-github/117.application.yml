@@ -1,0 +1,34 @@
+quarkus:
+  datasource:
+    db-kind: postgresql
+    username: user
+    password: pass
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/keyportal
+  mybatis:
+    initial-sql: queries/initial.sql
+  web-bundler:
+    dependencies:
+      node-modules: "node_modules"
+    bundle:
+      components:
+        components: true
+        qute-tags: true
+  http:
+    cors:
+      enabled: true
+      origins: http://localhost:80
+      methods: [ GET, POST, PATCH, DELETE ]
+      headers: [ X-Agent-Name, X-Poll-Key ]
+      exposed-headers: [ Content-Disposition ]
+      access-control-allow-credentials: true
+  rabbitmqclient:
+    username: user
+    password: pass
+    hostname: localhost
+    port: 5672
+    virtual-host: /
+
+servers-wrapper:
+  servers:
+    - name: server-1

@@ -1,0 +1,21 @@
+#sodexoBot
+quarkus:
+  mongodb:
+    connection-string: ${MONGO_URI}
+    database: sodexoBot
+
+telegram:
+  bot:
+    token: ${BOT_TOKEN}
+ru:
+  nmedvedev:
+    rest:
+      SodexoClient/mp-rest/uri: https://restaurantpass.gift-cards.ru/
+balance-check:
+  every: ${BALANCE_CHECK_EVERY:15m}
+
+spend-money-reminder:
+  half-month-allowed-balance: 1500
+  last-working-day-minus-four-allowed-balance: 1000
+  last-working-day-minus-three-allowed-balance: 500
+  last-working-day-minus-one-allowed-balance: 400

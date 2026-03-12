@@ -1,0 +1,46 @@
+app:
+  currencies:
+    - 980/UAH
+    - 840/USD
+    - 978/EUR
+    - 756/CHF
+    - 348/HUF
+    - 826/GBP
+    - 985/PLN
+    - 8/ALL
+    - 208/DKK
+
+quarkus:
+  rest-client:
+    mono:
+      url: https://api.monobank.ua
+      connect-timeout: 1000
+      read-timeout: 30000
+  banner:
+    path: banner.txt
+  log:
+    level: INFO
+    console:
+      enable: true
+      format: '%d{HH:mm:ss.SSS} %-5p (%-10t) [%c{2.}] %s%e%n'
+      darken: 0
+
+"%dev":
+  quarkus:
+    log:
+      min-level: TRACE
+      console:
+        darken: 1
+      category:
+        "com.yuriytkach":
+          level: DEBUG
+
+"%test":
+  quarkus:
+    log:
+      min-level: TRACE
+      console:
+        darken: 1
+      category:
+        "com.yuriytkach":
+          level: TRACE

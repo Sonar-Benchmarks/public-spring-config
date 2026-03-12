@@ -1,0 +1,56 @@
+quarkus:
+  http:
+    port: 8088
+    cors:
+      enabled: false
+      origins: "http://localhost:3000"
+      methods: "GET,PUT,POST,DELETE,OPTIONS"
+      headers: "origin, content-type, accept, authorization"
+      access-control-allow-credentials: true
+  grpc:
+    clients:
+      auth:
+        host: localhost
+        port: 50051
+        plain-text: true # TODO use TLS in production
+        use-quarkus-grpc-client: true
+      analytics:
+        host: localhost
+        port: 9090
+        plain-text: true
+        use-quarkus-grpc-client: true
+
+  hibernate-orm:
+    enabled: true
+    schema-management:
+      strategy: validate
+    log:
+      sql: true
+    packages: de.thi.focus.frameworksdrivers.persistence.jpa
+
+  flyway:
+    migrate-at-start: true
+    locations: db/migration
+
+  datasource:
+    db-kind: postgresql
+    username: focus
+    password: focus
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/focus
+
+focus:
+  events:
+    kafka:
+      bootstrap-servers: localhost:9092
+      topic: focus.events
+  security:
+    secure-cookies: false
+  constraints:
+    note:
+      max-length: 1000
+    category:
+      name:
+        max-length: 50
+  defaults:
+    category-color: "#FFFFFF"

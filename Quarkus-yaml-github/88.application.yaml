@@ -1,0 +1,59 @@
+quarkus:
+  application:
+    name: esthesis-core-srv-agent
+  devservices:
+    enabled: false
+  log:
+    min-level: TRACE
+    console:
+      format: "%d{HH:mm:ss} %-5p traceId=%X{traceId}, parentId=%X{parentId}, spanId=%X{spanId}, sampled=%X{sampled} [%c{2.}] (%t) %s%e%n"
+    handler:
+      gelf:
+        enabled: false
+        include-full-mdc: true
+        skip-hostname-resolution: false
+        additional-field:
+          platform:
+            value: esthesis
+          module:
+            value: esthesis-core
+          type:
+            value: API
+          service:
+            value: ${quarkus.application.name}
+  banner:
+    enabled: false
+  otel:
+    sdk:
+      disabled: true
+  rest-client:
+    SettingsSystemResource:
+      url: http://esthesis-core-srv-settings-service:8080
+      scope: Singleton
+    CASystemResource:
+      url: http://esthesis-core-srv-crypto-service:8080
+      scope: Singleton
+    DataflowSystemResource:
+      url: http://esthesis-core-srv-dataflow-service:8080
+      scope: Singleton
+    DeviceSystemResource:
+      url: http://esthesis-core-srv-device-service:8080
+      scope: Singleton
+    ProvisioningSystemResource:
+      url: http://esthesis-core-srv-provisioning-service:8080
+      scope: Singleton
+    SigningSystemResource:
+      url: http://esthesis-core-srv-security-service:8080
+      scope: Singleton
+    InfrastructureSystemResource:
+      url: http://esthesis-core-srv-infrastructure-service:8080
+      scope: Singleton
+  # Do not remove the following configuration, it is needed, so that it can be overridden in runtime
+  # (otherwise environment variables such as QUARKUS_OIDC_CLIENT_GRANT_OPTIONS_PASSWORD_USERNAME
+  # are ignored (see https://github.com/quarkusio/quarkus/discussions/41259#discussioncomment-9795685).
+  oidc-client:
+    client-id: esthesis
+    grant-options:
+      password:
+        username: defined-in-runtime
+        password: defined-in-runtime

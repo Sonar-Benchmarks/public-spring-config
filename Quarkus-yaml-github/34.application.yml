@@ -1,0 +1,47 @@
+ga:
+  prediction:
+    time-frame: 24
+    time-unit: HOURS
+  phenotype:
+    maximal-age: 5
+    genotype:
+      gene:
+        min: 0
+        max: 1000
+  evolution:
+    generations: 1000
+  limits:
+    max-records: 10000
+    since-last: 1825 # 5 YEARS
+    time-unit: DAYS
+
+quarkus:
+  application:
+    name: radon-ga
+  mongodb:
+    database: radon-ga
+    connection-string: mongodb://root:example@localhost:27017
+    max-pool-size: 4
+  log:
+    console:
+      format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{1.}] (%t) %X{SensorId} %s%e%n"
+    file:
+      enable: true
+      path: log/radon-ga.log
+      format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{1.}] (%t) %X{SensorId} %s%e%n"
+kafka:
+  bootstrap:
+    servers: localhost:9092
+
+mp:
+  messaging:
+    incoming:
+      radon-measurements:
+        connector: smallrye-kafka
+        topic: RadonMeasurements
+        value:
+          deserializer: pl.airq.ga.radon.domain.event.RadonMeasurementEventDeserializer
+        key:
+          deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value-deserialization-failure-handler: LogAndSkipDeserializationFailureHandler
+        key-deserialization-failure-handler: LogAndSkipDeserializationFailureHandler

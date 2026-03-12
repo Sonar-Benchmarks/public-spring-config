@@ -1,0 +1,29 @@
+quarkus:
+    http:
+      port: 8088
+
+    keycloak:
+      policy-enforcer:
+          enable: true
+
+    log:
+        category:
+            "io.quarkus.oidc":
+                level: DEBUG
+            "io.quarkus.security":
+                level: DEBUG
+
+    mongodb:
+        connection-string: "${MONGO_CONNECT_STRING}"
+        database: "${MONGO_DB}"
+        credentials:
+            auth-source: "${MONGO_DB}"
+            username: "${MONGO_DB_USER_LOGIN}"
+            password: "${MONGO_DB_USER_PASSWORD}"
+
+    oidc:
+        application-type: service
+        auth-server-url: "${KC_AUTH_SERVER_URL}"
+        client-id: "${OIDC_BLACKLIST_SVC_CLIENT_ID}"
+        credentials:
+            secret: "${OIDC_BLACKLIST_SVC_CLIENT_SECRET}"

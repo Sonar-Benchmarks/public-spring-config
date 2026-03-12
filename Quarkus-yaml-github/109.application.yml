@@ -1,0 +1,91 @@
+quarkus:
+  test:
+    continuous-testing: enabled
+  smallrye-openapi:
+    security-scheme: oidc
+    security-scheme-name: Bearer Authentication
+    oidc-open-id-connect-url: http://localhost/management/keycloak/realms/exe/.well-known/openid-configuration
+  oidc:
+    auth-server-url: https://auth.dlugoschvincent.de/realms/exe
+    client-id: ${KEYCLOAK_CHECKOUT_CLIENT_ID}
+    credentials:
+      secret: ${KEYCLOAK_CHECKOUT_CLIENT_SECRET}
+    tls:
+      verification: none
+  keycloak:
+    policy-enforcer:
+      enable: true
+      paths:
+        1:
+          name: Add address
+          path: /addresses/add
+          enforcement-mode: DISABLED
+        2:
+          name: Place order
+          path: /orders/place
+          enforcement-mode: DISABLED
+        3:
+          name: OpenAPI
+          path: /q/openapi
+          enforcement-mode: DISABLED
+  datasource:
+    db-kind: postgresql
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    jdbc:
+      url: jdbc:postgresql://checkoutdb:5432/checkout
+  hibernate-orm:
+    # log:
+    # sql: true
+    database:
+      generation: drop-and-create
+  package:
+    jar:
+      type: mutable-jar
+  live-reload:
+    password: livereloadpassword
+    url: http://localhost:8083
+  redis:
+    hosts: redis://cache:6379
+"%prod":
+  quarkus:
+    hibernate-orm:
+      sql-load-script: import.sql
+    smallrye-openapi:
+      # hardcoding hostname here
+      oidc-open-id-connect-url: https://exe.dlugoschvincent.de/management/keycloak/realms/exe/.well-known/openid-configuration
+rabbitmq-host: rabbitmq
+rabbitmq-port: 5672
+rabbitmq-username: ${RABBITMQ_DEFAULT_USER}
+rabbitmq-password: ${RABBITMQ_DEFAULT_PASS}
+mp:
+  messaging:
+    incoming:
+      order-validation:
+        auto-acknowledgement: true
+        connector: smallrye-rabbitmq
+        queue:
+          name: order-validation
+    outgoing:
+      order-validation-request:
+        connector: smallrye-rabbitmq
+        exchange:
+          name: order-validation-request
+#"%test":
+#  quarkus:
+#    package:
+#      type: jar
+#    keycloak:
+#      policy-enforcer:
+#        enable: false
+#  smallrye-openapi:
+#    security-scheme: oidc
+#    security-scheme-name: Bearer Authentication
+#    oidc-open-id-connect-url: http://localhost/management/keycloak/realms/exe/.well-known/openid-configuration
+#  oidc:
+#    auth-server-url: http://keycloak:8080/management/keycloak/realms/exe
+#    client-id: test-client
+#    credentials:
+#      secret: test-secret
+#    tls:
+#      verification: none

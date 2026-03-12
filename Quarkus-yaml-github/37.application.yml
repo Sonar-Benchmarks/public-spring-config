@@ -1,0 +1,64 @@
+quarkus:
+  tls:
+    # TLS configuration for the connection to the Kafka broker (the schema registry needs a separate config)
+    kafka:
+      key-store:
+        p12:
+          path: dev/secrets/kafka.client.p12
+          password: password
+      trust-store:
+        jks:
+          path: dev/secrets/kafka.client.truststore.jks
+          password: password
+      trust-all: false
+      hostname-verification-algorithm: NONE
+
+kafka:
+  # References the TLS configuration defined above
+#  tls-configuration-name: kafka
+  security:
+    protocol: SASL_SSL
+  bootstrap:
+    servers: localhost:9093
+  # Global configuration for SASL authentication for all Kafka clients
+  sasl:
+    mechanism: PLAIN
+    jaas:
+      config: org.apache.kafka.common.security.plain.PlainLoginModule required username="user1" password="user1-secret";
+
+mp:
+  messaging:
+    connector:
+      smallrye-kafka:
+        schema:
+          registry:
+            url: https://localhost:8082
+            # The schema registry seems not to support the use of the tls-configuration-name property, so we have to configure SSL here again
+            ssl:
+              key:
+                password: password
+              keystore:
+                location: dev/secrets/kafka.client.p12
+                password: password
+                type: PKCS12
+              truststore:
+                location: dev/secrets/kafka.client.truststore.jks
+                password: password
+              endpoint:
+                identification:
+                  algorithm: NONE
+            basic:
+              auth:
+                credentials:
+                  source: USER_INFO
+                user:
+                  info: admin:letmein
+    outgoing:
+      test-topic-out:
+        connector: smallrye-kafka
+        topic: test-topic
+        value:
+          serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+        specific:
+          avro:
+            reader: true

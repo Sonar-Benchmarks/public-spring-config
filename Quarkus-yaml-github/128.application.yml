@@ -1,0 +1,49 @@
+quarkus:
+  mailer:
+    host: 127.0.0.1
+    from: noreply@immowealth.local
+    port: 1025
+    mock: false
+    start-tls: null
+  native:
+    resources:
+      includes: publicKey.pem
+  http:
+    cors:
+      ~: true
+      origins: http://localhost:3000
+      exposed-headers: Set-Cookie
+      access-control-allow-credentials: true
+  datasource:
+    db-kind: postgresql
+    username: postgres
+    password: mysecretpassword
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/immowealth
+  rest-client:
+    geocoding:
+      url: https://nominatim.openstreetmap.org/
+      scope: jakarta.inject.Singleton
+    foreignExchangeRate:
+      url: https://commander.commerzbank.com/
+      scope: jakarta.inject.Singleton
+  hibernate-orm:
+    dialect: org.hibernate.dialect.PostgreSQLDialect
+    database:
+      generation: update
+immowealth:
+  defaultMail: kontakt@mathis-burger.de
+  applicationHost: http://localhost:3000
+  signSecret: AyM1SysPpbyDfgZld3umj1qzKObwVMko
+smallrye:
+  jwt:
+    sign:
+      key:
+        location: privateKey.pem
+    new-token:
+      lifespan: 3600
+mp:
+  jwt:
+    verify:
+      publickey:
+        location: publicKey.pem

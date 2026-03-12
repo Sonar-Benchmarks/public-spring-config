@@ -1,0 +1,82 @@
+quarkus:
+  resteasy:
+    path: /api
+
+  datasource:
+    db-kind: postgresql
+
+  liquibase:
+    migrate-at-start: true
+
+  oidc:
+    client-id: backend-api
+    auth-server-url: https://irfc.eu.auth0.com
+    application-type: service
+    token:
+      audience: https://backend.irfc.fh-joanneum.at/
+
+  container-image:
+    builder: jib
+    registry: ghcr.io
+    name: irfc-backend
+    group: fh-joanneum-iron-road-for-children
+    build: true
+    push: true
+
+  swagger-ui:
+    always-include: true
+
+  http:
+    cors:
+      ~: true
+      origins: '*'
+      access-control-allow-credentials: true
+      exposed-headers: Access-Control-Allow-Origin
+      methods: GET, POST, PUT, DELETE
+      access-control-max-age: 24h
+    limits:
+      max-form-attribute-size: 1G
+
+#  kubernetes-config:
+#    enabled: false
+#    namespace: ${KUBERNETES_NAMESPACE:default}
+#
+#  kubernetes-client:
+#    namespace: ${KUBERNETES_NAMESPACE:default}
+
+"%prod":
+  quarkus:
+#    container-image:
+#      build: true
+#      push: true
+    liquibase:
+      contexts: prod
+
+"%dev":
+  quarkus:
+    datasource:
+      username: test
+      password: test
+      devservices:
+        port: 5432
+
+    liquibase:
+      contexts: dev
+      migrate-at-start: true
+    hibernate-orm:
+      log:
+        sql: true
+
+pictures:
+  root_path: ${PICTURES_ROOT_PATH:C:/temp/pics/}
+  url: ${PICTURES_URL:http:/env-var.failed}
+
+videos:
+    root_path: ${VIDEOS_ROOT_PATH:C:/temp/videos/}
+    url: ${VIDEOS_URL:http:/env-var.failed/}
+    intro_video_folder: ${INTRO_VIDEO_FOLDER:intro}
+    intro_video_file: ${INTRO_VIDEO_FILE:intro}
+
+#    container-image:
+#      build: false
+#      push: false

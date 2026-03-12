@@ -1,0 +1,27 @@
+app:
+  init:
+    stocks:
+      - AAPL
+      - MSFT
+      - TSLA
+      - NVDA
+      - JNJ
+      - VZ
+      - WMT
+      - GS
+
+
+quarkus:
+  datasource:
+    db-kind: postgresql
+    devservices:
+      enabled: false
+    username: stockpilot
+    password: stockpilot
+    jdbc:
+      url: jdbc:postgresql://localhost:15432/stockpilot
+
+  hibernate-orm:
+    # Für Entwicklung: Schema automatisch anpassen, Daten bleiben erhalten
+    database:
+      generation: update

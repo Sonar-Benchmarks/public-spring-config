@@ -1,0 +1,87 @@
+insurance-calculator:
+  port: 8080
+  ssl-port: 8443
+
+quarkus:
+  micrometer:
+    enabled: true
+    export:
+      prometheus:
+        enabled: true
+        path: /q/metrics
+    binder:
+      http-server:
+        enabled: true
+      vertx:
+        enabled: true
+
+  swagger-ui:
+    enable: true
+    path: /q/swagger
+    always-include: true
+
+  log:
+    file:
+      enable: true
+      path: logs/application.log
+      format: "%d{yyyy-MM-dd HH:mm:ss} %-5p [%c{2.}] (%t) %s%e%n"
+    level: ERROR
+    category:
+      "io.quarkus":
+        level: WARN
+      "org.flywaydb":
+        level: INFO
+      "io.quarkus.runtime":
+        level: ERROR
+      "com.richert":
+        level: INFO
+      "io.quarkus.vertx.http":
+        level: DEBUG
+      "io.quarkus.http.cors":
+        level: DEBUG
+    console:
+      format: "%d{yyyy-MM-dd HH:mm:ss} %-5p [%c{2.}] (%t) %s%e%n"
+      json: false
+
+  datasource:
+    db-kind: postgresql
+    username: ${QUARKUS_DATASOURCE_USERNAME:postgres}
+    password: ${QUARKUS_DATASOURCE_PASSWORD:postgres}
+    jdbc:
+      url: ${QUARKUS_DATASOURCE_JDBC_URL:jdbc:postgresql://localhost:5432/insurance}
+
+  hibernate-orm:
+    database:
+      generation: validate
+
+  flyway:
+    migrate-at-start: true
+
+  smallrye-openapi:
+    path: /q/openapi
+
+  http:
+    port: ${insurance-calculator.port:8080}
+    insecure-requests: redirect
+    ssl-port: ${insurance-calculator.ssl-port:8443}
+    ssl:
+      certificate:
+        key-store-file: ${KEY_STORE_PATH:src/main/resources/keystore.p12}
+        key-store-password: password
+        key-store-file-type: PKCS12
+    cors:
+      enabled: true
+      origins: "http://localhost:3000,https://localhost:3000"
+      methods: "GET,POST,PUT,DELETE,OPTIONS,PATCH"
+      headers: "accept,authorization,content-type,x-requested-with"
+
+vehicle:
+  factors:
+    CAR: 1.0
+    SUV: 1.2
+    TRUCK: 1.5
+    MOTORCYCLE: 0.8
+
+csv:
+  import-enabled: ${CSV_IMPORT_ENABLED:true}
+  import-folder: ${CSV_IMPORT_FOLDER:src/main/resources/data}

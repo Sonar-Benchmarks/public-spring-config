@@ -1,0 +1,25 @@
+quarkus:
+  rest-client:
+    com.redhat.fceresol.threescale.api.clients.SourceThreescaleClient:
+      url: <source 3scale admin url>
+      scope: jakarta.inject.Singleton
+      verify-host: false
+    com.redhat.fceresol.threescale.api.clients.DestThreescaleClient:
+      url: <dest 3scale admin url>
+      scope: jakarta.inject.Singleton
+      verify-host: false
+    logging:
+      scope: all
+  tls:
+    trust-all: true
+  log:
+    level: INFO
+threescale:
+  exportToken: <source token>
+  importToken: <dest token>
+  proxyPromoteToProduction: false
+  forceDeploymentOption: self_managed
+  
+    
+
+

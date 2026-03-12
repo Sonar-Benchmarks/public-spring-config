@@ -1,0 +1,58 @@
+quarkus:
+  datasource:
+    jdbc:
+      url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    db-kind: postgresql
+  hibernate-orm:
+    database:
+      generation: drop-and-create
+
+rabbitmq-host: ${RABBITMQ_HOST}
+rabbitmq-virtual-host: ${RABBITMQ_VHOST}
+rabbitmq-username: ${RABBITMQ_USERNAME}
+rabbitmq-password: ${RABBITMQ_PASSWORD}
+
+mp:
+  messaging:
+    incoming:
+      label-detect:
+        dead-letter-exchange: "amq.direct"
+        dead-letter-routing-key: "dlx"
+        queue:
+          name: label-detect-queue
+        exchange:
+          name: jynx-to-process-image-exchange
+        routing-keys: uuid
+
+    outgoing:
+      jynx-to-process-image-exchange:
+        connector: smallrye-rabbitmq
+        exchange:
+          name: jynx-to-process-image-exchange
+          type: topic
+        default-routing-key: uuid
+
+      image-processed-emitter:
+        connector: smallrye-rabbitmq
+        exchange:
+          name: jynx-processed-image-exchange
+          type: topic
+        default-routing-key: uuid
+
+# Develop configuration file:
+
+"%dev":
+  quarkus:
+    datasource:
+      jdbc:
+        url: jdbc:postgresql://localhost:5432/jynx-db
+      username: postgres
+      password: jynx-password
+      db-kind: postgresql
+
+  rabbitmq-host: localhost
+  rabbitmq-virtual-host: jynx
+  rabbitmq-username: jynx-username
+  rabbitmq-password: jynx-password

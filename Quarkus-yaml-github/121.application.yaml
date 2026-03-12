@@ -1,0 +1,29 @@
+pangea:
+  token: ${PANGEA_INTEL_TOKEN}
+  domain: ${PANGEA_DOMAIN}
+  ip-intel:
+    enabled: true
+    type: ${PANGEA_IP_INTEL_TYPE}
+    score-threshold: ${PANGEA_IP_INTEL_SCORE_THRESHOLD}
+    redis-ttl: ${REDIS_TTL}
+
+quarkus:
+  redis:
+    pangea-cache:
+      hosts: redis://localhost:6379
+
+
+"%dev":
+  quarkus:
+    redis:
+      pangea-cache:
+        devservices:
+          enabled: true
+          service-name: redis1
+#        hosts: redis://redis1/
+
+"%prod":
+  quarkus:
+    redis:
+      pangea-cache:
+        hosts: redis://localhost:6379

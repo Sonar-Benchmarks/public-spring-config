@@ -1,0 +1,21 @@
+# src/main/resources/application.yaml
+quarkus:
+  http:
+    port: 8080
+  log:
+    category:
+      "com.dant":
+        level: INFO
+
+  # Updated health check paths
+  smallrye-health:
+    root-path: /health
+    liveness-path: /live
+    readiness-path: /ready
+    ui:
+      enable: true  # Enables a web UI for health checks
+
+node:
+  node-id: ${NODE_ID:1}
+  cluster-nodes: ${CLUSTER_NODES:localhost:8080}
+  node-addresses: ${NODE_ADDRESSES:http://node1:8080,http://node2:8080,http://node3:8080}

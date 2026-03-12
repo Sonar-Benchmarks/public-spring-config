@@ -1,0 +1,21 @@
+quarkus:
+  swagger-ui:
+    always-include: true
+  banner:
+    enabled: false
+  config:
+    log:
+      values: true
+  log:
+    category: 
+      "io.smallrye.config":
+        level: info
+      "io.github.fungrim":
+        level: debug
+  jib:
+    base-jvm-image: alpine/java:21-jre
+    jvm-additional-arguments: -Djava.util.logging.manager=org.jboss.logmanager.LogManager
+  container-image:
+    group: fungrim
+    name: webhook-vector-ingest
+    tag: latest

@@ -1,0 +1,857 @@
+micronaut:
+  application:
+    name: GreachConf
+---
+micronaut:
+  router:
+    static-resources:
+      default:
+        enabled: true
+        paths:
+          - 'classpath:public'
+        mapping: '/**'
+agenda:
+  speakers:
+    -
+      name: 'Laura Morillo-Velarde'
+      uid: 'laura-morillo-velarde-rodriguez'
+      twitter: 'laura_morillo'
+      image: '/images/laura_morillo.jpg'
+      bio:
+        - 'Tech Lead at seedtag. She has worked with several technologies from C++ to Javascript and learnt how to use a Kubernetes infrastructure along the way.'
+        - 'She is a Google Cloud GDE and an organiser of different meetups like GDG Madrid and others like AgileGirls and Tech&Ladies to promote an increase in the participation of women in technology.'
+      company-name: 'Seedtag'
+      company-link: 'https://www.seedtag.com'
+      company-image: '/images/seedtag.svg'
+    -
+      name: 'Beatriz Martinez'
+      uid: 'beatriz-martinez'
+      twitter: 'beatrizmrg'
+      image: '/images/beatriz-martinez.jpg'
+      bio: 'Beatriz Martínez works at IBM''s Architecture and Innovation department, mainly focus on enterprise-grade cloud environments. Passionate about technology and innovation, she is an insatiable learner who loves getting involved with open-source communities.'
+      company-name: 'IBM'
+      company-link: 'https://www.ibm.com/es-es'
+      company-image: '/images/ibm.png'
+    -
+      name: 'Pedro Santos'
+      uid: 'pedro-santos'
+      twitter: 'pedrodanielcsan'
+      image: '/images/pedrodanielcsan.jpg'
+      bio:
+        - 'Pedro is a pragmatic software engineer, with a rich background, that has been dedicating most of his professional career to Android development with the goal of making people''s lives easier with useful-yet-mindful bits of technology at their fingertips.'
+        - 'He always strives to leave code better than he found it and also sharing his lessons with the community so that his errors are only made once.'
+    -
+      name: 'Gal Shelach'
+      uid: 'gal-shelach'
+      twitter: 'taboola'
+      image: '/images/galshelach.jpg'
+      bio:
+        - 'Gal is a member of the SRE team in the Infrastructure group. As such, I take part and lead tasks that improve Taboola’s performance and stability.'
+        - 'Gal works on the core pillars of our infrastructure, to support Taboola''s ever-growing scale.'
+        - 'The fun part of his job is to look at the big picture of our system and track down suspicious bottlenecks. Gal is doing so, by using both in-house and open source monitoring and profiling tools.'
+        - 'The culprits can be Taboola’s services, or even commercial and open source 3rd party services. After catching them, he does whatever is necessary to make the services great again.'
+    -
+      name: 'Marcin Erdmann'
+      uid: 'marcin-erdmann'
+      twitter: 'marcinerdmann'
+      image: '/images/marcinerdmann.jpeg'
+      bio:
+        - 'Marcin has been developing in Groovy since 2010. Currently based in London but has worked in other European countries in the past. He loves Open Source Software and has a strong need to give back to the community whenever possible. That’s why he’s proud to be the current project lead of Geb, a Groovy Browser automation library.'
+        - 'In the past he contributed to many open source projects in the Groovy ecosystem and he enjoys going to conferences both as an attendee and a speaker. That’s where you will find him with a pint of good beer in hand engaged in lengthy discussions on how to make software development process and quality better.'
+    -
+      name: 'Szymon Stepniak'
+      uid: 'szymon-stepniak'
+      twitter: 'wololock'
+      image: '/images/wololock.jpg'
+      bio:
+        - "I write Groovy code on a daily basis at [Upwork.com](http://upwork.com/), where I lead the CI/CD pipeline product team. I try to solve problems without writing a single line of code, but when I have to, I use Groovy, Java, or Haskell. Blogger, Stack Overflow Jedi, Toruń Java User Group founder, bedroom guitar player."
+    -
+      name: 'Álvaro Sánchez-Mariscal'
+      uid: 'alvaro-sanchez-mariscal'
+      twitter: 'alvaro_sanchez'
+      image: '/images/alvaro_sanchez.jpg'
+      company-name: 'Object Computing'
+      company-link: 'https://objectcomputing.com'
+      company-image: '/images/oci.svg'
+      bio:
+        - "Álvaro is a passionate developer and agile enthusiast with over 19 years of experience. He now works as a Senior Software Engineer at OCI, the company leading Micronaut, Groovy and Grails open-source development"
+        - "Before working at OCI, he spent some years working in different industries like gambling games (Odobo) and fintech (4Finance). Prior to that, he created his own company, [Salenda](https://www.salenda.es), in 2005, a software factory and Atlassian Gold Solution Partner headquartered in Madrid, Spain. Adaptavist acquired Salenda in 2019. Previously, he worked at companies like IBM BCS, BEA Systems or Sun Microsystems"
+        - "Álvaro has spoken in 11 different countries at conferences like Devoxx, GeeCON, JavaLand, JavaZone, Codemotion and Commit Conf. In his spare time, as well as coding and experimenting with new technologies, he likes to spend time with his wife and son, support [CD Leganes football team](https://www.cdleganes.com/), and play paddle tennis."
+    -
+      name: 'Alberto Grande'
+      uid: 'alberto-grande'
+      twitter: 'alberto_grande'
+      image: '/images/albertogrande.jpg'
+      bio: 'Computer Engineer, passionate about technology. Interested in development, distributed architectures and Cloud systems.'
+    -
+      name: 'Schalk Cronjé'
+      uid: 'schalk-cronje'
+      twitter: 'ysb33r'
+      image: '/images/schalk-cronje.jpeg'
+      bio:
+        - 'Schalk describes himself as the glue man. He glues tech together to produce great pipelines so that others can flow their work. He is the author of two books on Gradle plugin development and also sits on the steering committees of both the Agile Testing Alliance and the DevOps++ Alliance.'
+        - 'He has recently thrown his weight behind Jobble Inc. where he has already brought painful manual deployments down to multiple pain free deployments per day across multiple products.'
+    -
+      name: 'Sergio del Amo'
+      uid: 'sdelamo'
+      twitter: 'sdelamo'
+      image: '/images/sergiodelamo.jpg'
+      company-name: 'Object Computing'
+      company-link: 'https://objectcomputing.com'
+      company-image: '/images/oci.svg'
+      bio: 'Member of [grails](https://grails.org) & [micronaut](https://micronaut.io) team at [OCI](https://objectcomputing.com), curator of the newsletter [Groovy Calamari](http://groovycalamari.com) and [Greach Conf](https://greachconf.com) organizer.'
+    -
+      name: 'Leonard Brünings'
+      uid: 'leonard-brunings'
+      twitter: 'spockframework'
+      company-name: '1&1'
+      company-link: 'https://www.1und1.de'
+      company-image: '/images/1and1.png'
+      image: '/images/leonard-brunings.jpeg'
+      bio: 'Leonard is a Java/Groovy developer and has been contributing over 15 years to open source. In 2015 Leonard took the lead of the Spock project, when the original author had to leave the project.'
+    -
+      name: 'Gytis Trikleris'
+      uid: 'gytis-trikleris'
+      twitter: 'gytis_t'
+      company-name: 'Red Hat'
+      company-link: 'https://www.redhat.com/en'
+      company-image: '/images/red-hat.svg'
+      image: '/images/gytis.jpg'
+      bio: 'Gytis has been working at Red Hat for the past 8 years and currently is a part of a RHOAR Spring Boot team. There he tries to adapt Red Hat technologies for Spring Boot users and to improve their experience on OpenShift and Kubernetes. He is a contributor to RHOAR, EAP, Spring Boot and other open source projects.'
+    - name: 'Aurea Muñoz'
+      uid: 'aurea-munoz'
+      company-name: 'Red Hat'
+      company-link: 'https://www.redhat.com/en'
+      company-image: '/images/red-hat.svg'
+      twitter: 'auritamh'
+      image: '/images/aureamunoz.jpg'
+      bio: 'Aurea works for Red Hat developing in Java with a focus on the integration of Spring Boot & Spring Cloud technology within the Red Hat Middleware portfolio.'
+    -
+      name: 'Pablo Ruiz Múzquiz'
+      uid: 'pablo-ruiz-muzquiz'
+      twitter: 'diacritica'
+      company-name: 'Kaleidos'
+      company-link: 'https://kaleidos.net'
+      company-image: '/images/kaleidos.png'
+      image: '/images/pabloruizmuquiz.jpg'
+      bio: 'I co-founded Kaleidos, a great hybrid between a technological partner for start-ups and an incubator for employees'' ideas (Taiga being a great example, amazing open source agile project management platform, UXBOX just launched). On a personal side, I love my trad archery/geek life with Angela and a bunch of great friends. I actively support public understanding of science, the fight against climate crisis, civil rights & feminism.'
+    -
+      name: 'Marcos F. Lobo'
+      uid: 'marcos-lobo'
+      twitter: 'arrayexception'
+      image: '/images/mlobo.jpg'
+      bio: 'Technical Lead in a Software Engineers team at [Nexthink](www.nexthink.com). Active worker for important open source projects such as OpenStack (Horizon, Keystone, Mistral, Magnum, Murano), The CentOS Project, RDO Project and Fedora Project. '
+    -
+      name: 'Adrián Casado Rivas'
+      uid: 'adrian-casado-rivas'
+      bio: 'Backend developer at Clarity AI. Currently Java and Spring. Enjoys being involved in projects with social background. T3chFest co-founder.'
+      company-image: '/images/clarity.png'
+      company-link: 'https://clarity.ai/'
+      company-name: 'Clarity'
+      image: '/images/adrian-casado-riva.jpg'
+      twitter: 'strikecr'
+    -
+      name: 'Ralf D. Müller'
+      uid: 'ralfdmueller'
+      twitter: 'ralfdmueller'
+      company-name: 'DB Systel'
+      company-link: 'https://www.dbsystel.de/'
+      company-image: '/images/dbsystel.png'
+      image: '/images/ralf.jpg'
+      bio: 'Ralf is an open source enthusiast. Creator of docToolchain.'
+      link: 'https://rdmueller.github.io/'
+    -
+      name: 'Andrés Almiray'
+      uid: 'andres-almiray'
+      twitter: 'aalmiray'
+      link: 'http://andresalmiray.com/'
+      company-image: '/images/oracle.svg'
+      company-link: 'https://www.oracle.com/'
+      company-name: 'Oracle'
+      image: '/images/aalmiray.jpg'
+      bio: 'JSR377 Spec lead, Groovy aficionado, Griffon project lead, Java Champion, JCP EC, Hackergarten. Senior Principal Product Manager for Oracle.'
+    -
+      name: 'Trisha Gee'
+      uid: 'trisha-gee'
+      twitter: 'trisha_gee'
+      company-name: 'JetBrains'
+      company-link: 'https://www.jetbrains.com/'
+      company-image: '/images/jetbrains.svg'
+      image: '/images/trishagee.jpg'
+      bio: 'Trisha has expertise in Java high performance systems, is passionate about community in tech, and dabbles with Open Source development'
+      link: 'https://trishagee.github.io'
+    -
+      name: 'David Bonilla'
+      uid: 'david-bonilla'
+      twitter: 'david_bonilla'
+      company-name: 'Manfred'
+      company-link: 'https://www.getmanfred.com/'
+      company-image: '/images/manfred.jpg'
+      image: '/images/davidbonilla.jpg'
+      bio: 'David is the founder of Manfred, a company exploring the technical recruitment niche with a candidate-centric approach. Writer at [Bonilista](http://eepurl.com/eqGj6), [Tarugoconf](http://www.tarugoconf.com/) organizer.'
+      link: 'https://bonillaware.com'
+    -
+      name: 'Michael Kutz'
+      uid: 'michael-kutz'
+      twitter: 'michakutz'
+      company-name: 'Rewe digital'
+      company-link: 'https://www.rewe-digital.com/'
+      company-image: '/images/rewe.jpg'
+      image: '/images/michakutz.jpg'
+      bio: 'Michael loves to write working software and I hate fixing bugs. Hence I developed a strong focus on test automation, continuous delivery/deployment and agile principals.'
+      link: 'https://michael-kutz.de/'
+    -
+      name: 'Antón Rodriguez'
+      uid: 'anton-rodriguez'
+      twitter: 'antonmry'
+      company-name: 'Inditex'
+      company-link: 'https://www.inditex.com/'
+      company-image: '/images/inditex.svg'
+      image: '/images/anton.jpg'
+      bio: 'Antón is a Data Engineer at Inditex. He specializes in JVM development, performance tuning, and distributed systems. He co-organizes the Vigo and Coruña Java User Groups.'
+      link: 'http://www.galiglobal.com'
+    -
+      name: 'Vladimír Oraný'
+      uid: 'vladimir-orany'
+      company-name: 'AgoraPulse'
+      company-link: 'https://www.agorapulse.com/'
+      company-image: '/images/agora.png'
+      twitter: 'musketyr'
+      image: '/images/musketyr.jpg'
+      bio: 'Vladimir is Test Facilitator at Agorapulse. He is interested in code quality, domain-specific languages, cloud computing and writing magical code using AST transformations.'
+      link: 'https://medium.com/@musketyr'
+    -
+      name: 'Jorge Aguilera'
+      uid: 'jorge-aguilera'
+      twitter: 'jagedn'
+      company-image: '/images/puravida.jpg'
+      company-link: 'https://www.puravida-software.com/'
+      company-name: 'Pura Vida'
+      image: '/images/jorgeaguilera.jpg'
+      bio: 'Groovy and Grails enthusiast. He enjoys creating bots and assistants.'
+      link: 'https://jorge.aguilera.soy'
+    -
+      name: 'Eduardo Sánchez'
+      uid: 'eduardo-sanchez'
+      twitter: 'edusanchezcon'
+      company-image: '/images/autentia.png'
+      company-link: 'https://autentia.com/'
+      company-name: 'Autentia'
+      image: '/images/eduardosanchez.jpg'
+      bio: 'Software Engineer at Autentia. He enjoys learning about low level programming and JVM internals.'
+    -
+      name: 'Bob Dahlberg'
+      uid: 'bob-dahlberg'
+      twitter: 'mr_bob'
+      image: '/images/bobdahlberg.jpg'
+      bio:
+        - 'I''m the Tech Lead Mobile at Qvik in Sweden.'
+        - 'Mostly doing Kotlin and Android and trying to be helpful.'
+        - 'I have been a developer since I started my first company in high school. I''ve built large campaign frameworks, several video players and chats, streaming services, mobile apps, and microservices to support them. At the moment my main languages are Kotlin, Java, and Scala and my main platforms are Android and AWS. I''ve always been an asynchronous programmer since day one and was used to work both reactive and functional before it became hip.'
+      link: 'http://www.challengeaccepted.se'
+    -
+      name: 'Jerónimo López'
+      uid: 'jeronimo-lopez'
+      twitter: 'jerolba'
+      image: '/images/jeronimolopez.jpg'
+      company-image: '/images/clarity.png'
+      company-link: 'https://clarity.ai/'
+      company-name: 'Clarity'
+      bio: 'Jerónimo tries to rebuild capitalism as a Backend Developer at Clarity and is coorganizer of MadridJUG. '
+      link: 'https://www.jerolba.com/'
+    -
+      name: 'Jacob Ae Mikkelsen'
+      uid: 'jacob-ae-mikkelsen'
+      company-image: '/images/cardlay.png'
+      company-link: 'https://www.cardlay.com/'
+      company-name: 'Cardlay'
+      twitter: 'jacobAae'
+      image: '/images/jacobaae.jpg'
+      bio: 'Jacob is a senior solution architect working in a startup fintect company in Denmark: Cardlay. While still hands-on, scaling microservices and microservice architechture is part of the job.'
+      link: 'http://grydeske.dk'
+    -
+      name: 'Denys Makogon'
+      uid: 'denys-makogon'
+      twitter: 'denis_makogon'
+      company-image: '/images/oracle.svg'
+      company-link: 'https://www.oracle.com/'
+      company-name: 'Oracle'
+      image: '/images/denismakogon.jpg'
+      bio: 'Developer advocate at Oracle, Denys concentrates on product development along with bringing well-designed and production-ready integration with cloud solutions.'
+      link: 'https://medium.com/@denismakogon'
+    -
+      name: 'Iván López'
+      uid: 'ivan-lopez'
+      twitter: 'ilopmar'
+      company-name: 'Object Computing'
+      company-link: 'https://objectcomputing.com'
+      company-image: '/images/oci.svg'
+      image: '/images/ilopmar.png'
+      bio:
+        - 'Iván is a Senior Software Engineer and Systems Administrator with 14 years of experience. He is a member of the Grails and Micronaut teams at Object Computing, Inc. (OCI). He discovered Grails 8 years ago and since then he develops almost exclusively using Groovy and Java. He is the creator of some well known Grails plugins like Postgresql-Extensions.'
+        - "He's also the coordinator of the Madrid Groovy User Group (@madridgug), ex-organizer of the [Greach Conference](http://greachconf.com) and a frequent speaker at conferences like Devoxx, Codemotion, RigaDevDays, JavaCro, GeeCon, ConFoo, SpringOne 2GX, Spring IO,.."
+  talks:
+    -
+      uid: 'cloud-native-monitoring-with-prometheus'
+      title: 'Cloud-native monitoring with Prometheus'
+      start: '2020-03-27T11:00:00'
+      end: '2020-03-27T11:45:00'
+      track: '📍 Google Campus Auditorium'
+      about:
+        - 'In the world of cloud-native applications and microservices, Prometheus has become the standard for monitoring.'
+        - 'This talk shows why, and what differentiates it from the more traditional approaches. How it can be used to monitor both systems and applications, and how to develop Prometheus-native applications.'
+        - 'It also shows the best practices when designing alert systems and integrate them with incident management tools that maybe already deployed.'
+      tags:
+        - 'cloud'
+        - 'monitoring'
+        - 'prometheus'
+      speakers:
+        - 'beatriz-martinez'
+        - 'laura-morillo-velarde-rodriguez'
+    -
+      uid: 'functional-testing-with-karate'
+      title: 'Functional testing with Karate'
+      start: '2020-03-27T16:15:00'
+      end: '2020-03-27T17:00:00'
+      track: '📍 Google Campus Room'
+      tags:
+        - 'testing'
+        - 'karate'
+        - 'functional'
+      speakers:
+        - 'adrian-casado-rivas'
+      about:
+        - 'Test your code as Daniel-san will do.'
+        - 'When somebody start to speak about testing and "PUFF" or "ya otro día.." is your first reaction? Or is it the task that has always motivated you the most? Whatever your option is, our Karate club is opened in order for you to start the path to black belt.'
+        - 'We are going to talk about the importance of functional testing, about how we understand it at Clarity and the challenges that we have faced. We will focus on Karate (https://intuit.github.io/karate/) as framework to develop tests, its pros and cons, we will do some examples and finally we will discuss lessons learned during one year making use of it in our tech team.'
+        - 'Let''s make a secret deal. I promise to teach karate, you promise to learn. I tell, you perform, no questions." - Mr. Miyagi'
+    -
+      uid: 'converting-java-pojos-to-kotlin'
+      title: 'Converting 8+k lines of Java POJOs to Kotlin'
+      start: '2020-03-27T15:00:00'
+      end: '2020-03-27T15:45:00'
+      track: '📍 Google Campus Room'
+      tags:
+        - 'java'
+        - 'kotlin'
+      speakers:
+        - 'pedro-santos'
+      about:
+        - 'At the moment, converting Java code to Kotlin is one of Doist’s engineers’ favorite tasks! We know and love all the benefits Kotlin brings us (conciseness, readability, safer null handling, etc). However, there are a few caveats that might be overlooked or things we take for granted in this process.'
+        - 'Our main product, Todoist, had a complex hierarchy of Java POJOs used to parse the API responses, local DB models, along with a few other utilities. All this added up to a total of over 8k LOC.'
+        - 'We’ve recently decided to modernize that part of our system by converting it all to Kotlin.'
+        - 'We had a few requirements to consider this refactoring successful:'
+        - '- Ensure these models were usable in both Android and JVM-only projects;'
+        - '- Ensure that an open-source version of these POJOs was still available to the community that wanted to do something related to [Todoist](https://github.com/Doist/TodoistPojos)'
+        - '- Ensure we got additional benefits from it - just reducing the number of LOC wasn’t a plausible justification for such an endeavour. It ended up taking about 2 months from the beginning of the implementation to the complete stabilisation in production, passing by testing and code review;'
+        - 'This talk will highlight the process we’ve adopted, the lessons we’ve learned and some other interesting takeaways. The goal is that you know how to deal with similar cases in the future and, most importantly, be aware of Kotlin’s quirks and features and leverage them in the best way possible.'
+    -
+      uid: 'how-to-push-to-production'
+      title: 'How to Push to Production on Thursday Afternoon and Live to Tell the Tale'
+      start: '2020-03-27T14:05:00'
+      end: '2020-03-27T14:50:00'
+      track: '📍 Google Campus Room'
+      tags:
+        - 'devops'
+      speakers:
+        - 'gal-shelach'
+      about:
+        - 'Taboola has >250 developers creating over 20 releases a day. Going from QA to production means exposing a new feature to 1.4B monthly unique users and up to 500K HTTP requests/sec which can be frightening.'
+        - 'In my talk, I will demonstrate the concepts we use in Taboola to tackle the above challenge.'
+        - 'I believe that working the way we do make me a better developer. It is helping me be more creative and responsible, take bigger risks and most importantly enjoy. I will be happy to convince you to try and work as we do.'
+    -
+      uid: 'micronaut-aws-jumpstart'
+      title: 'Pre-Conference Workshop: Micronaut on AWS Jumpstart'
+      start: '2020-03-24T09:00:00'
+      end: '2020-03-24T16:00:00'
+      track: '📍 Glue Edison'
+      tags:
+        - 'micronaut'
+        - 'aws'
+      speakers:
+        - 'sdelamo'
+      about:
+        - 'In this 2-day training workshop, students learn how to use the new Micronaut Framework in concert with Amazon Web Services.'
+        - '[More Info and Enroll](https://objectcomputing.com/services/training/catalog/micronaut-training/micronaut-aws-jumpstart)'
+    -
+      uid: 'micronaut-aws-jumpstart'
+      title: 'Pre-Conference Workshop: Micronaut on AWS Jumpstart'
+      start: '2020-03-25T09:00:00'
+      end: '2020-03-25T16:00:00'
+      track: '📍 Glue Edison'
+      tags:
+        - 'micronaut'
+        - 'aws'
+      speakers:
+        - 'sdelamo'
+      about:
+        - 'In this 2-day training workshop, students learn how to use the new Micronaut Framework in concert with Amazon Web Services.'
+        - '[More Info and Enroll](https://objectcomputing.com/services/training/catalog/micronaut-training/micronaut-aws-jumpstart)'
+    -
+      uid: 'over-two-hundred-ci-cd-pipelines'
+      title: 'Over two hundred CI/CD pipelines and a single Jenkins Shared Library - a case study'
+      start: '2020-03-28T15:00:00'
+      end: '2020-03-28T15:45:00'
+      track: '📍 Google Campus Auditorium'
+      tags:
+        - 'jenkins'
+        - 'ci'
+        - 'cd'
+      speakers:
+        - 'szymon-stepniak'
+      about:
+        - 'Everyone knows Jenkins. Everyone (most probably) worked with Jenkins jobs at least once. Many already know that Jenkins supports pipeline as a code approach. Some might hear about Jenkins Shared Libraries, a way to share the common pipeline code between multiple pipelines. But not many people had an opportunity to implement and maintain Jenkins Shared Library used by hundreds of active Jenkins pipelines. In this talk, I want to show you the journey that Upwork, a global online freelancing platform, went from a Jenkins v1 freestyle jobs to the Jenkins 2 declarative pipelines delivered as a shared library. I will show you the mistakes we made, the tools we used to automate the shared library releasing process, and some numbers and metrics that helped us make the right decisions. '
+    -
+      uid: 'becoming-a-better-groovy-programmer'
+      title: 'Becoming a better Groovy programmer - a warrior''s path'
+      start: '2020-03-27T17:15:00'
+      end: '2020-03-27T18:00:00'
+      track: '📍 Google Campus Auditorium'
+      tags:
+        - 'groovy'
+      speakers:
+        - 'szymon-stepniak'
+      about:
+        - 'The one thing I admire in programming is that it is not a skill that you acquire, and you''re done. It is a journey. A never-ending process of learning new things and moving what you already know to the next level. In this talk, I would like to share with you a few ready-to-implement ideas that will help you improve your Groovy knowledge, become a problem solver, and what is even more important - enjoy that ride. If you feel that you stuck with the learning progress and you don''t know how to overcome it, this talk might help you get out of the impasse. I guarantee that you will learn something new either way. Are you in?'
+    -
+      uid: 'micronaut-and-kubernetes'
+      title: 'From local to cloud with Micronaut and Kubernetes'
+      start: '2020-03-27T15:00:00'
+      end: '2020-03-27T15:45:00'
+      track: '📍 Google Campus Auditorium'
+      tags:
+        - 'micronaut'
+        - 'kubernetes'
+        - 'docker'
+      speakers:
+        - 'alvaro-sanchez-mariscal'
+      about:
+        - 'This sessions aims to explain the options to deploy Micronaut microservices that make use of service discovery and distributed configuration. The steps that will be followed are:'
+        - '- Local execution.'
+        - '- Creating container images, with both the default Dockerfile and Jib.'
+        - '- Using Docker Compose.'
+        - '- Deploying the microservices in a local Kubernetes cluster, using micronaut-kubernetes.'
+        - '- Deploying them in Google Kubernetes Engine.'
+    -
+      uid: 'quarkus-for-spring-developers'
+      title: 'Quarkus for Spring developers'
+      start: '2020-03-28T10:15:00'
+      end: '2020-03-28T10:45:00'
+      track: '📍 Google Campus Auditorium'
+      tags:
+        - 'quarkus'
+        - 'spring'
+      speakers:
+        - 'aurea-munoz'
+        - 'gytis-trikleris'
+      about:
+        - 'Ever wondered how you could create truly micro microservices using your favorite Spring APIs?'
+        - 'The arrival of Quarkus 1.0 brings an innovative platform for developing Linux container- and kubernetes-native Java microservices. With Quarkus, developers don’t have to set aside their existing knowledge because it includes Spring API compatibility, brought to Quarkus by the same engineers that bring Spring Boot support too.'
+        - 'This session will show you how Quarkus speaks Spring by live coding a Quarkus application using some of the most popular Spring features which will then be converted to GraalVM native image and deployed and scaled up in milliseconds on Kubernetes and OpenShift. Don''t miss it!'
+    -
+      uid: 'microsevices-architectures-staying-alive-while-trying'
+      title: 'Microsevices architectures: staying alive while trying'
+      start: '2020-03-28T09:00:00'
+      end: '2020-03-28T09:45:00'
+      track: '📍 Google Campus Auditorium'
+      tags:
+        - 'microservices'
+      speakers:
+        - 'alberto-grande'
+      about:
+        - 'Microservices based architectures growth has been unstoppable in recent years. Large companies such as Netflix or Amazon use these architectures as the solution to their huge systems, becoming the reference for thousands of companies that yearn for the capabilities demonstrated by two giants.'
+        - 'How is it possible that the implementation of these technologies can sink your business? How can the scalability or resilience capabilities of these architectures become counterproductive?'
+        - 'In this talk we will discuss about the analysis, the definition and the design of a microservice architecture. We will try to decompose a monolith using the strangler pattern analyzing its consequences.'
+    -
+      uid: 'keynote'
+      title: 'Keynote'
+      start: '2020-03-27T09:00:00'
+      end: '2020-03-27T09:30:00'
+      track: '📍 Google Campus Auditorium'
+      speakers:
+        - 'sdelamo'
+      about:
+        - 'TBD.'
+    -
+      uid: '10-gradle-plugins-to-improve-your-cloud-life'
+      title: '10 Gradle Plugins to Improve Your Cloud Life'
+      start: '2020-03-27T12:00:00'
+      end: '2020-03-27T12:45:00'
+      track: '📍 Google Campus Room'
+      tags:
+        - 'gradle'
+        - 'cloud'
+      speakers:
+        - 'schalk-cronje'
+      about:
+        - 'There are many tools around to help with building pipelines and infrastructure, but keeping them together and easily managed is not always that easy. With infrastructure-as-code as objective, one soon realises that Gradle is an excellent pipeline orchestration tool.'
+        - 'In this talk I will show why this is true but demonstring 10 Gradle plugins that you might not even know about, but will accelerate developer productivity. This includes things as simple as CI control up to full infrastructure deployment.'
+    -
+      uid: 'closing'
+      title: 'Conference Closing'
+      start: '2020-03-28T16:00:00'
+      end: '2020-03-28T16:15:00'
+      track: '📍 Google Campus Auditorium'
+      speakers:
+        - 'sdelamo'
+      about:
+        - 'TBD.'
+    -
+      uid: 'spock-a-logical-way-of-testing'
+      title: 'Spock: A Logical Way of Testing'
+      start: '2020-03-26T09:00:00'
+      end: '2020-03-26T11:00:00'
+      track: '📍 Glue Edison Room Blue'
+      tags:
+        - 'testing'
+        - 'spock'
+      speakers:
+        - 'leonard-brunings'
+        - 'michael-kutz'
+      about:
+        - 'In this workshop we''ll introduce the Spock testing framework.'
+        - 'Participants will learn about'
+        - '- How to use Spock with Maven and Gradle,'
+        - '- Spock''s basic test structure (blocks),'
+        - ' - Testing of Exceptions,'
+        - '- Data Driven Testing,'
+        - '- Mocking, Stubbing, Spying and'
+        - '- Spring support'
+        - 'Participants should have a Laptop with their favorite IDE and JDK 8+ installed. Groovy knowledge is nice but not required.'
+    -
+      uid: 'a-groovy-kind-of-browser-automation'
+      title: 'A Groovy Kind of Browser Automation – Geb Testing Workshop'
+      start: '2020-03-26T11:15:00'
+      end: '2020-03-26T13:15:00'
+      track: '📍 Glue Edison Room Blue'
+      tags:
+        - 'testing'
+        - 'geb'
+        - 'functional'
+      speakers:
+        - 'michael-kutz'
+        - 'marcin-erdmann'
+      about:
+        - 'In this workshop we''ll introduce the participants to the Geb framework and how to use it for real groovy browser automation. We will make use of the Spock framework for the tests but won''t go into much detail on that. Covered topics:'
+        - '- Setup with Gradle - Basics of navigation & interaction'
+        - '- Page objects - Waiting for dynamic content'
+        - '- Modules for repeating & complex content'
+        - '- Configuration - Combination with Testcontainers'
+    -
+      uid: 'managing-software-projects-with-taiga'
+      title: 'Managing Software Projects with Taiga'
+      start: '2020-03-27T13:45:00'
+      end: '2020-03-27T14:00:00'
+      track: '📍 Google Campus Auditorium'
+      tags:
+        - 'management'
+        - 'taiga'
+      speakers:
+        - 'pablo-ruiz-muzquiz'
+      about:
+        - 'I will show how Taiga can help teams develop better software addressing agile antipatterns and multidisciplinary teams. It will be short but well packed with useful tips.'
+    -
+      uid: 'spock-geb-and-asciidoc'
+      title: 'Spock, Geb and AsciiDoc - from test to specification and back again'
+      start: '2020-03-28T15:00:00'
+      end: '2020-03-28T15:45:00'
+      track: '📍 Google Campus Room'
+      tags:
+        - 'spock'
+        - 'asciidoc'
+        - 'geb'
+        - 'testing'
+      speakers:
+        - 'ralfdmueller'
+      about:
+        - 'In this talk we will see how to develop and deploy a telegram bot from scratch using Micronaut either with groovy or with java. We will see the basic architecture to build a bot as well as different platforms where deploy it. You will learn how to send messages, accept commands and react to them.'
+    -
+      uid: 'everything-you-need-to-know-about-kafka-streams'
+      title: 'Everything you need to know about Kafka Streams'
+      start: '2020-03-26T14:45:00'
+      end: '2020-03-26T17:00:00'
+      track: '📍 Glue Edison Room Green'
+      tags:
+        - 'kafka'
+        - 'streams'
+      speakers:
+        - 'anton-rodriguez'
+      about:
+        - 'Would you like to learn stream processing within the Kafka platform?. In this easy-to-follow workshop, you’ll explore real-world examples to collect, transform, and aggregate data, work with multiple processors, and handle real-time events. You’ll even dive into streaming SQL with KSQL!. Practical to the very end, it will finish with testing and operational aspects, such as monitoring and debugging.'
+    -
+      uid: 'when-micronaut-met-telegram'
+      title: 'When Micronaut met Telegram'
+      start: '2020-03-26T14:45:00'
+      end: '2020-03-26T17:00:00'
+      track: '📍 Glue Edison Room Blue'
+      tags:
+        - 'micronaut'
+        - 'chatbot'
+        - 'telegram'
+      speakers:
+        - 'jorge-aguilera'
+      about:
+        - 'In this talk we will see how to develop and deploy a telegram bot from scratch using Micronaut either with groovy or with java. We will see the basic architecture to build a bot as well as different platforms where deploy it. You will learn how to send messages, accept commands and react to them.'
+    -
+      uid: 'jvm-tuning-what-you-must-know-before-going-into-production'
+      title: 'JVM tuning: what you must know before going into production'
+      start: '2020-03-27T17:15:00'
+      end: '2020-03-27T18:00:00'
+      track: '📍 Google Campus Room'
+      tags:
+        - 'java'
+      speakers:
+        - 'eduardo-sanchez'
+      about:
+        - 'You finally have your application finished, with all unit and integration tests green. Is that enough? You''d rather like to be sure that the performance and memory footprint is the best one for the production environment and loads.'
+        - 'In this talk we’ll see most common load test types. I’ll explain how memory is managed by the JVM and how the Garbage Collector and JIT Compiler work. I’ll also show how to find and solve most common memory leaks and bottlenecks using tools such as Eclipse Memory Analyzer and Java Flight Recorder, with some practical examples.'
+    -
+      uid: 'the-micronaut-an-unexpected-journey'
+      title: 'The Micronaut: An Unexpected Journey'
+      start: '2020-03-28T09:00:00'
+      end: '2020-03-28T09:45:00'
+      track: '📍 Google Campus Room'
+      tags:
+        - 'micronaut'
+        - 'kubernetes'
+        - 'azure'
+        - 'docker'
+      speakers:
+        - 'marcos-lobo'
+      about:
+        - 'I will introduce the problems, solutions, performance and different situations in the journey to put in real production several microservices, all of them implemented over pure Micronaut Framework, managing huge volume of data and requests, all of them deployed in the Azure''s cloud via Docker and Kubernetes'
+        - 'I will explain why Micronaut frameworks works of us (Nexthink company) and how it makes a difference in terms of development speed and performance.'
+        - 'Also, I will drive the talk to explain what at Nexthink we do in terms of CI/CD for the Micronaut microservices.'
+    -
+      uid: 'testing-micronaut-applications'
+      title: 'Testing Micronaut applications'
+      start: '2020-03-27T14:05:00'
+      end: '2020-03-27T14:50:00'
+      track: '📍 Google Campus Auditorium'
+      tags:
+        - 'micronaut'
+        - 'testing'
+      speakers:
+        - 'ivan-lopez'
+      about:
+        - 'Let''s talk about testing! We all know that it''s important to test our applications but some times it''s not that simple.'
+        - 'Micronaut allows running an embedded server to execute end-to-end functional tests pretty fast, but how do we actually take advantage of all the features and possibilities the framework provides?'
+        - 'In this talk you will learn different approaches to test your Micronaut applications. You will see how easy is to keep everything organized, mock external servers, use different configurations for every test and many more things.'
+        - 'If you want to improve your testing skills, this is your talk!'
+    -
+      uid: 'nonfunctional-requirements-the-often-forgotten-ones'
+      title: 'Nonfunctional Requirements - the Often Forgotten Ones'
+      start: '2020-03-28T12:15:00'
+      end: '2020-03-28T13:00:00'
+      track: '📍 Google Campus Room'
+      tags:
+        - 'testing'
+      speakers:
+        - 'jacob-ae-mikkelsen'
+      about:
+        - 'Functional requirements are easy, they come nicely defined in stories and epics, and they are usually quite easy to validate.'
+        - 'But then comes production, and users start to operate the system, wreaking havoc in the system. Maybe we forgot, or was too busy to do penetration testing, load testing, ensure sane logging and check our backup.'
+        - 'In this presentation we will see a few tools and strategies for doing load testing, penetration testing and discuss some of the other nonfunctional requirements we tend to forget.'
+        - 'Some keywords: DevSecOps, Gatling, Encryption'
+    -
+      uid: 'take-control-of-your-professional-career'
+      title: 'Take Control of your Professional Career'
+      start: '2020-03-27T16:15:00'
+      end: '2020-03-27T17:00:00'
+      track: '📍 Google Campus Auditorium'
+      tags:
+        - 'business'
+      speakers:
+        - 'david-bonilla'
+      about:
+        - 'TBD'
+    -
+      uid: 'mastering-spreadsheet-generation'
+      title: 'Mastering Spreadsheet Generation'
+      start: '2020-03-28T11:15:00'
+      end: '2020-03-28T12:00:00'
+      track: '📍 Google Campus Auditorium'
+      tags:
+        - 'spreadsheet'
+      speakers:
+        - 'vladimir-orany'
+      about:
+        - 'Business users love spreadsheet files as much as the developers hate doing so. MS Excel will never die but many companies has replaced it with Google Sheets. Let''s take a look together how to generate documents with rich content full of colors, different borders and fonts, filters and more.'
+        - 'Spreadsheet Builder provides declarative DSL to create Excel and Google Sheets files with grace. The DSL for writing spreadsheets is mirrored in query language to read spreadsheets which can be used to import or test generated files more easily. After a short introduction, the framework will be presented in live examples.'
+    -
+      uid: 'leveraging-micronaut-in-grails-4'
+      title: 'Leveraging Micronaut in Grails 4'
+      start: '2020-03-28T12:15:00'
+      end: '2020-03-28T13:00:00'
+      track: '📍 Google Campus Auditorium'
+      tags:
+        - 'micronaut'
+        - 'grails'
+      speakers:
+        - 'vladimir-orany'
+      about:
+        - 'Upgrading to Grails 4 is such a simple task so you might not notice that you are now standing on the shoulders of micronauts. Let''s take a look together how to fully leverage Micronaut in a Grails application to benefit from the unique symbiosis.'
+    -
+      uid: 'kotlin-beyond-basics'
+      title: 'Kotlin Beyond Basics'
+      start: '2020-03-26T09:00:00'
+      end: '2020-03-26T11:00:00'
+      track: '📍 Glue Edison Room Green'
+      tags:
+        - 'kotlin'
+      speakers:
+        - 'bob-dahlberg'
+      about:
+        - 'So you''ve started developing in Kotlin? Great! But you don''t really know about all those advanced (or seemingly advanced) features that are rarely used. Well, don''t stress it!'
+        - 'This workshop will go through the Kotlin features that are beyond the basic stuff. Like Delegation, Destructure, Inline Classes, Sealed Classes, Operation Overloading, DSL, lateinit, reifid, type aliases, Flow & Coroutines.'
+        - 'In this follow along you will get hands-on coding with the concepts and I''ll explain some of them more thoroughly.'
+    -
+      uid: 'learn-to-build-cloud-native-java-applications-with-quarkus'
+      title: 'Learn to build Cloud Native Java Applications with Quarkus'
+      start: '2020-03-26T11:15:00'
+      end: '2020-03-26T13:15:00'
+      track: '📍 Glue Edison Room Green'
+      tags:
+        - 'cloud'
+        - 'quarkus'
+      speakers:
+        - 'aurea-munoz'
+        - 'gytis-trikleris'
+      about:
+        - 'Java assumed the whole computer belonged to itself, that it could consume all the available memory and CPU. In this workshop we will see the problems associated with using Java for “microservices”, and how the open source ecosystem is working to insure the future of Java by being cloud first, container native, serverless focused and Kubernetes optimized. This is where GraalVM meets Quarkus, bringing server-side and enterprise-capable Java to enable you to build truly cloud native apps.'
+        - 'This lab offers attendees an intro-level, hands-on session with Quarkus, from the first line of code to making services, to consuming them, and finally to assembling everything in a consistent system. But, what are we going to build? Well, it’s going to be a set of microservices (we want to be trendy):'
+        - 'using Quarkus'
+        - 'using HTTP and events (Kafka)'
+        - 'with some parts of the dark side of microservices (monitoring (Prometheus), resilience)'
+        - 'answer the ultimate question: are super heroes stronger than super villains?'
+        - 'This workshop is a BYOL (Bring Your Own Laptop) session, so bring your Windows, OSX, or Linux laptop. You need JDK 8+ on your machine, Apache Maven (3.6+), and Docker. On Windows, some parts may be qualified as experimental.'
+    -
+      uid: 'kafka-and-databases-a-love-story'
+      title: 'Kafka and databases: a love story'
+      start: '2020-03-27T09:45:00'
+      end: '2020-03-27T10:30:00'
+      track: '📍 Google Campus Room'
+      tags:
+        - 'kafka'
+        - 'database'
+      speakers:
+        - 'anton-rodriguez'
+      about:
+        - 'In this talk, Anton will share his experience scaling beyond individual teams into larger, department- and company-sized architectures, using event streams as a source of truth and how to build service ecosystems that blend event-driven and request-driven interfaces using a replayable log and Kafka’s Streams API. He will also explore how event collaboration and event sourcing patterns increase safety and recoverability in production databases.'
+    -
+      uid: 'live-after-java-8'
+      title: 'Live after Java 8'
+      start: '2020-03-27T09:45:00'
+      end: '2020-03-27T10:30:00'
+      track: '📍 Google Campus Auditorium'
+      tags:
+        - 'java'
+      speakers:
+        - 'trisha-gee'
+      about:
+        - ''
+    -
+      uid: '6-signs-you-have-no-clue-about-modern-java'
+      title: '6 signs you have no clue about modern Java'
+      start: '2020-03-27T11:00:00'
+      end: '2020-03-27T11:45:00'
+      track: '📍 Google Campus Room'
+      tags:
+        - 'java'
+      speakers:
+        - 'denys-makogon'
+      about:
+        - 'There''s a strong feeling that people don''t upgrade their Java version because they are scared of what''s going on with newer Java releases, especially after that moment when the release cadence has changed. So many OpenJDK projects have an open target, which makes people feel like there''s nothing happening with them because delivery time takes years, and so on. It feels like you are one of those developers, team leaders, managers who stuck with older versions of Java for certain reasons. And only things you have heard about modern Java that are freighting you so much? Let me ask you a few questions:'
+        - '- How good you know modern Java?'
+        - '- How good you know modern Java features?'
+        - '- Aren’t you afraid of it yet?'
+        - 'If you are one of those then this talk is for you (and your manager). In this talk. I’d like to talk 6 signs that you have no idea of what’s going on with modern Java:'
+        - '- Java modules, no thank you;'
+        - '- Java is not good for the cloud;'
+        - '- JavaFX is dead;'
+        - ' - OpenJDK projects (Valhalla, Loom, Panama) are cool, but no visual progress so far;'
+        - ' - Java is not evolving; - GraalVM will replace Java HotSpot VM'
+    -
+      uid: 'griffon-state-of-the-union'
+      title: 'Griffon: State of the Union'
+      start: '2020-03-28T11:15:00'
+      end: '2020-03-28T12:00:00'
+      track: '📍 Google Campus Room'
+      tags:
+        - 'griffon'
+      speakers:
+        - 'andres-almiray'
+      about:
+        - 'Griffon is the desktop application development platform for the JVM. Born inside the Groovy community it has grown out of its shell to reach out to Java and Kotlin developers alike. In this session we''ll discover what are its key features and strengths as well as current state and future plans.'
+    -
+      uid: 'build-and-deploy-micronaut-applications-to-the-cloud'
+      title: 'Build and Deploy Micronaut Applications to the Cloud'
+      start: '2020-03-28T10:15:00'
+      end: '2020-03-28T10:45:00'
+      track: '📍 Google Campus Room'
+      tags:
+        - 'micronaut'
+        - 'cloud'
+      speakers:
+        - 'andres-almiray'
+      about:
+        - 'Bill Gates once said 640k should be enough for anyone. History showed that wasn''t the case for a while. But with the advent of Cloud computing we have to rethink how big our applications should be, as well as how quickly they must be ready to start serving requests. Enter Micronaut, a refreshing framework that can be used to build traditional web applications as well as tiny microservices and anything in between. In this workshop you''ll get started with the basics, domain design, database acces, view scaffolding, monitoring, and more.'
+    -
+      uid: 'intellij-tips'
+      title: 'IntelliJ Tips'
+      start: '2020-03-27T12:00:00'
+      end: '2020-03-27T12:45:00'
+      track: '📍 Google Campus Auditorium'
+      tags:
+        - 'ide'
+      speakers:
+        - 'trisha-gee'
+      about:
+        - ''
+    -
+      uid: 'persist-with-jFleet'
+      title: 'Persist with JFleet'
+      start: '2020-03-27T13:45:00'
+      end: '2020-03-27T14:00:00'
+      track: '📍 Google Campus Room'
+      tags:
+        - 'persistence'
+        - 'java'
+        - 'jdbc'
+      speakers:
+        - 'jeronimo-lopez'
+      about:
+        - 'Jerónimo presents us JFleet, a library which persist in database large collections of Java objects as fast as possible, using the best available technique in each database provider (Postgres, MySQL and SQLServer), achieving it using not standard persistence methods from each JDBC driver implementation.'
+    - uid: 'coffee-break-day1-1'
+      title: 'Coffee Break'
+      start: '2020-03-26T10:45:00'
+      end: '2020-03-26T11:00:00'
+    - uid: 'coffee-break-day3-1'
+      title: 'Coffee Break'
+      start: '2020-03-28T10:45:00'
+      end: '2020-03-28T11:15:00'
+    -
+      uid: 'coffee-break-day2-1'
+      title: 'Coffee Break'
+      start: '2020-03-27T10:30:00'
+      end: '2020-03-27T11:00:00'
+    -
+      uid: 'lunch-break-day2-2'
+      title: 'Lunch Break'
+      start: '2020-03-27T12:45:00'
+      end: '2020-03-27T13:45:00'
+    -
+      uid: 'lunch-break-day1-1'
+      title: 'Lunch Break'
+      start: '2020-03-26T13:15:00'
+      end: '2020-03-26T14:45:00'
+    -
+      uid: 'lunch-break-day3-1'
+      title: 'Lunch Break'
+      start: '2020-03-28T13:00:00'
+      end: '2020-03-28T14:00:00'
+    -
+      uid: 'coffee-break-day2-2'
+      title: 'Coffee Break'
+      start: '2020-03-27T15:45:00'
+      end: '2020-03-27T16:15:00'

@@ -1,0 +1,39 @@
+mp:
+
+  jwt:
+    verify:
+      issuer: https://sts.windows.net/d71896c5-795f-424e-bfb5-558dd1f95bb1/
+      publickey:
+        location: https://login.microsoftonline.com/common/discovery/v2.0/keys
+  openapi:
+    scan:
+      disable: false
+quarkus:
+  cache:
+    enabled: true
+  native:
+    resources:
+      includes: appspeyk.pfx,import.sql
+  hibernate-orm:
+    log:
+      sql: false 
+    second-level-caching-enabled: false
+    statistics: false 
+  package:
+    type: uber-jar
+  smallrye-openapi:
+    path: /openapi
+  swagger-ui:
+    always-include: true
+    path: /swagger
+  jib:
+    base-jvm-image: registry.access.redhat.com/ubi8/openjdk-17-runtime:1.16
+  rate-limiter:
+    buckets:
+      restapi:
+        limits:
+          - permitted-uses: 100
+            period: 1S
+          - permitted-uses: 600
+            period: 1M
+        identity-resolver: nl.speyk.utils.UserResolver

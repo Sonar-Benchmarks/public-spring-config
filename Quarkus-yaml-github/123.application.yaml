@@ -1,0 +1,38 @@
+quarkus:
+  log:
+    level: DEBUG
+  mongodb:
+    connection-string: mongodb://localhost:27018
+    write-concern:
+      journal: false
+  mailer:
+    mock: true
+  smallrye-jwt:
+    enabled: true
+  http:
+    test-port: 0
+
+mp:
+  jwt:
+    verify:
+      privatekey:
+        location: security/testPrivateKeyPkcs8.pem
+      publickey:
+        location: security/testPublicKey.pem
+      issuer: ${runningInfo.organization} - ${runningInfo.serverName} Task Timekeeper Server
+    expiration:
+      default: 86400 # 1 day
+      extended: 2678400 # 1 month
+
+runningInfo:
+  organization: The Testing Organization
+  serverName: Testing
+  orgUrl: https://testing.com
+  contactInfo:
+    name: Tester Mc Testerson
+    email: test@foo.bar
+    phone: 222-222-2222
+
+user:
+  new:
+    autoApprove: false

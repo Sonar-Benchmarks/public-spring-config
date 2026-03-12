@@ -1,0 +1,27 @@
+quarkus:
+  datasource:
+    jdbc:
+      driver: org.mariadb.jdbc.Driver
+      url: jdbc:mariadb://localhost:3306/bookflow-mariadb
+    db-kind: mariadb
+    username: bookflow-admin
+    password: passwd
+    auto-create-tables: false
+  hibernate-orm:
+    dialect: org.hibernate.dialect.MariaDBDialect
+    show-sql: true
+    persistence-xml:
+      ignore: true
+    database:
+      generation: none
+    validate-in-dev-mode: false
+  jpa:
+    persistence-unit-name: bookflow
+    properties:
+      hibernate.archive.autodetection: false
+      hibernate.hbm2ddl.auto: none
+      quarkus.jpa.orm-xml.disable-validation: true
+  http:
+    port: 8082
+  swagger-ui:
+    theme: newspaper

@@ -1,0 +1,39 @@
+scicat:
+  url: &scicat-url http://backend.localhost
+
+quarkus:
+  test:
+    container:
+      network: host
+  container-image:
+    build: true
+    registry: ghcr.io
+    group: paulscherrerinstitute
+    name: scicat-rocrate
+    tag: ${quarkus.application.version:latest}
+  log:
+    level: INFO
+  http:
+    root-path: /api/v1
+    test-port: 9999
+  rest-client:
+    logging:
+      scope: request-response
+    scicat:
+      url: *scicat-url
+    s3broker:
+      url: http://s3-broker.localhost
+  smallrye-openapi:
+    path: /openapi-specs
+  smallrye-health:
+    openapi:
+      included: true
+    root-path: /api/v1/health
+  swagger-ui:
+    path: /explorer
+    always-include: true
+
+titanium:
+  jsonld:
+    cache:
+      size: 10

@@ -1,0 +1,52 @@
+smartquark:
+  name: SmartQuark
+  version: 0.9.1
+quarkus:
+  application:
+    name: ${smartquark.name}
+    version: ${smartquark.version}
+  banner:
+    path: banner.txt
+  console:
+    color: true
+  datasource:
+    db-kind: postgresql
+  log:
+    level: INFO
+    console:
+      format: "%d{HH:mm:ss} %-5p [%c{2.}] %s%e%n"
+      level: DEBUG
+  native:
+    native-image-xmx: 4g
+    resources:
+      includes:
+        - "resources/*.yaml"
+  swagger-ui:
+    always-include: true
+    theme: "Flattop"
+    title: "SmartQuark API | Swagger UI"
+    urls-primary-name: "SmartQuark API"
+  profile: default
+  smallrye-health:
+    ui:
+      always-include: true
+  smallrye-graphql:
+    ui:
+      always-include: true
+mp:
+  openapi:
+    extensions:
+      smallrye:
+        info:
+          title: SmartQuark API
+          version: ${smartquark.version}
+          description: SmartQuark API
+          contact:
+            email: alessiosaltarin@gmail.com
+            name: Alessio Saltarin
+    scan:
+      exclude:
+        classes: net.littlelite.smartquark.controller.web.WebController
+
+
+

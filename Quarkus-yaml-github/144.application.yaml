@@ -1,0 +1,59 @@
+# Build time configuration & dev services configuration
+quarkus:
+  container-image:
+    group: 'jasonmarstoncouk'
+    name: 'movies'
+    password: ${DOCKER_HUB_TOKEN}
+    push: 'true'
+    registry: 'registry.hub.docker.com'
+    tag: 'latest'
+    username: 'jasonmarstoncouk'
+  kubernetes:
+    deployment-target: 'kubernetes'
+    deploy: 'true'
+    name: 'movies'
+    namespace: 'default'
+  jib:
+    base-jvm-image: 'eclipse-temurin:25-jdk-alpine'
+    base-registry-username: 'jasonmarstoncouk'
+    base-registry-password: ${DOCKER_HUB_TOKEN}
+
+# development profile configuration
+"%dev":
+  smallrye:
+    jwt:
+      verify:
+        key:
+          location: http://${KEY_SERVICE}/service-api/pem
+        issuer: ${TOKEN_ISSUER}
+  quarkus:
+    datasource:
+      db-kind: ${DATABASE_KIND}
+    hibernate-orm:
+      database:
+        generation: drop-and-create
+    http:
+      port: 8081
+
+# production profile configuration
+"%prod":
+  quarkus:
+    datasource:
+      db-kind: ${database-kind}
+      username: ${database-username}
+      password: ${database-password}
+      reactive:
+        url: ${database-url}
+    http:
+      port: 8080
+    kubernetes-config:
+      enabled: true
+      secrets:
+        ~: kiunzi-common-secrets,kiunzi-movies-secrets
+        enabled: true
+  smallrye:
+    jwt:
+      verify:
+        key:
+          location: http://${key-service}/service-api/pem
+        issuer: ${token-issuer}

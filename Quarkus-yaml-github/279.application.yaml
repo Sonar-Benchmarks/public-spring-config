@@ -1,0 +1,25 @@
+quarkus:
+  datasource:
+    db-kind: postgresql
+    db-version: 17.6
+    jdbc:
+      url: ${DATABASE_URL}/${DATABASE}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+
+  hibernate-orm:
+    schema-management:
+      strategy: none
+    log:
+      sql: true
+    packages: com.tgfcodes.userapi.domain
+
+  flyway:
+    migrate-at-start: true
+    locations: db/migration
+
+  http:
+    port: 8080
+
+swagger-ui:
+  always-include: true

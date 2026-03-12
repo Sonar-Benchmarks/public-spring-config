@@ -1,0 +1,50 @@
+quarkus:
+  arc:
+    selected-alternatives:
+      - org.acme.users.config.JwtAuthContextProducer
+  http:
+    port: ${HTTP_PORT:8081}
+  datasource:
+    db-kind: postgresql
+    username: ${DB_USER:appuser}
+    password: ${DB_PASSWORD:apppassword}
+    jdbc:
+      url: ${DB_JDBC_URL:jdbc:postgresql://localhost:5432/appdb}
+  hibernate-orm:
+    database:
+      generation: update
+  log:
+    min-level: DEBUG
+    category:
+      "org.hibernate.SQL":
+        level: INFO
+      "io.smallrye.jwt":
+        min-level: TRACE
+        level: TRACE
+      "io.quarkus.smallrye.jwt.runtime":
+        min-level: TRACE
+        level: TRACE
+  
+  smallrye-openapi:
+    path: ${OPENAPI_PATH:/openapi/users}
+
+  swagger-ui:
+    always-include: true
+    path: ${SWAGGER_PATH:/swagger/users}
+
+jwt:
+  issuer: ${JWT_ISSUER:users-service}
+  expiration:
+    minutes: ${JWT_EXPIRATION_MINUTES:480}  # 8 heures (au lieu de 15 minutes)
+  secret: ${JWT_SECRET:super-secret-change-me-please-change-me-32-bytes-minimum-length}
+  algorithm: ${JWT_ALGORITHM:HS256}
+
+smallrye:
+  jwt:
+    verify:
+      algorithm: ${JWT_ALGORITHM:HS256}
+      secret: ${JWT_SECRET:super-secret-change-me-please-change-me-32-bytes-minimum-length}
+      issuer: ${JWT_ISSUER:users-service}
+    sign:
+      algorithm: ${JWT_ALGORITHM:HS256}
+      secret: ${JWT_SECRET:super-secret-change-me-please-change-me-32-bytes-minimum-length}

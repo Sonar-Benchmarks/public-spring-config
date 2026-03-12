@@ -1,0 +1,80 @@
+# ============================================================
+# Camel MCP Secure Demo - Application Configuration
+#
+# Uses YAML format to avoid filename collision with the upstream
+# camel-jbang-mcp application.properties in the uber-jar.
+# In Quarkus, application.yaml takes precedence over
+# application.properties, so our settings win at runtime.
+# ============================================================
+
+quarkus:
+  application:
+    name: camel-mcp-server-secure
+    version: 1.0.0-SNAPSHOT
+
+  # --- Enable HTTP server (overrides upstream quarkus.http.host-enabled=false) ---
+  http:
+    host-enabled: true
+    port: 8080
+    cors:
+      enabled: true
+
+    # --- HTTP auth policy: secure all MCP endpoints ---
+    auth:
+      permission:
+        mcp-sse:
+          paths: /mcp/sse
+          policy: authenticated
+          methods: GET
+        mcp-messages:
+          paths: /mcp/messages/*
+          policy: authenticated
+          methods: POST
+        mcp-streamable:
+          paths: /mcp
+          policy: authenticated
+          methods: GET,POST,DELETE
+
+  # --- OIDC configuration (bearer-token validation) ---
+  oidc:
+    application-type: service
+    token:
+      issuer: any
+
+  # --- Logging ---
+  log:
+    level: INFO
+    category:
+      "org.apache.camel":
+        level: INFO
+      "io.quarkiverse.mcp":
+        level: DEBUG
+      "io.quarkus.oidc":
+        level: DEBUG
+
+# ============================================================
+# %dev profile - Quarkus Dev Services auto-starts Keycloak
+# ============================================================
+"%dev":
+  quarkus:
+    oidc:
+      auth-server-url: http://localhost:8180/realms/camel-mcp
+      client-id: mcp-server
+      credentials:
+        secret: mcp-server-secret
+    keycloak:
+      devservices:
+        enabled: true
+        port: 8180
+        realm-path: keycloak/camel-mcp-realm.json
+
+# ============================================================
+# %prod profile - external Keycloak via Docker Compose
+# ============================================================
+"%prod":
+  quarkus:
+    oidc:
+      auth-server-url: http://localhost:8180/realms/camel-mcp
+      client-id: mcp-server
+      credentials:
+        secret: mcp-server-secret

@@ -1,0 +1,19 @@
+quarkus:
+  mongodb:
+    devservices:
+      image-name: mongo:8.0.6
+
+graphoenix-server:
+  configuration:
+    application-url: http://localtest
+    client-bundle-version: dummy-version
+    client-bundle-path: static/client-bundle.gz
+  storage:
+    type: s3
+    s3:
+      endpoint: http://localhost:4566
+      region: us-east-1
+      access-key-id: test-key
+      secret-access-key: test-secret
+      bucket: graphoenix-test
+      force-path-style: true

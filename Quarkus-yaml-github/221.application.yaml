@@ -1,0 +1,126 @@
+scheduler:
+  baseUrl: ${BASE_URL}
+  name: rex-${quarkus.uuid}
+  options:
+    task-configuration:
+      clean: true
+      default-concurrency: 5
+      heartbeat:
+        processing-tolerance: 200ms
+    internal-retry-policy:
+      delay: 100
+      jitter: 80
+      max-retries: 15
+      abort-on:
+        - jakarta.validation.ConstraintViolationException
+        - org.jboss.pnc.rex.common.exceptions.TaskMissingException
+        - org.jboss.pnc.rex.common.exceptions.BadRequestException
+        - org.jboss.pnc.rex.common.exceptions.TaskConflictException
+        - org.jboss.pnc.rex.common.exceptions.CircularDependencyException
+        - org.jboss.pnc.rex.common.exceptions.ConstraintConflictException
+    http-configuration:
+      idle-timeout: 5m # 5 minutes
+      follow-redirects: true
+      request-retry-policy:
+        backoff:
+          min-delay: 0ms
+          max-delay: 0ms
+          jitter-factor: 0.5
+        max-retries: 0
+        expire-in: 0
+      status-code-retry-policy:
+        425:
+          backoff:
+            min-delay: 200ms
+            max-delay: 1m # 1 minute
+            jitter-factor: 0.5
+          max-retries: 0
+          expire-in: 10m # 10minutes
+
+quarkus:
+  application:
+    name: rex
+  otel:
+    enabled: true
+    traces:
+      exporter: cdi
+      # reflect sampling on collector
+      sampler:
+        arg: 0.05
+#    resource:
+#      attributes: "sampler_ratio=0.05,service.name=rex"
+  # Avoid blocking eventloop if Keycloak is slow to respond
+  smallrye-jwt:
+    blocking-authentication: true
+  package:
+    jar:
+      type: fast-jar
+
+  http:
+    enable-compression: true
+    enable-decompression: true
+    cors:
+      enabled: true
+      origins: "/.*/"
+
+    port: 80
+    limits:
+      max-body-size: 1G
+
+  oidc:
+    enabled: true
+    auth-server-url: https://keycloak.com/auth/realms/quarkus
+    client-id: client
+    credentials:
+      secret: secret
+    application-type: SERVICE
+    tls:
+      verification: none
+  oidc-client:
+    enabled: true
+    auth-server-url: https://keycloak.com/auth/realms/quarkus
+    client-id: client
+    credentials:
+      secret: secret
+
+  infinispan-client:
+#    hosts: ${ISPN_NODE}
+    use-schema-registration: false
+    use-auth: true
+    username: ${ISPN_USER}
+    password: ${ISPN_PASS}
+  swagger-ui:
+    always-include: true
+  smallrye-openapi:
+    store-schema-directory: src/main/resources/META-INF
+
+  log:
+    console:
+      format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] (%t) %s%e%n"
+      json:
+        ~: false
+        exception-output-type: formatted
+    category:
+      "org.jboss.pnc":
+        level: DEBUG
+      "com.arjuna.ats.jta":
+        # Set to WARN if you want to see all the exceptions
+        level: ERROR
+    min-level: TRACE
+
+  vertx:
+    max-event-loop-execute-time: 10s
+
+  jib:
+    environment-variables:
+      JAVA_MAX_MEM_RATIO: "70"
+      GC_CONTAINER_OPTIONS: "-XX:+UseG1GC -XX:G1PeriodicGCInterval=5000 -XX:TrimNativeHeapInterval=60000 -XX:+UseStringDeduplication"
+
+mp:
+  openapi:
+    scan:
+      exclude:
+        packages: org.jboss.pnc.rex.test
+    extensions:
+      smallrye:
+        operationIdStrategy: METHOD

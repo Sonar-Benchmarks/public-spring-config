@@ -1,0 +1,33 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+  address: 0.0.0.0
+
+quarkus:
+
+  scheduler:
+    enabled: true
+
+  flyway:
+    migrate-at-start: true
+    baseline-on-migrate: true
+
+  datasource:
+    db-kind: postgresql
+    jdbc:
+      url: ${JDBC_URL:jdbc:postgresql://localhost:5432/}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:postgres}
+
+  hibernate-orm:
+    physical-naming-strategy: "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy"
+
+  console:
+    color: true
+
+  http:
+    cors:
+      ~: true
+      origins: "*"
+      methods: "GET,OPTIONS"

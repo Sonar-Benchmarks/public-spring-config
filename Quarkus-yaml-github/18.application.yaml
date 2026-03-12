@@ -1,0 +1,32 @@
+hello:
+  greeting: Hello,
+  welcome: Hello World
+
+quarkus:
+  shutdown:
+    timeout: 30s
+  http:
+    port: 8080
+    test-port: 9000
+  datasource:
+    db-kind: postgresql
+    username: mgmt
+    password: mgmt
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/mgmt
+      initial-size: 1
+      min-size: 1
+      max-size: 10
+
+  hibernate-orm:
+    database:
+      generation: none
+    log:
+      sql: true
+      format-sql: false
+
+  liquibase:
+    migrate-at-start: true
+    change-log: db/changeLog.xml
+    validate-on-migrate: true
+    clean-at-start: false

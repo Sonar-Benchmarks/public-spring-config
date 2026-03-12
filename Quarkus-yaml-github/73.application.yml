@@ -1,0 +1,30 @@
+"%dev":
+
+  quarkus:
+
+    log:
+      level: INFO
+      min-level: TRACE
+
+"%prod":
+
+  quarkus:
+
+    log:
+      level: INFO
+      min-level: INFO
+
+    # native configuration
+    native:
+      additional-build-args: -H:ReflectionConfigurationFiles=daogen-reflect-config.json
+
+greeting:
+  message: "hello"
+
+quarkus:
+
+  datasource:
+    db-kind: h2
+    jdbc:
+      driver: org.h2.Driver
+      url: jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;INIT=RUNSCRIPT FROM './src/test/resources/h2init/init.sql';

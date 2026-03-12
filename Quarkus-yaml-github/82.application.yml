@@ -1,0 +1,61 @@
+quarkus:
+  management:
+    enabled: true
+  # HTTP-serverinställningar
+  http:
+    cors:
+      enabled: true
+      methods: GET,POST
+  # Databas
+  datasource:
+    db-kind: sqlite
+    jdbc:
+      url: jdbc:sqlite:${GREDOR_DATABASE_PATH}?busy_timeout=10000
+      max-size: 1  # Viktigt med SQLite att inte ha flera anslutningar samtidigt
+    devservices:
+      enabled: false  # Funkar inte med SQLite
+  flyway:
+    migrate-at-start: true
+  hibernate-orm:
+    schema-management:
+      strategy: validate
+  # Loggning
+  log:
+    console:
+      format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] (%t) [%X{request.id}] %s%e%n"
+  # Generering av klasser från Bolagsverkets OpenAPI-scheman
+  openapi-generator:
+    codegen:
+      spec:
+        hamtaArsredovisningsinformation_1_4_yaml:
+          use-dynamic-url: true
+        lamnaInArsredovisning_2_1_yaml:
+          use-dynamic-url: true
+  # Generering av OpenAPI-schema från egna klasser
+  smallrye-openapi:
+    servers:
+      - http://localhost:8080
+      - https://api.acc.test.gredor.se
+      - https://api.gredor.se
+  # Docker-inställningar
+  container-image:
+    build: true
+    registry: ghcr.io
+    group: gredortools
+    name: gredor-backend
+    tag: latest
+  jib:
+    base-jvm-image: registry.access.redhat.com/ubi9/openjdk-25-runtime:1.24
+    ports: 8080
+
+gredor:
+  bankid:
+    client-identifier: gredor-backend
+    cert:
+      path: ${gredor.secrets.cert-bankid.path}  # Ska vara en PKCS#12-fil
+      password: ${gredor.secrets.cert-bankid.password}
+  bolagsverket:
+    hamta-arsredovisningsinformation:
+      version: v1.4
+    lamna-in-arsredovisning:
+      version: v2.1
