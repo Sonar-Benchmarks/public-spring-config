@@ -1,0 +1,21 @@
+# CDR Kafka Configuration Example
+# Copy this to application.properties and configure according to your environment
+
+# Kafka broker configuration
+kafka.bootstrap.servers=localhost:9092
+
+# CDR outgoing channel configuration
+mp.messaging.outgoing.cdr-out.connector=smallrye-kafka
+mp.messaging.outgoing.cdr-out.topic=cdr-records
+mp.messaging.outgoing.cdr-out.value.serializer=org.apache.kafka.common.serialization.StringSerializer
+mp.messaging.outgoing.cdr-out.key.serializer=org.apache.kafka.common.serialization.StringSerializer
+
+# Optional: Configure additional Kafka properties
+# mp.messaging.outgoing.cdr-out.acks=all
+# mp.messaging.outgoing.cdr-out.retries=3
+# mp.messaging.outgoing.cdr-out.max.in.flight.requests.per.connection=5
+# mp.messaging.outgoing.cdr-out.enable.idempotence=true
+
+# Logging configuration
+quarkus.log.level=INFO
+quarkus.log.category."com.csg.airtel.aaa4j".level=DEBUG

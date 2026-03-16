@@ -1,0 +1,65 @@
+greeting:
+  message: hello
+"%dev":
+  quarkus:
+    http:
+      port: 8080
+    hibernate-orm:
+      log:
+        sql: true
+    datasource:
+      db-kind: mysql
+      jdbc:
+        url: jdbc:mysql://127.0.0.1:3306/quarkus
+        max-size: 8
+        min-size: 2
+      username: root
+      password: root
+    redis:
+      hosts: redis://localhost:6379
+      database: 0
+      timeout: 10s
+    smallrye-openapi:
+      info-title: Example API (development)
+quarkus:
+  log:
+    level: INFO
+  category:
+    "org.hibernate":
+      level: DEBUG
+    "io.quarkus":
+      level: DEBUG
+  swagger-ui:
+    path: /q
+  smallrye-openapi:
+    info-title: Example API
+    info-version: 1.0.1
+    info-description: Just an example service
+    info-terms-of-service: Your terms here
+    info-contact-email: techsupport@example.com
+    info-contact-name: Example API Support
+    info-contact-url: http://exampleurl.com/contact
+    info-license-name: Apache 2.0
+    info-license-url: https://www.apache.org/licenses/LICENSE-2.0.html
+"%test":
+   quarkus:
+     http:
+       port: 8888
+     hibernate-orm:
+       log:
+         sql: true
+     datasource:
+       db-kind: mysql
+       jdbc:
+         url: jdbc:mysql://127.0.0.1:3306/quarkus
+         max-size: 8
+         min-size: 2
+       username: root
+       password: root
+     redis:
+       hosts: redis://localhost:6379
+       database: 0
+       timeout: 10s
+     smallrye-openapi:
+       info-title: Example API (test)
+

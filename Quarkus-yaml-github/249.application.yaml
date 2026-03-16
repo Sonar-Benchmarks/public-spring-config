@@ -1,0 +1,41 @@
+quarkus:
+
+  pooled-jms:
+    transaction: xa
+
+  datasource:
+    db-kind: postgresql
+    username: postgres
+    password: postgres
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/forumnation?currentSchema=public
+
+  transaction-manager:
+    enable-recovery: true
+
+  hibernate-orm:
+    log:
+      sql: true
+      format-sql: false
+
+  liquibase:
+    migrate-at-start: true
+    change-log: db/changelog/db.changelog-master.yaml
+
+  devservices:
+    enabled: false
+
+  log:
+    console:
+      format: "%d{yyyy-MM-dd HH:mm:ss:SSS} %-5p [%c{3.}] (%t) %s%e%n"
+    category:
+      "org.hibernate":
+        level: INFO
+      "com.arjuna.ats":
+        level: DEBUG
+      "io.quarkiverse.messaginghub.pooled.jms":
+        level: TRACE
+      "io.smallrye.reactive.messaging":
+        level: TRACE
+
+

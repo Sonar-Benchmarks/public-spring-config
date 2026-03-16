@@ -1,0 +1,53 @@
+"%prod":
+  kafka:
+    bootstrap:
+      servers: ${KAFKA_HOST:"kafka:9092"}
+
+"%test":
+  quarkus:
+    hibernate-orm:
+      database:
+        generation: "drop-and-create"
+    datasource:
+      db-kind: "sqlite"
+      username: "template"
+      password: "secret"
+      jdbc:
+        url: "jdbc:sqlite:databases/test.db"
+    kafka:
+      devservices:
+        port: 32801
+
+
+quarkus:
+  http:
+    port: 8080
+    test-port: 0
+  swagger-ui:
+    always-include: true
+  kafka:
+    devservices:
+      image-name: "redpandadata/redpanda:v23.2.18"
+      port: 32800
+      topic-partitions:
+        product: 1
+  hibernate-orm:
+    database:
+      generation: "update"
+  datasource:
+    db-kind: "sqlite"
+    username: "template"
+    password: "secret"
+    jdbc:
+      url: "jdbc:sqlite:databases/database.db"
+
+kafka:
+  auto:
+    offset:
+      reset: "earliest"
+
+mp:
+  messaging:
+    outgoing:
+      product-out:
+        topic: "product"

@@ -1,0 +1,40 @@
+quarkus:
+  application:
+    name: esthesis-core-srv-public-access
+  devservices:
+    enabled: false
+  log:
+    min-level: TRACE
+    console:
+      format: "%d{HH:mm:ss} %-5p traceId=%X{traceId}, parentId=%X{parentId}, spanId=%X{spanId}, sampled=%X{sampled} [%c{2.}] (%t) %s%e%n"
+    handler:
+      gelf:
+        enabled: false
+        include-full-mdc: true
+        skip-hostname-resolution: false
+        additional-field:
+          platform:
+            value: esthesis
+          module:
+            value: esthesis-core
+          type:
+            value: API
+          service:
+            value: ${quarkus.application.name}
+  banner:
+    enabled: false
+  otel:
+    sdk:
+      disabled: true
+
+esthesis:
+  oidc:
+    client-id: "esthesis"
+    scope: "openid profile offline_access"
+    response-type: "code"
+    silent-renew: true
+    use-refresh-token: true
+    renew-time-before-token-expires-in-seconds: 30
+    max-id-token-iat-offset-allowed-in-seconds: 10
+    ignore-nonce-after-refresh: true
+    secure-routes: [ "/api" ]

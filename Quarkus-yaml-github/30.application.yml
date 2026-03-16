@@ -1,0 +1,68 @@
+#
+# To use the profile local, the configuration 
+# smallrye.config.profile=local has to be set 
+# into any valid ConfigSource.
+#
+# https://quarkus.io/guides/config-reference
+#
+# ./mvnw package -Pnative -Dquarkus.profile=local
+#
+# local dev usage:
+# ./mvnw -Dsmallrye.config.profile=local-dev quarkus:dev
+
+# on openshift overwrite this with env var SMALLRYE_CONFIG_PROFILE or via env var JAVA_OPTIONS=... -Dsmallrye..
+
+smallrye:
+    config:
+        profile: dev
+        
+"%dev":
+    camel:
+        context:
+            name: ya-integration
+        main:
+            #
+            # NOTE: after the comma "," there must not be any whitespaces.
+            # 
+            routes-include-pattern: classpath:routes/*.yaml,classpath:test-routes/*.yaml
+    app:
+        endpoints:
+            starttiraha:
+                sendCsv: direct:out.starttiraha
+                outTulorekisteriXml: direct:out.tulorekisteri
+        
+        readDataFromFile: true
+        writeResultsToFile: true
+
+
+
+"%test":
+    camel:
+        context:
+            name: ya-integration
+        main:
+            routes-include-pattern: classpath:routes/*.yaml,classpath:test-routes/*.yaml
+    app:
+        endpoints:
+            starttiraha:
+                sendCsv: mock:out.starttiraha
+                outTulorekisteriXml: mock:out.tulorekisteri
+
+
+"%openshift":
+    camel:
+        context:
+            name: ya-integration
+        main:
+            #
+            # NOTE: after the comma "," there must not be any whitespaces.
+            # 
+            routes-include-pattern: classpath:routes/*.yaml,classpath:test-routes/*.yaml
+    app:
+        endpoints:
+            starttiraha:
+                sendCsv: direct:out.starttiraha
+                outTulorekisteriXml: direct:out.tulorekisteri
+        readDataFromFile: false
+        writeResultsToFile: false
+    

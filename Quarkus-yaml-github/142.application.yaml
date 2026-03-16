@@ -1,0 +1,68 @@
+quarkus:
+  application:
+    name: payment-service
+
+  datasource:
+    db-kind: postgresql
+    username: ${QUARKUS_DATASOURCE_USERNAME:saga}
+    password: ${QUARKUS_DATASOURCE_PASSWORD:saga}
+    reactive:
+      url: ${QUARKUS_DATASOURCE_REACTIVE_URL:postgresql://localhost:5432/payments}
+      max-size: 5
+      idle-timeout: PT1M
+    jdbc:
+      max-size: 2
+      acquisition-timeout: 15S
+      idle-removal-interval: PT30S
+      url: ${QUARKUS_DATASOURCE_JDBC_URL:jdbc:postgresql://localhost:5432/payments}
+
+  flyway:
+    migrate-at-start: true
+
+  http:
+    port: 8080
+
+  container-image:
+    build: true
+    group: saga
+    name: payment-service
+    tag: latest
+    builder: docker
+    dockerfile-jvm-path: src/main/docker/Dockerfile.jvm
+
+rabbitmq-host: ${RABBITMQ_HOST:localhost}
+rabbitmq-port: ${RABBITMQ_PORT:5672}
+rabbitmq-username: ${RABBITMQ_USERNAME:ivang}
+rabbitmq-password: ${RABBITMQ_PASSWORD:ivang123}
+
+mp:
+  messaging:
+    outgoing:
+      payment-events:
+        connector: smallrye-rabbitmq
+        exchange:
+          name: payment-events
+          type: topic
+          durable: true
+        publisher-confirms: true
+
+    incoming:
+      payment-commands-in:
+        connector: smallrye-rabbitmq
+        queue:
+          name: payment-commands-queue
+          durable: true
+          x-dead-letter-exchange: saga-dlx
+          x-dead-letter-routing-key: payment.commands.dlq
+          x-queue-type: quorum
+        exchange:
+          name: payment-commands
+          type: topic
+        routing-keys: payment.command
+        auto-acknowledgement: false
+        failure-strategy: reject
+
+outbox:
+  polling:
+    interval-ms: ${OUTBOX_POLLING_INTERVAL_MS:100}
+    batch-size: ${OUTBOX_BATCH_SIZE:100}

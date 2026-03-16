@@ -1,0 +1,62 @@
+server:
+  port: ${SPRING_REVIEW_SERVER_PORT}
+  jackson:
+    timezone: Asia/Seoul
+
+spring:
+  application:
+    name: review-service
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE}
+  # MySQL-Server & JPA 설정
+  # Quarkus 기반 Keycloak-Server 을 이용한 인증 처리
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${SPRING_KEYCLOAK_URL}/realms/inkcloud
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+  datasource:   
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${SPRING_REVIEW_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD} 
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 10
+      initialization-fail-timeout: 0
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:  
+        "[format_sql]": true
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA}
+    consumer:
+      auto-offset-reset: earliest
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+
+
+# 로깅 설정
+logging:  
+  level:
+    root: info
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
+    com.mzc.review_service: INFO
+
+# Eureka-Server 에 자가 등록 설정
+# eureka:
+#   instance:
+#     instance-id: ${spring.application.name}:${spring.cloud.client.hostname}:${server.port}
+#     prefer-ip-address: true
+#   client:  
+#     register-with-eureka: true  
+#     fetch-registry: true
+#     service-url:
+#       defaultZone: http://eureka-server:8761/eureka

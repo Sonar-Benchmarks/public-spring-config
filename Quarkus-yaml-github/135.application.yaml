@@ -1,0 +1,23 @@
+app:
+  mode: 'production'
+  database:
+    movies:
+      url: jdbc:postgresql://localhost:5432/movies
+      username: admin
+      password: s3cr3t
+
+quarkus:
+  datasource:
+    movies:
+      db-kind: pg
+      jdbc:
+        url: ${app.database.movies.url}
+      username: ${app.database.movies.username}
+      password: ${app.database.movies.password}
+  hibernate-orm:
+    movies:
+      datasource: movies
+      packages: hrytsenko
+    mapping:
+      format:
+        global: ignore

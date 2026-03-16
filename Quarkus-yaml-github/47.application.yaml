@@ -1,0 +1,289 @@
+quarkus:
+  log:
+    sentry:
+      ~: ${SENTRY_ENABLED:true}
+      level: ${SENTRY_LOG_LEVEL:WARN}
+  swagger-ui:
+    enable: true
+    always-include: true
+
+  mongodb:
+    database: marketDB
+    application-name: market-service-${ENVIRONMENT:dev}
+
+  rest-client:
+    zerodha-api:
+      url: https://api.kite.trade
+      scope: javax.inject.Singleton
+
+    binance-api:
+      url: https://api.binance.com
+      scope: javax.inject.Singleton
+
+calendar:
+  has-tenant: false
+  cache:
+    expiry:
+      default:
+        milli-seconds: 900000
+        seconds: 900
+  schema:
+    version:
+      current: v1
+
+country:
+  has-tenant: false
+  cache:
+    expiry:
+      default:
+        milli-seconds: 900000
+        seconds: 900
+  schema:
+    version:
+      current: v1
+
+currency:
+  has-tenant: false
+  cache:
+    expiry:
+      default:
+        milli-seconds: 900000
+        seconds: 900
+  schema:
+    version:
+      current: v1
+
+exchange:
+  has-tenant: false
+  cache:
+    expiry:
+      default:
+        milli-seconds: 900000
+        seconds: 900
+  schema:
+    version:
+      current: v1
+
+industry:
+  has-tenant: false
+  cache:
+    expiry:
+      default:
+        milli-seconds: 900000
+        seconds: 900
+  schema:
+    version:
+      current: v1
+
+market:
+  has-tenant: false
+  cache:
+    expiry:
+      default:
+        milli-seconds: 900000
+        seconds: 900
+  schema:
+    version:
+      current: v1
+
+marketdata:
+  chart:
+    has-tenant: false
+    cache:
+      expiry:
+        default:
+          milli-seconds: 900000
+          seconds: 900
+        timeframe:
+          today:
+            seconds: 1800
+          one-week:
+            seconds: 10800
+          one-month:
+            seconds: 21600
+          six-months:
+            seconds: 43200
+          one-year:
+            seconds: 86400
+          three-years:
+            seconds: 259200
+          five-years:
+            seconds: 432000
+    schema:
+      version:
+        current: v1
+  ohlcv:
+    has-tenant: false
+    buffer:
+      default:
+        seconds: 180
+    cache:
+      expiry:
+        default:
+          milli-seconds: 900000
+          seconds: 900
+    schema:
+      version:
+        current: v1
+  realtime:
+    has-tenant: false
+    cache:
+      expiry:
+        default:
+          milli-seconds: 900000
+          seconds: 900
+    schema:
+      version:
+        current: v1
+  statistics:
+    has-tenant: false
+    cache:
+      expiry:
+        default:
+          milli-seconds: 900000
+          seconds: 900
+    schema:
+      version:
+        current: v1
+
+sector:
+  has-tenant: false
+  cache:
+    expiry:
+      default:
+        milli-seconds: 900000
+        seconds: 900
+  schema:
+    version:
+      current: v1
+
+security:
+  has-tenant: false
+  cache:
+    expiry:
+      default:
+        milli-seconds: 900000
+        seconds: 900
+  schema:
+    version:
+      current: v1
+
+segment:
+  has-tenant: false
+  cache:
+    expiry:
+      default:
+        milli-seconds: 900000
+        seconds: 900
+  schema:
+    version:
+      current: v1
+
+tag:
+  has-tenant: false
+  cache:
+    expiry:
+      default:
+        milli-seconds: 900000
+        seconds: 900
+  schema:
+    version:
+      current: v1
+
+universe:
+  has-tenant: false
+  cache:
+    expiry:
+      default:
+        milli-seconds: 900000
+        seconds: 900
+  schema:
+    version:
+      current: v1
+
+vendor:
+  has-tenant: false
+  cache:
+    expiry:
+      default:
+        milli-seconds: 900000
+        seconds: 900
+  schema:
+    version:
+      current: v1
+
+  request:
+    realtime:
+      default:
+        epoch-count: 1
+        sleep:
+          milli-seconds: 150
+
+zerodha:
+  kite:
+    mode:
+      debug: false
+
+kafka:
+  bootstrap:
+    servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+mp:
+  messaging:
+    connector: smallrye-kafka
+    outgoing:
+      marketHistoricalDataRequest:
+        enabled: ${MARKET_HISTORICAL_DATA_REQUEST_PRODUCER_ENABLED:true}
+        connector: smallrye-kafka
+        topic: ${MARKET_HISTORICAL_DATA_REQUEST_TOPIC:market-service.market-historical-data-request}
+        value:
+          serializer: io.quarkus.kafka.client.serialization.ObjectMapperSerializer
+      basketHistoricalDataRequest:
+        enabled: ${BASKET_HISTORICAL_DATA_REQUEST_PRODUCER_ENABLED:true}
+        connector: smallrye-kafka
+        topic: ${BASKET_HISTORICAL_DATA_REQUEST_TOPIC:market-service.basket-historical-data-request}
+        value:
+          serializer: io.quarkus.kafka.client.serialization.ObjectMapperSerializer
+    incoming:
+      marketHistoricalDataRequest-in:
+        enabled: ${MARKET_HISTORICAL_DATA_REQUEST_CONSUMER_ENABLED:false}
+        connector: smallrye-kafka
+        broadcast: true
+        failure-strategy: dead-letter-queue
+        dead-letter-queue:
+          topic: dead-letter.market-service.${MARKET_HISTORICAL_DATA_REQUEST_TOPIC:market-historical-data-request}
+          value:
+            serializer: io.quarkus.kafka.client.serialization.ObjectMapperSerializer
+        topic: ${MARKET_HISTORICAL_DATA_REQUEST_TOPIC:market-service.market-historical-data-request}
+        group:
+          id: ${MARKET_HISTORICAL_DATA_REQUEST_GROUP_ID:market-historical-data-request}
+        health-enabled: false
+        enable:
+          auto:
+            commit: true
+        auto:
+          offset:
+            reset: ${KAFKA_HISTORICAL_MARKET_DATA_REQUEST_OFFSET_RESET:earliest}
+        value:
+          serializer: io.quarkus.kafka.client.serialization.ObjectMapperSerializer
+      basketHistoricalDataRequest-in:
+        enabled: ${BASKET_HISTORICAL_DATA_REQUEST_CONSUMER_ENABLED:false}
+        connector: smallrye-kafka
+        broadcast: true
+        failure-strategy: dead-letter-queue
+        dead-letter-queue:
+          topic: dead-letter.market-service.${BASKET_HISTORICAL_DATA_REQUEST_TOPIC:basket-historical-data-request}
+          value:
+            serializer: io.quarkus.kafka.client.serialization.ObjectMapperSerializer
+        topic: ${BASKET_HISTORICAL_DATA_REQUEST_TOPIC:market-service.basket-historical-data-request}
+        group:
+          id: ${BASKET_HISTORICAL_DATA_REQUEST_GROUP_ID:basket-historical-data-request}
+        health-enabled: false
+        enable:
+          auto:
+            commit: true
+        auto:
+          offset:
+            reset: ${KAFKA_HISTORICAL_BASKET_DATA_REQUEST_OFFSET_RESET:earliest}
+        value:
+          serializer: io.quarkus.kafka.client.serialization.ObjectMapperSerializer

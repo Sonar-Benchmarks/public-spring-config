@@ -1,0 +1,98 @@
+quarkus:
+  smallrye-openapi:
+    path: /swagger
+  swagger-ui:
+    always-include: true
+  log:
+    level: DEBUG
+    category:
+      "io.ordermanagement":
+        level: DEBUG
+"%prod":
+  quarkus:
+    http:
+      insecure-requests: enabled
+      cors:
+        ~: true
+        origins: '*'
+        headers: accept, authorization, content-type, x-requested-with, X-Custom
+        methods: GET, OPTIONS, POST
+        access-control-allow-credentials: true
+   # kubernetes-config:
+   #   enabled: true
+   #   secrets: 
+   #     ~: "ordermgmt-config"
+   #     enabled: true
+    datasource:
+      ordermgmt-db:
+        db-kind: postgresql
+        username: connect23
+        password: connect23 
+        jdbc:
+          url: jdbc:postgresql://postgresql.thegoodcorner-legacy.svc.cluster.local:5432/ordermanagement
+    hibernate-orm:
+      "inventory":
+        packages: io.ordermanagement.inventory.model
+        datasource: ordermgmt-db
+        sql-load-script: products.sql
+    kubernetes-client:
+      trust-certs: true
+   # openshift:
+   #   route:
+   #     expose: true
+   #     target-port: http
+   #     tls:
+   #       termination: Edge
+   #      insecure-edge-termination-policy: Redirect
+    jaeger:
+      endpoint: https://localhost:14682/api/traces
+      sampler-type: const
+      sampler-param: 1
+    # container-image:
+    #   build: true
+    #   push: true
+    #   registry: quay.io
+    #   group: redhat-summit-connect-france-2023/ordermanagement-modern
+    #   name: inventory
+    #   tag: 1.0-SNAPSHOT
+"%dev":
+  quarkus:
+    http:
+      cors:
+        ~: true
+        origins: '*'
+        headers: accept, authorization, content-type, x-requested-with
+        methods: GET, OPTIONS, POST
+      port: 8083
+    kubernetes-config:
+      enabled: false
+    # datasource:
+    #   db-kind: h2
+    #   jdbc:
+    #     url: jdbc:h2:mem:inventory;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    datasource:
+      ordermgmt-db:
+        db-kind: postgresql
+        username: connect23
+        password: connect23 
+        jdbc:
+          url: jdbc:postgresql://localhost:5432/ordermanagement 
+    hibernate-orm:
+      "inventory":
+        packages: io.ordermanagement.inventory.model
+        datasource: ordermgmt-db
+        database:
+          generation: drop-and-create
+        sql-load-script: products.sql
+    jaeger:
+      endpoint: http://localhost:14682/api/traces
+      sampler-type: const
+      sampler-param: 1
+"%test":
+  quarkus:
+    kubernetes-config:
+      enabled: false
+    datasource:
+      db-kind: h2
+      jdbc:
+        url: jdbc:h2:mem:inventory;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE

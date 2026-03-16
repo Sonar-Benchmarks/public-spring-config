@@ -1,0 +1,30 @@
+"%dev":
+  quarkus:
+    hibernate-orm:
+      database:
+        default-schema: eventman
+    http:
+      port: 8080
+      cors:
+        origins: /.*/
+        enabled: true
+    rest-client:
+      jwt-api:
+        url: http://localhost:8070
+    datasource:
+      db-kind: postgresql
+      db-version: 17
+      username: postgres
+      password: postgres
+    flyway:
+      active: true
+      migrate-at-start: true
+      schemas: ["eventman"]
+      table: flyway_quarkus_history
+      locations: db/migrations
+  mp:
+    jwt:
+      verify:
+        issuer: eventman
+        publickey:
+          location: ../jwt/publicKey.pem

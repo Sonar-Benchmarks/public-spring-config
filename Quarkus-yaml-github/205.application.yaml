@@ -1,0 +1,24 @@
+
+# Quarkus configuration
+quarkus:
+  http:
+    # host: 127.0.0.1
+    host: 0.0.0.0
+    port: 9000
+    cors:
+      ~: true
+      origins: "/.*/"
+
+  log:
+    console:
+      enable: false
+    file:
+      enable: true
+      path: "${user.home}/.osprey-competition/logs/ospreycompetition.log"
+      format: "%d{yyyy-MM-dd HH:mm:ss} %-5p [%c] (%t) %s%e%n"
+      rotation:
+        file-suffix: ".yyyy-MM-dd"
+
+# Compeition configuration
+competition:
+  file-location: /home/matthew/images/Named

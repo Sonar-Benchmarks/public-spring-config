@@ -1,0 +1,42 @@
+'%test':
+  kkv:
+    target:
+      service:
+        namespace: dev
+        informer-resync-period: 5m
+
+  quarkus:
+    kafka:
+      snappy:
+        enabled: false
+      devservices:
+        topic-partitions:
+          mytopic: 3
+        enabled: true
+  mp:
+    messaging:
+      incoming:
+        topic:
+          health-readiness-enabled: ${kafka_health_radiness_enabled:false}
+          connector:
+            smallrye-kafka
+          bootstrap:
+            servers: ${quarkus-dev-service-kafka}
+          topic: mytopic
+          enable:
+            auto:
+              commit: false
+          auto:
+            offset:
+              reset: ${ONUPDATE_AFTER_OFFSET:latest}
+          group:
+            # id: ${KAFKA_GROUP_ID}
+            id: something
+          consumer-rebalance-listener:
+            name: kkv
+          key:
+            deserializer: org.apache.kafka.common.serialization.StringDeserializer
+          value:
+            deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+          interceptor:
+            classes: se.yolean.kafka.keyvalue.KafkaPollListener

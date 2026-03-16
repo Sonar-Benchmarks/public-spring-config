@@ -1,0 +1,79 @@
+agoora-endpoint: local.spoud.io
+agoora-insecure: false
+agoora-transport-path: /default/openapi
+
+
+agoora:
+  openapi:
+    base-url: https://petstore3.swagger.io
+    url: ${agoora.openapi.base-url}/api/v3/openapi.json
+    ui-url: ${agoora.openapi.base-url}
+  scrapper:
+    samples-size: 500
+    state:
+      enabled: true
+      initial-delay: PT10S
+    hooks:
+      enabled: true
+      initial-delay: PT1S
+  transport:
+    agoora-path: ${agoora-transport-path}
+  auth:
+    server-url: https://${agoora-endpoint}/auth/
+    realm: spoud
+    user:
+      name: to-be-defined
+      token: to-be-defined
+  logistics:
+    endpoint: ${agoora-endpoint}
+    insecure: ${agoora-insecure}
+  hooks:
+    endpoint: ${agoora-endpoint}
+    insecure: ${agoora-insecure}
+  schema:
+    endpoint: ${agoora-endpoint}
+    insecure: ${agoora-insecure}
+  looker:
+    endpoint: ${agoora-endpoint}
+    insecure: ${agoora-insecure}
+  blob:
+    endpoint: ${agoora-endpoint}
+    insecure: ${agoora-insecure}
+  profiler:
+    endpoint: localhost:8089
+    insecure: true
+
+quarkus:
+  arc:
+    # Needed for the grpc interceptors
+    remove-unused-beans: fwk
+  http:
+    port: 8280
+  log:
+    category:
+      "io.spoud.agoora":
+        level: INFO
+  ssl:
+    native: true
+  native:
+    container-build: true
+    additional-build-args:
+      - --allow-incomplete-classpath
+      - --report-unsupported-elements-at-runtime
+      - -H:+AddAllCharsets
+
+"%dev":
+  agoora-endpoint: local.spoud.io
+  agoora-insecure: true
+  agoora-transport-path: /default/openapi/openpai
+  agoora:
+    scrapper:
+      state:
+        initial-delay: 3s
+      profiling:
+        initial-delay: 5s
+    auth:
+      server-url: http://${agoora-endpoint}/auth/
+      user:
+        name: agoora_t_1e6c4b68-bbff-4085-b4fb-43126150ccf4
+        token: YKmCLNJ3IkELHfYCGmJc7HtegiyJYC8r

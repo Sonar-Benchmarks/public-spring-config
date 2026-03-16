@@ -1,0 +1,96 @@
+quarkus:
+  http:
+    port: 8080
+    host: 0.0.0.0
+    netty:
+      tcp-no-delay: true
+      tcp-keep-alive: true
+      send-buffer-size: 262144     # 256KB
+      receive-buffer-size: 65536   # 64KB
+    compress: false
+    http2: true
+    limits:
+      max-body-size: 1M
+      max-form-size: 1M
+
+  executor:
+    core-threads: 8
+    max-threads: 64
+    queue-size: 1000
+    shutdown-timeout: 30S
+
+  jackson:
+    indent-output: false
+    fail-on-unknown-properties: false
+    fail-on-empty-beans: false
+
+  log:
+    level: INFO
+    handler:
+      type: async
+    category:
+      "ru.rkhamatyarov":
+        level: INFO
+      "ru.rkhamatyarov.websocket":
+        level: WARN
+
+  netty:
+    event-loops:
+      io: 8
+    io-threads: 8
+
+  rest:
+    server:
+      mode: reactive
+  resteasy:
+    path: api
+
+  micrometer:
+    enabled: true
+    export:
+      prometheus:
+        enabled: true
+        path: /metrics
+    binder:
+      vertx:
+        enabled: true
+      http:
+        client:
+          enabled: false
+        server:
+          enabled: true
+
+  quinoa:
+    ui-dir: src/main/resources/META-INF/resources
+    build-dir: dist
+    dev-server:
+      port: 5173
+      check-timeout: 60000
+    package-manager: npm
+
+"%dev":
+  quarkus:
+    log:
+      category:
+        "ru.rkhamatyarov":
+          level: DEBUG
+      handler:
+        type: async
+    quinoa:
+      dev-server:
+        port: 5173
+
+"%prod":
+  quarkus:
+    log:
+      level: WARN
+      category:
+        "ru.rkhamatyarov":
+          level: INFO
+
+game:
+  broadcast:
+    interval: 16
+  websocket:
+    max-connections: 1000
+    keep-alive-interval: 30000

@@ -1,0 +1,28 @@
+quarkus:
+  thread-pool:
+    max-threads: ${MAX_THREADS:100}
+    queue-size: ${QUEUE_SIZE:1000}
+
+configuration:
+  component:
+    uri: ${CONFIG_PATH:/config/test-machine.json}
+
+emulators:
+  qemu: ${EMULATOR_QEMU:/usr/bin/qemu-system-}
+  basilisk: ${EMULATOR_BASILISK:/usr/bin/BasiliskII.real}
+  sheepshaver: ${EMULATOR_SHEEPSHAVER:/usr/bin/SheepShaver}
+  dosbox: ${EMULATOR_DOSBOX:/usr/bin/dosbox}
+  vbox:
+    headless-exec: ${EMULATOR_VBOX_HEADLESS_EXEC:/usr/bin/VBoxSDL}
+    manage-exec: ${EMULATOR_VBOX_MANAGE_EXEC:/usr/bin/VBoxManage}
+  hatari: ${EMULATOR_HATARI:/usr/bin/hatari}
+  vde-switch: ${EMULATOR_VDE_SWITCH:/usr/bin/vde_switch}
+  vice:
+    c64: ${EMULATOR_VICE_C64:/usr/bin/x64}
+    c128: ${EMULATOR_VICE_C128:/usr/bin/x128}
+  pce:
+    atarist: ${EMULATOR_PCE_ATARIST:/usr/bin/pce-atarist}
+    ibmpc: ${EMULATOR_PCE_IBMPC:/usr/bin/pce-ibmpc}
+    macplus: ${EMULATOR_PCE_MACPLUS:/usr/bin/pce-macplus}
+  kegs: ${EMULATOR_KEGS:/usr/bin/kegs}
+  beebem: ${EMULATOR_BEEBEM:/usr/bin/beebem}

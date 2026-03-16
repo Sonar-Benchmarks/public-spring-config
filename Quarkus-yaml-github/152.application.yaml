@@ -1,0 +1,46 @@
+quarkus:
+  log:
+    level: INFO
+    min-level: INFO
+  # Disabling flyway to test ddl scripts
+  flyway:
+    migrate-at-start: false
+  # Quartz configuration
+  quartz:
+    store-type: jdbc-cmt
+    start-mode: forced
+  resteasy:
+    path: /rest
+  datasource:
+    db-kind: ${maven.jdbc.db-kind}
+    jdbc:
+      url: ${maven.jdbc.url}
+    username: ${maven.jdbc.username}
+    password: ${maven.jdbc.password}
+  hibernate-orm:
+    database:
+      generation: validate
+      default-schema: "${maven.jdbc.schema}"
+  security:
+    users:
+      file:
+        realm-name: pim_file
+        enabled: true
+        plain-text: true
+        users: users.properties
+        roles: roles.properties
+    jdbc:
+      realm-name: pim_jdbc
+      enabled: true
+      principal-query:
+        sql: SELECT u.password, u.role FROM users u WHERE u.username=?
+    ldap:
+      realm-name: pim_ldap
+      dir-context:
+        url: ldap://override-when-needed
+      identity-mapping:
+        search-base-dn: ou=users,o=YourCompany,c=ES
+"%test":
+  pim:
+    username: ${maven.pim.username}
+    password: ${maven.pim.password}

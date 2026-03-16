@@ -1,0 +1,23 @@
+quarkus:
+  banner:
+    path: banner.txt
+  http:
+    host: 0.0.0.0
+    port: 8082
+    cors: true
+    limits:
+      max-body-size: 700K
+    idle-timeout: 5m
+
+mp:
+  messaging:
+    outgoing:
+      transaction-events:
+        connector: smallrye-kafka
+        topic: transaction-events
+    incoming:
+      currency-profile-events:
+        connector: smallrye-kafka
+        topic: currency-profile-events
+        group:
+          id: transaction-group

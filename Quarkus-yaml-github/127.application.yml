@@ -1,0 +1,32 @@
+quarkus:
+  swagger-ui:
+    theme: material
+    always-include: true
+
+  http:
+    port: ${PORT:8080}
+    auth:
+      basic: true
+
+  live-reload:
+    instrumentation: true
+
+  rest-client:
+    oauth2-google:
+      url: https://oauth2.googleapis.com
+    google-calendar:
+      url: https://www.googleapis.com/calendar
+
+  cache:
+    caffeine:
+      "oauth-token-cache":
+        expire-after-write: 3599S
+
+  hibernate-orm:
+    database:
+      generation: none
+
+  flyway:
+    baseline-on-migrate: true
+    migrate-at-start: false
+    locations: filesystem:src/main/resources/db/migration

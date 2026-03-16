@@ -1,0 +1,113 @@
+---
+quarkus:
+  banner:
+    enabled: true
+    path: "banner.txt"
+  container-image:
+    group: "agogos"
+    name: "agogos-operator"
+    registry: "quay.io"
+    tag: "latest"
+  docker:
+    dockerfile-jvm-path: "src/main/docker/Dockerfile.fast-jar"
+  http:
+    port: 7070
+  kubernetes:
+    namespace: "agogos"
+    service-account: "agogos-operator"
+  log:
+    min-level: "TRACE"
+    syslog:
+      truncate: false
+  operator-sdk:
+    crd:
+      generate: false
+      apply: false
+    fail-on-version-check: false
+  scheduler:
+    start-mode: forced
+
+agogos:
+  retain-resources: false
+  service-account: agogos
+  cloud-events:
+    publish: true
+    base-url: "http://broker-ingress.knative-eventing.svc.cluster.local"
+
+  security:
+    # Here we are controlling the Pod security Policy for all containers
+    # run as part of Build or Pipeline in Agogos.
+    # https://kubernetes.io/docs/concepts/policy/pod-security-policy
+    pod-security-policy:
+      # By default every we require that every container run in the Pod
+      # has a regular user specified.
+      # https://kubernetes.io/docs/concepts/policy/pod-security-policy/#users-and-groups
+      runAsNonRoot: true
+      # To unify permissions of files created as part of Builds and Pipeline execution
+      # we set the user and group ID.
+      # https://kubernetes.io/docs/concepts/policy/pod-security-policy/#users-and-groups
+      runAsUser: 65532
+      runAsGroup: 65532
+      fsGroup: 65532
+
+"%dev":
+  broker/mp-rest/url: http://localhost:8111
+
+  # hostnameVerifier: io.quarkus.restclient.NoopHostnameVerifier
+
+  agogos:
+    service-account: agogos
+    cloud-events:
+      publish: true
+      base-url: "http://localhost:8111"
+
+  kubernetes:
+    # Default storage class name in minikube
+    storage-class: "standard"
+
+  quarkus:
+    log:
+      category:
+        # "io.javaoperatorsdk":
+        #  use  level: TRACE
+        "com.redhat.agogos":
+          level: TRACE
+        "io.fabric8.kubernetes.client.informers.cache":
+          level: WARN
+      file:
+        enable: true
+        path: "${PWD}/logs/operator.log"
+
+    kubernetes-client:
+      trust-certs: true
+
+"%prod":
+  broker/mp-rest/url: "http://broker-ingress.knative-eventing.svc.cluster.local"
+
+  quarkus:
+    # http:
+    #   ssl:
+    #     certificate:
+    #       file: /server.crt
+    #       key-file: /server.key
+    log:
+      category:
+        "com.redhat.agogos":
+          level: DEBUG
+
+    # TODO: change this
+    kubernetes-client:
+      trust-certs: true
+
+  kubernetes:
+    storage-class: "gp2"
+
+"%test":
+  broker/mp-rest/url: http://localhost:8111
+
+  kubernetes:
+    # Default storage class name in minikube
+    storage-class: "standard"
+  quarkus:
+    operator-sdk:
+      start-operator: false

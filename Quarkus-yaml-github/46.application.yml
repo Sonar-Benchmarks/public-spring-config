@@ -1,0 +1,398 @@
+keycloak:
+  url: '${STIP_OIDC_AUTH_SERVER}'
+  frontend-url: '${STIP_OIDC_AUTH_SERVER_FRONTEND:${keycloak.url}}'
+  client-id: 'stip-api'
+
+kstip:
+  version: '0.1-SNAPSHOT'
+  environment: 'local'
+  default-tenant: 'bern'
+  allowed:
+    mimetypes: 'image/tiff,image/jpeg,image/png,application/pdf'
+    testcase-mimetypes:
+      - 'application/x-tika-ooxml'
+      - 'application/zip'
+  darlehen:
+    verfuegung-email:
+      recipient: 'ausbildungsdarlehen@mailbucket.dvbern.ch'
+  pre-signed-request:
+    issuer: 'https://stip.kibon.ch'
+    expires-in-minutes: 1
+    secret: '${STIP_PRE_SIGNED_REQUEST_SECRET}'
+  sap:
+    system-id: '${STIP_SAP_SYSID}'
+    auth-header-value: '${STIP_SAP_AUTH_HEADER_VALUE}'
+    connectionTimeout: 6000
+    receiveTimeout: 1000
+  demo:
+    smallest-png: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQAAAAA3bvkkAAAACklEQVR4AWNgAAAAAgABc3UBGAAAAABJRU5ErkJggg=='
+  seeding:
+    seed-on:
+      - 'dev'
+    all-profiles:
+      - 'dev'
+      - 'prod'
+      - 'test'
+  plzdata:
+    cron: '0 15 10 10W * ?' # Fires at 10:15 on the closest weekday to the 10th of each month
+    featurekey: 'ortschaftenverzeichnis_plz_2056.csv.zip'
+    hashkey: 'checksum:multihash'
+  gesuchsperiode:
+    cron: '0 0 0 1/1 * ? *' # Fires daily at 00:00
+  unterschriftenblatt:
+    cron: '0 0 9 1/1 * ? *' # Fires daily at 09:00
+  fehlendedokumente:
+    cron: '0 0 10 1/1 * ? *' # Fires daily at 10:00
+  sapbusinesspartner:
+    bern:
+      cron: '0 0/2 * * * ? *' # Fires every 2 minutes, starting at XX:00
+    dv:
+      cron: '0 1/2 * * * ? *' # Fires every 2 minutes, starting at XX:01
+  sappendingauszahlung:
+    bern:
+      cron: '0 1/2 * * * ? *' # Fires every 2 minutes, starting at XX:01
+    dv:
+      cron: '0 2/2 * * * ? *' # Fires every 2 minutes, starting at XX:02
+  sapremainderauszahlung:
+    bern:
+      cron: '0 2/2 * * * ? *' # Fires every 2 minutes, starting at XX:02
+    dv:
+      cron: '0 3/2 * * * ? *' # Fires every 2 minutes, starting at XX:03
+  sapretryfailedauszahlungsbuchhaltung:
+    bern:
+      cron: '0 3/2 * * * ? *' # Fires every 2 minutes, starting at XX:03
+    dv:
+      cron: '0 4/2 * * * ? *' # Fires every 2 minutes, starting at XX:04
+  bern:
+    seeding:
+      sozialdienste: # Can be set via environment variable using: KSTIP_BERN_SEEDING_SOZIALDIENSTE, KSTIP_DV_SEEDING_SOZIALDIENSTE, etc.
+    welcome-mail:
+      kc-url: '${STIP_OIDC_AUTH_SERVER_FRONTEND}'
+      kc-path: '${STIP_WELCOME_MAIL_PATH}'
+      kc-query-parameter: '${STIP_WELCOME_MAIL_QUERY_PARAMETER}'
+      kc-scope: '${STIP_BERN_WELCOME_MAIL_SCOPE}'
+    frontend-uri: '${STIP_FRONTEND_URI:localhost:4200}'
+  dv:
+    welcome-mail:
+      kc-url: '${STIP_OIDC_AUTH_SERVER_FRONTEND}'
+      kc-path: '${STIP_WELCOME_MAIL_PATH}'
+      kc-query-parameter: '${STIP_WELCOME_MAIL_QUERY_PARAMETER}'
+      kc-scope: '${STIP_DV_WELCOME_MAIL_SCOPE}'
+  dmn:
+    current-major-version: 1
+    current-minor-version: 0
+  pagination:
+    max-allowed-page-size: 50
+  should-clear-database: false
+  nesko:
+    wsdl-url: 'https://nesko-int.sv.fin.be.ch/evasnp/AuskunftService/services/StipendienAuskunftService?wsdl'
+    username: '${NESKO_TECHNICAL_USER_NAME}'
+    password: '${NESKO_TECHNICAL_USER_PASSWORD}'
+  tenancy:
+    bern:
+      subdomains:
+        - 'dev-stip'
+        - 'dev-sb-stip'
+    dv:
+      subdomains:
+        - 'dv'
+
+quarkus:
+  #  live-reload:
+  #    instrumentation: true
+  hibernate-validator:
+    method-validation:
+      # Seems to be an issue with hibernate-validator < 9.0
+      # Currently we are using 8.0.2
+      # see:
+      # * https://github.com/quarkusio/quarkus/issues/35144
+      # * ^--- was closed by https://github.com/quarkusio/quarkus/pull/42292
+      allow-overriding-parameter-constraints: true
+  log:
+    sentry:
+      enabled: true
+      dsn: '${STIP_SENTRY_DSN}'
+      traces-sample-rate: 1.0
+      environment: '${KSTIP_ENVIRONMENT}'
+      in-app-packages: 'ch.dvbern.stip.*'
+    console:
+      format: '%z{Europe/Zurich} %d{yyyy-MM-dd HH:mm:ss,SSS z}  %p [%C] (%t) %m %n'
+  antivirus:
+    clamav:
+      enabled: true
+      health:
+        enabled: true
+  execution-model-annotations:
+    # TODO: use FAIL as soon as @Blocking is detected on subclasses
+    # see: https://github.com/quarkusio/quarkus/issues/38275
+    detection-mode: WARN
+  liquibase:
+    migrate-at-start: true
+    change-log: 'db/migration/changelog.xml'
+    validate-on-migrate: true
+  oidc:
+    bern:
+      auth-server-url: '${keycloak.url}/realms/bern'
+      client-id: '${keycloak.client-id}'
+      application-type: service
+    dv:
+      auth-server-url: '${keycloak.url}/realms/dv'
+      client-id: '${keycloak.client-id}'
+      application-type: service
+  s3:
+    aws:
+      credentials:
+        type: static
+        static-provider:
+          access-key-id: '${STIP_S3_ACCESS_KEY}'
+          secret-access-key: '${STIP_S3_ACCESS_SECRET}'
+      region: '${STIP_S3_REGION}'
+    path-style-access: true
+  mailer:
+    port: 25
+    auth-methods: 'DIGEST-MD5 CRAM-SHA256 CRAM-SHA1 CRAM-MD5 PLAIN LOGIN'
+    host: 'mailext.dvbern.ch'
+    from: 'kstip@dvbern.ch'
+  datasource:
+    username: '${STIP_DB_USERNAME}'
+    db-kind: 'postgresql'
+    password: '${STIP_DB_PASSWORD}'
+    jdbc:
+      url: '${STIP_DB_URL}'
+  hibernate-envers:
+    object-quoting-strategy: 'QUOTE_ALL_OBJECTS'
+  hibernate-orm:
+    persistence-xml:
+      ignore: true
+    log:
+      queries-slower-than-ms: 20
+      jdbc-warnings: true
+    #      sql: true
+    multitenant: 'DISCRIMINATOR'
+    jdbc:
+      timezone: 'Europe/Zurich'
+    mapping:
+      format:
+        global: 'ignore'
+  default-locale: 'de'
+  security:
+    jaxrs:
+      deny-unannotated-endpoints: true
+  jacoco:
+    excludes: 'ch/dvbern/stip/generated/**,ch/dvbern/stip/**/Q*,ch/dvbern/stip/**/*MapperImpl*'
+  application:
+    name: 'stip-api'
+  keycloak:
+    devservices:
+      enabled: false
+    admin-client:
+      server-url: ${keycloak.url}
+      grant-type: password
+      username: ${STIP_KEYCLOAK_ADMIN_USER}
+      password: ${STIP_KEYCLOAK_ADMIN_PASSWORD}
+
+  # Keep in Sync with AppLanguages.java
+  locales: de_CH,fr_CH
+  # For the generation of the classes fot the NESKO SOAP interface
+  #  cxf:
+  #    codegen:
+  #      wsdl2java:
+  #        sap-BusinessPartnerCreate-params:
+  #          includes: 'wsdl/businesspartner/SST-009-BusinessPartnerCreate.wsdl'
+  #          wsdl-location: 'wsdl/businesspartner/SST-009-BusinessPartnerCreate.wsdl'
+  #        sap-BusinessPartnerRead-params:
+  #          includes: 'wsdl/businesspartner/SST-010-BusinessPartnerRead.wsdl'
+  #          wsdl-location: 'wsdl/businesspartner/SST-010-BusinessPartnerRead.wsdl'
+  #        sap-BusinessPartnerSearch-params:
+  #          includes: 'wsdl/businesspartner/SST-074-BusinessPartnerSearch.wsdl'
+  #          wsdl-location: 'wsdl/businesspartner/SST-074-BusinessPartnerSearch.wsdl'
+  #        sap-BusinessPartnerChange-params:
+  #          includes: 'wsdl/businesspartner/SST-077-BusinessPartnerChange.wsdl'
+  #          wsdl-location: 'wsdl/businesspartner/SST-077-BusinessPartnerChange.wsdl'
+  #        sap-GetImportStatus-params:
+  #          includes: 'wsdl/importstatus/SST-073-GetImportStatus.wsdl'
+  #          wsdl-location: 'wsdl/importstatus/SST-073-GetImportStatus.wsdl'
+  #        sap-VendorPostingCreate-params:
+  #          includes: 'wsdl/vendorposting/SST-003-VendorPostingCreate.wsdl'
+  #          wsdl-location: 'wsdl/vendorposting/SST-003-VendorPostingCreate.wsdl'
+  #        nesko-params:
+  #          includes: 'wsdl/nesko/StipendienAuskunftService.wsdl'
+  #          wsdl-location: 'wsdl/nesko/StipendienAuskunftService.wsdl'
+  #          bindings:
+  #            - 'src/main/resources/wsdl/nesko/binding.xml'
+
+  rest-client:
+    GeoCollection-api:
+      url: 'https://data.geo.admin.ch/api/stac/v0.9/collections/ch.swisstopo-vd.ortschaftenverzeichnis_plz'
+    NeskoGetBearerToken-api:
+      url: 'https://nesko-int.sv.fin.be.ch/sso/auth/realms/hades-int/protocol/openid-connect'
+#   store-type: jdbc-tx
+'%dev':
+  mp:
+    jwt:
+      verify:
+        issuer: 'NONE'
+  quarkus:
+    log:
+      sentry:
+        enabled: false
+        debug: true
+    http:
+      enable-compression: true
+      compress-media-types:
+        - 'application/json'
+    mailer:
+      mock: false
+    s3:
+      endpoint-override: '${STIP_S3_ENDPOINT}'
+    swagger-ui:
+      oauth2-redirect-url: 'http://localhost:8080/q/swagger-ui/oauth2-redirect.html'
+    tls:
+      bern:
+        trust-store:
+          jks:
+            alias: 'apps-mercury-ocp-dvbern-ch'
+            path: './src/main/resources/development.jks'
+            password: 'changeit'
+      dv:
+        trust-store:
+          jks:
+            alias: 'apps-mercury-ocp-dvbern-ch'
+            path: './src/main/resources/development.jks'
+            password: 'changeit'
+    oidc:
+      bern:
+        tls:
+          tls-configuration-name: bern
+      dv:
+        tls:
+          tls-configuration-name: dv
+    smallrye-openapi:
+      security-scheme: 'oauth2-implicit'
+      security-scheme-name: 'auth-dev-bern'
+      oauth2-implicit-authorization-url: '${STIP_OIDC_AUTH_SERVER}/realms/bern/protocol/openid-connect/auth'
+    keycloak:
+      admin-client:
+        server-url: ${keycloak.url}
+        grant-type: password
+        username: ${STIP_KEYCLOAK_ADMIN_USER}
+        password: ${STIP_KEYCLOAK_ADMIN_PASSWORD}
+        tls-configuration-name: bern
+    quartz:
+      clustered: false
+    liquibase:
+      contexts: dev
+  kstip:
+    pre-signed-request:
+      issuer: 'https://stip.kibon.ch'
+      expires-in-minutes: 5
+
+'%test':
+  mp:
+    jwt:
+      verify:
+        issuer: 'NONE'
+  quarkus:
+    http:
+      test-port: 0
+    log:
+      ## Uncomment to enable DEBUG logging for WebApplicationException, this debugs every failing request in STDOUT
+      # category:
+      #   "WebApplicationException":
+      #     level: DEBUG
+      sentry:
+        enabled: false
+    antivirus:
+      clamav:
+        devservice:
+          enabled: false
+    hibernate-orm:
+      database:
+        generation: 'drop-and-create'
+    oidc:
+      auth-server-url: '${keycloak.url:replaced-by-test-resource}/realms/quarkus/'
+      client-id: '${keycloak.client-id}'
+      application-type: service
+    s3:
+      aws:
+        credentials:
+          static-provider:
+            access-key-id: 'test-key'
+            secret-access-key: 'test-secret'
+        region: 'eu-central-2'
+      devservices:
+        enabled: false
+        buckets: '${bucket.name}'
+    keycloak:
+      admin-client:
+        server-url: ${keycloak.url}
+        grant-type: password
+        username: 'test'
+        password: 'test'
+    quartz:
+      clustered: false
+    liquibase:
+      contexts: test
+  bucket:
+    name: 'stip-usercontent-test'
+  keycloak:
+    url: 'http://dummy.keycloak'
+    frontend-url: 'http://dummy.keycloak'
+  kstip:
+    allowed:
+      mimetypes: 'text/plain,image/png'
+    pre-signed-request:
+      issuer: 'https://stip.kibon.ch'
+      expires-in-minutes: 10
+      secret: '6a5336d35a192000260cbc9b41a1cb39'
+    bern:
+      welcome-mail:
+        kc-url: 'http://dummy.keycloak'
+        kc-path: '/realms/bern/protocol/openid-connect/auth'
+        kc-query-parameter: '?response_type=code&client_id=stip-gesuch-app&redirect_uri=localhost:4200'
+        kc-scope: '&scope=openid%20profile%20email%20offline_access&kc_idp_hint=belogin'
+    nesko:
+      username: 'username'
+      password: 'password'
+'%prod':
+  quarkus:
+    s3:
+      endpoint-override: '${STIP_S3_ENDPOINT}'
+    antivirus:
+      clamav:
+        host: '${STIP_CLAMAV_HOST}'
+        port: '${STIP_CLAMAV_PORT:3310}'
+    keycloak:
+      admin-client:
+        server-url: ${keycloak.url}
+        grant-type: password
+        username: ${STIP_KEYCLOAK_ADMIN_USER}
+        password: ${STIP_KEYCLOAK_ADMIN_PASSWORD}
+    quartz:
+      clustered: true
+      store-type: jdbc-cmt
+    liquibase:
+      contexts: prod
+
+mp:
+  openapi:
+    scan:
+      disable: true
+    extensions:
+      servers:
+        relative: true
+      path: '/openapi.yml'
+      enabled: true
+openapi:
+  ui:
+    swaggerHeaderVisibility: 'hidden'
+    yamlUrl: '/openapi.yml'
+    swaggerUiTheme: 'feeling-blue'
+    serverVisibility: 'hidden'
+bucket:
+  name: '${STIP_S3_BUCKET_NAME}'
+
+org:
+  hibernate:
+    envers:
+      audit_table_suffix: '_aud'

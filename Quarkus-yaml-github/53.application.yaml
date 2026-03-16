@@ -1,0 +1,75 @@
+"%prod":
+  kafka:
+    bootstrap:
+      servers: "kafka:9092"
+
+"%test":
+  quarkus:
+    hibernate-orm:
+      database:
+        generation: "drop-and-create"
+    datasource:
+      db-kind: "sqlite"
+      username: "template"
+      password: "secret"
+      jdbc:
+        url: "jdbc:sqlite:databases/test.db"
+    kafka:
+      devservices:
+        port: 32801
+  mp:
+    messaging:
+      incoming:
+        shopping-basket-in:
+          failure-strategy: "ignore"
+        offering-in:
+          failure-strategy: "ignore"
+        shipping-in:
+          failure-strategy: "ignore"
+        stock-in:
+          failure-strategy: "ignore"
+
+test:
+  eventing:
+    assertion-timeout: 4 # Seconds to wait for an event to arrive and the action to be done in kafka integration tests
+
+quarkus:
+  swagger-ui:
+    always-include: true
+  kafka:
+    devservices:
+      image-name: "redpandadata/redpanda:v23.2.18"
+      port: 32800
+      topic-partitions:
+        order: 1
+        shopping-basket: 1
+        payment: 1
+  hibernate-orm:
+    database:
+      generation: "update"
+  datasource:
+    db-kind: "sqlite"
+    username: "template"
+    password: "secret"
+    jdbc:
+      url: "jdbc:sqlite:databases/database.db"
+
+kafka:
+  auto:
+    offset:
+      reset: "earliest"
+
+mp:
+  messaging:
+    outgoing:
+      order-out:
+        topic: "order"
+    incoming:
+      shopping-basket-in:
+        topic: "shopping-basket"
+      offering-in:
+        topic: "offering"
+      shipping-in:
+        topic: "shipments"
+      stock-in:
+        topic: "stock"

@@ -1,0 +1,21 @@
+"%dev":
+  quarkus:
+    http:
+      port: 8020
+    application:
+      name: Quarkus Shop
+    datasource:
+      db-kind: postgresql
+      username: shop
+      password: shop
+      jdbc:
+        url: jdbc:postgresql://localhost:5432/shop
+    flyway:
+      locations: "classpath:/db/migration"
+      migrate-at-start: true
+
+"%test":
+  quarkus:
+    flyway:
+      locations: "classpath:/db/migration"
+      migrate-at-start: true

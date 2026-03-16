@@ -1,0 +1,101 @@
+---
+quarkus:
+  banner:
+    enabled: false
+  kubernetes:
+    namespace: "agogos"
+  native:
+    resources:
+      includes: "deployment/crds.yaml,dependencies/*.yaml"
+  security:
+    security-providers: "BC"
+
+"%dev":
+  quarkus:
+    log:
+      level: INFO
+      console:
+        format: "%m%n"
+      category:
+        # "io.quarkus":
+        #   level: "OFF"
+        "io.quarkus.kubernetes":
+          level: DEBUG
+        "com.redhat.agogos":
+          level: DEBUG
+        "io.fabric8.kubernetes.client":
+          level: ERROR
+  agogos:
+    cli-profile: admin
+
+"%prod":
+  quarkus:
+    # http:
+    #   insecure-requests: DISABLED
+    log:
+      level: INFO
+      console:
+        format: "%m%n"
+      category:
+        "io.quarkus.kubernetes":
+          level: ERROR
+        "io.fabric8.kubernetes.client":
+          level: ERROR
+        "io.quarkus":
+          level: "OFF"
+  agogos:
+    cli-profile: user
+    interceptors:
+      url: "http://host.minikube.internal:7090/interceptors"
+
+
+agogos:
+  agogos:
+    service-account: "agogos"
+  container-image:
+    init: "quay.io/agogos/stage-init:v1"
+  interceptors:
+    container-image: "quay.io/agogos/agogos-interceptors:latest"
+    endpoints:
+      - "group-execute"
+    port: 8443
+    service-account: "agogos-interceptors"
+    url: "http://only-needed-for-tests"
+  operator:
+    container-image: "quay.io/agogos/agogos-operator:latest"
+    service-account: "agogos-operator"
+  webhooks:
+    container-image: "quay.io/agogos/agogos-webhooks:latest"
+    service-account: "agogos-webhooks"
+  # The EventListener needs 2Gi to handle a group of 50 builds without being OOMKilled
+  event-listener:
+    requests:
+      cpu: 1000m
+      memory: 2Gi
+    limits:
+      memory: 2Gi
+
+dependencies:
+  knative-eventing:
+    namespace: "knative-eventing"
+    version: "v1.13.1"
+    urls:
+      - "https://github.com/knative/eventing/releases/download/knative-${dependencies.knative-eventing.version}/eventing-core.yaml"
+      - "https://github.com/knative/eventing/releases/download/knative-${dependencies.knative-eventing.version}/in-memory-channel.yaml"
+      - "https://github.com/knative/eventing/releases/download/knative-${dependencies.knative-eventing.version}/mt-channel-broker.yaml"
+  tekton-pipelines:
+    namespace: "tekton-pipelines"
+    version: "v0.53.3"
+    urls:
+      - "https://storage.googleapis.com/tekton-releases/pipeline/previous/${dependencies.tekton-pipelines.version}/release.yaml"
+  tekton-triggers:
+    namespace: "tekton-pipelines"
+    version: "v0.25.3"
+    urls:
+      - "https://storage.googleapis.com/tekton-releases/triggers/previous/${dependencies.tekton-triggers.version}/release.yaml"
+      - "https://storage.googleapis.com/tekton-releases/triggers/previous/${dependencies.tekton-triggers.version}/interceptors.yaml"
+  tekton-chains:
+    namespace: "tekton-chains"
+    version: "v0.19.0"
+    urls:
+      - "https://storage.googleapis.com/tekton-releases/chains/previous/${dependencies.tekton-chains.version}/release.yaml"

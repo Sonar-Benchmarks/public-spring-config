@@ -1,0 +1,32 @@
+konflux-build-driver:
+  quay-repo: "quay.io/redhat-user-workloads-stage/pnc-devel-tenant/pnc-konflux"
+  pipeline-resolver: "https://raw.githubusercontent.com/project-ncl/konflux-integration/refs/heads/main/pipeline/mw-pipeline-v0.1.yaml"
+  domain-proxy-allow-list: "localhost,cdn-ubi.redhat.com,repo1.maven.org,repo.scala-sbt.org,scala.jfrog.io,repo.typesafe.com,jfrog-prod-usw2-shared-oregon-main.s3.amazonaws.com"
+  domain-proxy-internal-non-proxy-hosts: "localhost"
+  indy-proxy-enabled: false
+  indy-proxy-client-id: ""
+  indy-proxy-client-credential: ""
+  notification-enabled: false
+  self-base-url: http://localhost:8081/
+quarkus:
+  application:
+    name: konflux-build-driver
+  shutdown:
+    timeout: 300
+  log:
+    category:
+      "org.jboss.pnc.konfluxbuilddriver":
+        level: INFO
+  oidc:
+    auth-server-url: https://keycloak-host/auth/realms/pncredhat
+    client-id: client
+    credentials:
+      secret: secret
+  oidc-client:
+    auth-server-url: https://keycloak-host/auth/realms/pncredhat
+    client-id: service-account
+    credentials:
+      secret: secret-of-service-account
+  rest-client:
+    indy-service:
+      url: "http://localhost:8080"

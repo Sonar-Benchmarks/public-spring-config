@@ -1,0 +1,99 @@
+villagecompute:
+  auth:
+    cookie:
+      name: vu_anon_id
+      secure: true
+      http-only: true
+      same-site: Lax
+      max-age: 31536000
+    bootstrap:
+      token: test-bootstrap-token
+      admin-exists: false
+    jwt:
+      secret: unit-test-signing-secret
+      issuer: test-suite
+      audience: village-homepage-test
+      expiration-minutes: 30
+    rate-limit:
+      bootstrap:
+        max-requests: 5
+        window-seconds: 3600
+      login:
+        max-requests: 20
+        window-seconds: 60
+  # Apple Sign-In test configuration
+  apple:
+    key-id: test-apple-key-id
+    team-id: test-apple-team-id
+
+quarkus:
+  log:
+    level: WARN
+  otel:
+    sdk:
+      disabled: true
+  # LangChain4j test configuration (Task I4.T1)
+  langchain4j:
+    anthropic:
+      api-key: sk-ant-test-fake-key-for-testing-12345678
+
+  # NO DEFAULT DATASOURCE CONFIGURATION
+  # Legacy tests use @QuarkusTestResource(H2TestResource.class) which provides H2 configuration
+  # New integration tests using BaseIntegrationTest use @TestProfile(PostgreSQLTestProfile.class) which provides PostgreSQL configuration
+
+  # OIDC test configuration - OAuth providers with test values
+  oidc:
+    enabled: false
+    google:
+      client-id: test-google-client-id
+      credentials:
+        secret: test-google-secret
+    apple:
+      client-id: test-apple-client-id
+    facebook:
+      client-id: test-facebook-client-id
+      credentials:
+        secret: test-facebook-secret
+  security:
+    auth:
+      enabled-in-dev-mode: false
+    jpa:
+      enabled: false
+
+  # Hibernate Search Elasticsearch configuration for tests
+  hibernate-search-orm:
+    enabled: false
+    elasticsearch:
+      version: 8
+
+alphavantage:
+  api-key: test-api-key
+
+email:
+  imap:
+    host: localhost
+    port: 1143
+    username: test@example.com
+    password: ${IMAP_PASSWORD:test_placeholder}
+    folder: INBOX
+    poll-interval-seconds: 60
+
+# Profile for PostgreSQL 17 + PostGIS integration tests (Task I1.T2)
+# NOTE: When running tests locally with .env file loaded, env vars may override these settings.
+# To ensure DevServices works, either unset QUARKUS_DATASOURCE_* env vars or run: unset QUARKUS_DATASOURCE_JDBC_URL
+"%test":
+  quarkus:
+    datasource:
+      db-kind: postgresql
+      # DevServices enabled by default - will start PostgreSQL container if jdbc.url not set
+      # Using joshuasundance/postgis_pgvector which has both PostGIS (for geometry) and pgvector (for vector)
+      devservices:
+        enabled: true
+        image-name: joshuasundance/postgis_pgvector:latest
+        init-script-path: db/init-test-postgis.sql
+    hibernate-orm:
+      database:
+        generation: drop-and-create
+      log:
+        sql: false
+      sql-load-script: no-file

@@ -1,0 +1,68 @@
+quarkus:
+  application:
+    name: esthesis-core-srv-dt
+  devservices:
+    enabled: false
+  log:
+    min-level: TRACE
+    console:
+      format: "%d{HH:mm:ss} %-5p traceId=%X{traceId}, parentId=%X{parentId}, spanId=%X{spanId}, sampled=%X{sampled} [%c{2.}] (%t) %s%e%n"
+    handler:
+      gelf:
+        enabled: false
+        include-full-mdc: true
+        skip-hostname-resolution: false
+        additional-field:
+          platform:
+            value: esthesis
+          module:
+            value: esthesis-core
+          type:
+            value: API
+          service:
+            value: ${quarkus.application.name}
+  banner:
+    enabled: false
+  otel:
+    sdk:
+      disabled: true
+  swagger-ui:
+    always-include: true
+    path: /api/openapi-ui
+    title: esthes.is Digital Twin API
+    operations-sorter: alpha
+    tags-sorter: alpha
+    urls:
+      default: /api/dt/openapi
+  smallrye-openapi:
+    path: /api/openapi
+    security-scheme: api-key
+    security-scheme-name: X-ESTHESIS-DT-APP
+    api-key-parameter-in: header
+    api-key-parameter-name: X-ESTHESIS-DT-APP
+  rest-client:
+    ApplicationSystemResource:
+      url: http://esthesis-core-srv-application-service:8080
+      scope: Singleton
+    CommandSystemResource:
+      url: http://esthesis-core-srv-command-service:8080
+      scope: Singleton
+    AuditResource:
+      url: http://esthesis-core-srv-audit-service:8080
+      scope: Singleton
+    TagResource:
+      url: http://esthesis-core-srv-tag-service:8080
+      scope: Singleton
+  # Do not remove the following configuration, it is needed, so that it can be overridden in runtime
+  # (otherwise environment variables such as QUARKUS_OIDC_CLIENT_GRANT_OPTIONS_PASSWORD_USERNAME
+  # are ignored (see https://github.com/quarkusio/quarkus/discussions/41259#discussioncomment-9795685).
+  oidc-client:
+    client-id: esthesis
+    grant-options:
+      password:
+        username: defined-in-runtime
+        password: defined-in-runtime
+esthesis:
+  dt-api:
+      timeout-in-ms: ${DT_API_REQUEST_TIMEOUT_MS:30000}
+      poll-interval-in-ms: ${DT_API_REQUEST_POLL_INTERVAL_MS:1000}

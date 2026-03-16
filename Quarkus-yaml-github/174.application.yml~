@@ -1,0 +1,85 @@
+quarkus:
+  hibernate-orm:
+    package: org.ged
+    database:
+      generation: drop-and-create
+  server:
+    port: 8081
+    servlet:
+      context-path: /ged/api/
+  oidc:
+
+    auth-server-url: http://keycloak:8080/realms/sistema-backend
+    client-id: backend
+    credentials:
+      secret: xFRWC0fbQakBSPYUrjVTsdobn90cTLpi
+    connection-timeout: 20s
+    token:
+      issuer: http://127.0.0.1:8080/realms/sistema-backend
+  token:
+    allow-implicit-flow: true
+    roles:
+      role-claim-path: realm_access.roles
+    applications:
+      token-propagation: enabled
+  security:
+    auth-enabled: true
+  transaction-manager:
+    default-transaction-timeout: 300s
+  debug:
+    print-startup-times: true
+  log:
+    console:
+      level: ALL
+  http:
+    port: 8081
+    root-path: /ged/api
+    cors:
+      ~: true
+      origins: http://127.0.0.1:4200, http://0.0.0.0:4200, http://frontend:4200, http://localhost:4200
+      methods: GET, POST, PUT, DELETE, OPTIONS
+      headers: Accept, Content-Type, Authorization, X-Requested-With, Bearer, X-Custom
+      expose-headers: Content-Disposition
+      access-control-max-age: 24H
+      access-control-allow-credentials: true
+#      headers:
+#        Access-Control-Allow-Origin: true
+#        Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
+#        Access-Control-Allow-Headers: accept, content-type, x-requested-with, authorization, x-custom
+#        expose-headers: Content-Disposition
+#        Access-Control-Allow-Content-Type: application/json
+#        Access-Control-Allow-Credentials: true
+
+  #  flyway:
+  #    migrate-at-start: true
+
+  datasource:
+    username: postgres
+    password: postgres
+    jdbc:
+      max-size: 20
+      min-size: 3
+      url: jdbc:postgresql://0.0.0.0:5433/sistema
+
+    db-kind: postgresql
+
+
+keycloak:
+  policy-enforcer:
+    enabled: true
+    lazy-load-paths: false
+    paths:
+      - /ged/api/**
+
+
+  realm: sistema-backend
+  domain: keycloak:8080
+  adminClientId: backend
+  adminClientSecret: xFRWC0fbQakBSPYUrjVTsdobn90cTLpi
+  client: backend
+  user: tallys
+  password: 123
+  urls:
+    auth: http://${keycloak.domain}
+tls:
+  verification: none

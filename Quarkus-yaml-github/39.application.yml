@@ -1,0 +1,157 @@
+conductor:
+  watcher:
+    enabled: true
+    offset:
+      storage:
+        type: org.apache.kafka.connect.storage.FileOffsetBackingStore
+        config:
+          file:
+            filename: offsets.dat
+      config:
+        flush:
+          interval:
+            ms: 300
+pipeline:
+  offset:
+    storage:
+      # In the future when we will have other environment implementations the default should be re-thought.
+      type: io.debezium.storage.jdbc.offset.JdbcOffsetBackingStore
+      config:
+        jdbc:
+          url: ${OFFSET_JDBC_URL:${quarkus.datasource.jdbc.url}}
+          user: ${OFFSET_JDBC_USERNAME:${quarkus.datasource.username}}
+          password: ${OFFSET_JDBC_PASSWORD:${quarkus.datasource.password}}
+          offset:
+            table:
+              name: "@{pipeline_name}_offset"
+  schema:
+    history:
+      internal: io.debezium.storage.jdbc.history.JdbcSchemaHistory
+      config:
+        jdbc:
+          url: ${SCHEMA_HISTORY_JDBC_URL:${quarkus.datasource.jdbc.url}}
+          user: ${SCHEMA_HISTORY_JDBC_USERNAME:${quarkus.datasource.username}}
+          password: ${SCHEMA_HISTORY_JDBC_PASSWORD:${quarkus.datasource.password}}
+          schema:
+            history:
+              table:
+                name: "@{pipeline_name}_schema_history"
+sources:
+  database:
+    connection:
+      timeout: 60
+destinations:
+  redis:
+    connection:
+      timeout: 60
+  kafka:
+    connection:
+      timeout: 60
+
+quarkus:
+  hibernate-orm:
+    mapping:
+      format:
+        global: ignore
+  rest-client:
+    debezium-server-api:
+      url: http://localhost:8080
+      # Avoid throwing an exception when HTTP status code is higher than 400
+      disable-default-mapper: true
+  http:
+    cors:
+        ~: true
+  debezium-outbox:
+    table-name: events
+    aggregate-type:
+      name: aggregatetype
+    aggregate-id:
+      name: aggregateid
+    type:
+      name: type
+  datasource:
+    db-kind: postgresql
+  flyway:
+    baseline-on-migrate: true
+    migrate-at-start: true
+  swagger-ui:
+    always-include: true
+  log:
+    min-level: TRACE
+    level: INFO
+
+"%dev":
+  conductor:
+    watcher:
+      enabled: true
+      crd: https://raw.githubusercontent.com/debezium/debezium-operator/main/k8/debeziumservers.debezium.io-v1.yml
+      offset:
+        storage:
+          type: org.apache.kafka.connect.storage.FileOffsetBackingStore
+          config:
+            file:
+              filename: offsets.dat
+        config:
+          flush:
+            interval:
+              ms: 300
+  pipeline:
+    offset:
+      storage:
+        # In the future when we will have other environment implementations the default should be re-thought.
+        type: io.debezium.storage.jdbc.offset.JdbcOffsetBackingStore
+        config:
+          jdbc:
+            url: jdbc:postgresql://postgresql:5432/debezium?loggerLevel=OFF
+            user: debezium
+            password: debezium
+            offset:
+              table:
+                name: "@{pipeline_name}_offset"
+    schema:
+      history:
+        internal: io.debezium.storage.jdbc.history.JdbcSchemaHistory
+        config:
+          jdbc:
+            url: jdbc:postgresql://postgresql:5432/debezium?loggerLevel=OFF
+            user: debezium
+            password: debezium
+            schema:
+              history:
+                table:
+                  name: "@{pipeline_name}_schema_history"
+  quarkus:
+    debezium-outbox:
+      remove-after-insert: false
+    flyway:
+      baseline-on-migrate: true
+      migrate-at-start: true
+    datasource:
+      devservices:
+        enabled: true
+        port: 5432
+        image-name: quay.io/debezium/postgres:16-alpine
+    http:
+      port: 8081
+    log:
+      level: INFO
+      category:
+        "io.debezium":
+          level: INFO
+        "io.debezium.platform.environment.actions":
+          level: TRACE
+
+"%test":
+  conductor:
+    watcher:
+      enabled: true
+      offset:
+        storage:
+          type: org.apache.kafka.connect.storage.MemoryOffsetBackingStore
+  quarkus:
+    datasource:
+      devservices:
+        enabled: true
+        image-name: quay.io/debezium/postgres:16-alpine
+    flyway:
+      baseline-on-migrate: true

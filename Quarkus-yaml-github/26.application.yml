@@ -1,0 +1,60 @@
+ddc:
+  bucket: '${DDC_BUCKET}'
+  mnemonic: '${DDC_MNEMONIC}'
+  cdnUrl: '${DDC_CDN_URL:https://cdn.testnet.cere.network}'
+
+quarkus:
+  cache:
+    caffeine:
+      initial-capacity: 1000
+      maximum-size: 10000
+  
+  grpc:
+    server:
+      use-separate-server: false
+    clients:
+      ddc:
+        port: ${DDC_PORT:9090}
+        host: ${DDC_HOST:178.18.148.250}
+        use-quarkus-grpc-client: true
+        plain-text: true
+
+  rest-client:
+    tg-bot-api:
+      url: 'https://api.telegram.org/bot${telegram.bot.token}'
+    tg-file-api:
+      url: 'https://api.telegram.org/file/bot${telegram.bot.token}'
+    compute-engine:
+      url: '${compute-engine.url}'
+    cere-wallet:
+      url: '${cere-wallet.url}'
+    rob-api:
+      url: '${rob.api.url:https://api.rob.stage.cere.io/rms-node-backend}'
+      headers:
+        Authorization: '${ROB_API_AUTHORIZATION:b8vZS773iCvvinb9cOsJfxW6eWGiIQzl}'
+    rule-service-api:
+      url: '${rule-service.api.url}'
+  kotlin-serialization:
+    json:
+      encode-defaults: false
+      ignore-unknown-keys: true
+
+  http:
+    cors:
+      ~: true
+      origins: '*'
+
+agent-service:
+  bot-name: '${AGENT_SERVICE_BOT_NAME:stg_ddc_streaming_bot}'
+  mini-app-name: '${AGENT_SERVICE_MINI_APP_NAME:viewer}'
+
+"%dev":
+  quarkus:
+    rest-client:
+      logging:
+        scope: 'request-response'
+        body-limit: 10000
+    log:
+      category:
+        "org.jboss.resteasy.reactive.client.logging":
+          level: 'DEBUG'

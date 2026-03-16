@@ -1,0 +1,46 @@
+quarkus:
+  devservices:
+    enabled: false
+  http:
+    port: 8082
+  datasource:
+    jdbc:
+      driver: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/notifications_db
+    username: mysql_user
+    password: mysql_password
+    db-kind: mysql
+  hibernate-orm:
+    log:
+      sql: true
+    database:
+      generation: drop-and-create
+
+mp:
+  messaging:
+    connector:
+      smallrye-kafka:
+        schema:
+          registry:
+            url: http://localhost:8081
+    incoming:
+      notification-service:
+        connector: smallrye-kafka
+        topic: notification-service
+        group:
+          id: notification-db-consumer-group
+        bootstrap:
+          servers: http://localhost:9092
+        auto:
+          offset:
+            reset: earliest
+      notification-result-service:
+        connector: smallrye-kafka
+        topic: notification-result-service
+        group:
+          id: notification-db-consumer-group
+        bootstrap:
+          servers: http://localhost:9092
+        auto:
+          offset:
+            reset: earliest

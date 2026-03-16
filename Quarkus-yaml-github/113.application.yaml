@@ -1,0 +1,64 @@
+quarkus:
+  http:
+    cors:
+      enabled: true
+      origins: "http://localhost:5173"
+      headers: "accept,authorization,content-type,x-requested-with"
+      methods: "GET,POST,OPTIONS"
+  log:
+    # Root level (applies unless overridden by category)
+    level: INFO
+
+    console:
+      enable: false
+      level: TRACE
+
+    file:
+      enable: true
+      path: logs/app.log
+      level: TRACE
+      format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{2.}] (%t) %s%e%n"
+
+    category:
+      "org.gautelis":
+        level: DEBUG
+
+      # Quarkus internals
+      "io.quarkus":
+        level: DEBUG
+
+      # JBoss Logging facade and backend
+      "org.jboss.logging":
+        level: TRACE
+        min-level: TRACE
+      "org.jboss.logmanager":
+        level: TRACE
+        min-level: TRACE
+      "org.jboss.logmanager.handlers":
+        level: TRACE
+        min-level: TRACE
+
+  index-dependency:
+    ipto-repo-cdi:
+      group-id: org.gautelis.ipto
+      artifact-id: ipto-repo-cdi
+  datasource:
+    db-kind: postgresql
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/repo
+      max-size: 10
+    username: repo
+    password: repo
+
+ipto:
+  repository:
+    database-adapter: org.gautelis.ipto.repo.search.query.adapters.PostgresAdapter
+    events-threshold: 1000
+    events-listeners:
+      - org.gautelis.ipto.repo.listeners.NopActionListener
+    cache:
+      look-behind: true
+      max-size: 1000
+      idle-check-interval: 60
+  graphql:
+    sdl-resource: /ipto.graphqls

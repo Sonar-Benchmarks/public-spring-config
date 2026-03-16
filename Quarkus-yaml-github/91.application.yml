@@ -1,0 +1,48 @@
+quarkus:
+  http:
+    port: 8080
+  datasource:
+    db-kind: sqlite
+    jdbc:
+      url: ${DB_URL}
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: db/migration
+    migrate-at-start: true
+  mybatis:
+    map-underscore-to-camel-case: true
+  native:
+    resources:
+      includes:
+        - db/migration/**
+  oidc:
+    resolve-tenants-with-issuer: true
+    # 1. Disable the default tenant so it doesn't demand a URL
+    tenant-enabled: false
+    poc-keycloak-cluster:
+      auth-server-url: ${KEYCLOAK_AUTH_SERVER_URL}
+      tls:
+        verification: none
+      tenant-enabled: true
+    poc-keycloak-cluster-new:
+      auth-server-url: ${KEYCLOAK_NEW_AUTH_SERVER_URL}
+      tls:
+        verification: none
+      tenant-enabled: true
+
+  log:
+    category:
+      # Enable detailed OIDC logging
+      "io.quarkus.oidc":
+        level: DEBUG
+      "io.quarkus.oidc.runtime":
+        level: TRACE
+
+      # Show HTTP client requests to Keycloak
+      "io.vertx.ext.web.client":
+        level: DEBUG
+
+      # Show token validation details
+      "io.quarkus.oidc.runtime.OidcProvider":
+        level: DEBUG

@@ -1,0 +1,76 @@
+
+quarkus:
+  http:
+    test-port: 8081
+  application:
+    name: buggy-developer-quarkus-service
+    uri: http://buggy-developer-quarkus-service:8080/
+  keycloak:
+    policy-enforcer:
+      enforment-mode: PERMISSIVE
+      paths:
+        name: unsecured
+        path: /health
+        enforcement-mode: DISABLED
+  oidc:
+    auth-server-url: http://buggy-keycloak:8080/auth/realms/buggy
+    client-id: buggyui
+    credentials:
+      secret: d6bbc4e6-ca6b-4a15-96aa-838aab3aaeef
+
+  mongodb:
+    connection-string: mongodb://buggy-mongo:27017
+
+  log:
+    level: INFO
+    category:
+      io.smallrye.reactive.messaging:
+        level: TRACE
+      de.dkutzer:
+        level: TRACE
+
+
+
+
+# Configures the AMQP broker credentials.
+
+
+kafka:
+  bootstrap:
+    servers: buggy-kafka:9092
+
+# Configure the AMQP connector to read from the `developers` queue
+
+
+mp:
+  messaging:
+    outgoing:
+      developer:
+        connector: smallrye-kafka
+        topic: developer
+        value:
+          serializer: io.quarkus.kafka.client.serialization.ObjectMapperSerializer
+
+
+sba-api/mp-rest/url: http://buggy-sba-service:8080/instances
+sba-api/mp-rest/scope: javax.inject.Singleton
+
+
+
+
+"%test":
+
+  quarkus:
+    application:
+      sba:
+        enabled: false
+    oauth2:
+      enabled: false
+    keycloak:
+      policy-enforcer:
+        enable: false
+    oidc:
+      enabled: false
+
+
+

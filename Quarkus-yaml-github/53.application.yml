@@ -1,0 +1,33 @@
+quarkus:
+  test:
+    continuous-testing: enabled
+
+"%prod":
+  quarkus:
+    hibernate-orm:
+      database:
+        generation: drop-and-create
+      sql-load-script: import.sql
+    swagger-ui:
+      always-include: true
+
+mp:
+  messaging:
+    outgoing:
+      todocompletions:
+        connector: smallrye-kafka
+        topic: todocompletions
+
+"%dev":
+  quarkus:
+    rest-client:
+      twitter-api:
+        url: http://localhost:8888
+
+"%test":
+  mp:
+    messaging:
+      outgoing:
+        todocompletions:
+          connector: smallrye-in-memory
+          merge: true

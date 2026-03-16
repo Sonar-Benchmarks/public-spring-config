@@ -1,0 +1,257 @@
+#
+# JBoss, Home of Professional Open Source.
+# Copyright 2023 Red Hat, Inc., and individual contributors
+# as indicated by the @author tags.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+smallrye:
+  messaging:
+    worker:
+      "build-processor-pool":
+        max-concurrency: 10
+      "errata-processor-pool":
+        max-concurrency: 10
+
+mp:
+  messaging:
+    incoming:
+      errata:
+        port: ${UMB_BROKER_PORT}
+        # This is useful for dev, for prod correct value is provided with MP_ env variables
+        address: ${SBOMER_CONSUMER_ERRATA_TOPIC}
+        host: "${UMB_BROKER_HOST}"
+        connector: smallrye-amqp
+        enabled: ${sbomer.features.umb.enabled}
+        client-options-name: umb
+        failure-strategy: reject
+      builds:
+        port: ${UMB_BROKER_PORT}
+        # This is useful for dev, for prod correct value is provided with MP_ env variables
+        address: ${SBOMER_CONSUMER_PNC_TOPIC}
+        host: "${UMB_BROKER_HOST}"
+        connector: smallrye-amqp
+        enabled: ${sbomer.features.umb.enabled}
+        client-options-name: umb
+        failure-strategy: reject
+
+    outgoing:
+      finished:
+        port: ${UMB_BROKER_PORT}
+        address: "topic://${PRODUCER_TOPIC}"
+        host: "${UMB_BROKER_HOST}"
+        connector: smallrye-amqp
+        enabled: ${sbomer.features.umb.enabled}
+        client-options-name: umb
+
+quarkus:
+  application:
+    version: ${buildNumber}
+
+  # Make the startup a bit nicer
+  banner:
+    path: banner.txt
+
+  # We don't use https://quarkus.io/guides/dev-services currently
+  devservices:
+    enabled: false
+
+  index-dependency:
+    yaml:
+      group-id: com.fasterxml.jackson.jakarta.rs
+      artifact-id: jackson-jakarta-rs-yaml-provider
+
+  rest-client:
+    connect-timeout: 15000
+    read-timeout: 120000
+    "atlas-build":
+      url: "https://${sbomer.atlas.build.host}"
+    "atlas-release":
+      url: "https://${sbomer.atlas.release.host}"
+    "pnc":
+      url: "https://${sbomer.pnc.host}"
+    "sbomer":
+      url: "https://${sbomer.host}"
+    "errata":
+      url: "https://${sbomer.errata.host}"
+    "pyxis":
+      url: "https://${sbomer.pyxis.host}"
+      logging:
+        scope: request-response
+        body-limit: 500
+
+  # Support for feature-flags
+  unleash:
+    # Disable extension by default
+    active: false
+    # By default we use the 'dev' application name
+    application: dev
+    # Fetch flags every 30s
+    fetch-toggles-interval: 30
+    # Fetch initial update in synchronous way
+    synchronous-fetch-on-initialisation: true
+    # The Unleash server URL
+    url: "https://localhost"
+
+  # Default logging settings
+  log:
+    level: INFO
+    category:
+      "org.jboss.sbomer":
+        level: DEBUG
+      # "io.javaoperatorsdk.operator":
+      #   level: DEBUG
+      "com.github.tennaito.rsql":
+        level: WARN
+      "io.quarkus.kubernetes.client":
+        level: INFO
+      "io.quarkiverse.kerberos.runtime.KerberosIdentityProvider":
+        level: TRACE
+      "org.jboss.resteasy.reactive.client.logging":
+        level: DEBUG
+
+    console:
+      # Enable console logging
+      enable: true
+      # Disable JSON logging for console by default
+      json:
+        ~: false
+      format: "%d{HH:mm:ss,SSS} %-5p traceId=%X{traceId} parentId=%X{parentId} spanId=%X{spanId} [%c{3.}] (%t) %s%e mdc:[%X]%n"
+    file:
+      level: DEBUG
+      # Disable file logging
+      enable: false
+      # Disable JSON logging for files by default
+      json:
+        ~: false
+      format: "%d{HH:mm:ss,SSS} %-5p [%c{3.}] (%t) %s%e mdc:[%X]%n"
+      path: application.log
+
+  # Configuration for API viewer under the api/ /endpoint.
+  smallrye-openapi:
+    info-title: SBOMer service
+
+  swagger-ui:
+    doc-expansion: none
+    always-include: true
+    path: /api
+    # Sort tags, print latest API versions first
+    tags-sorter: |
+      function (a, b) { return b.localeCompare(a); }
+
+  # Database configuration
+  datasource:
+    db-kind: postgresql
+    metrics:
+      enabled: true
+    jdbc:
+      telemetry: true
+      max-size: 20
+      min-size: 0
+      initial-size: 1
+      acquisition-timeout: 45
+      additional-jdbc-properties:
+        connectTimeout: 20
+        socketTimeout: 30
+
+  # https://quarkus.io/guides/hibernate-orm
+  hibernate-orm:
+    database:
+      # Just validate, do not do anything else
+      generation:
+        ~: validate
+
+  # https://docs.quarkiverse.io/quarkus-operator-sdk/dev/index.html
+  operator-sdk:
+    crd:
+      generate-all: false
+      generate: false
+      apply: false
+      validate: false
+    enable-ssa: false
+
+  ## https://quarkus.io/guides/security-oidc-configuration-properties-reference
+  ## OpenID Connect (OIDC) configuration
+  oidc:
+    enabled: false
+
+  oidc-client:
+    client-enabled: false
+
+  # https://quarkus.io/guides/opentelemetry
+  ## Opentelemetry configuration
+  otel:
+    enabled: false
+
+  http:
+    cors:
+      ~: true
+      origins: "/.*/"
+
+  kerberos:
+    enabled: ${sbomer.features.kerberos.enabled}
+
+sbomer:
+  features:
+    umb:
+      # Disable UMB feature entirely by default
+      enabled: false
+    kerberos:
+      enabled: false
+      errata:
+        service-principal-name: errata-service-principal
+      pyxis:
+        service-principal-name: pyxis-service-principal
+
+  controller:
+    generation-request:
+      # # The directory where the content between TaskRuns (dependent resources) will be
+      # # shared with the controller.
+      # sbom-dir: "/data"
+
+      # # Defines whether resources related to a generation should be automatically removed from the system
+      # # This includes removing the generation request kubernetes resource as well as any leftovers on the filesystem
+      # # located in the sbomer.sbom-dir directory.
+      cleanup: false
+
+  generator:
+    # GenerationRequestType.toName()
+    containerimage:
+      tekton:
+        resources:
+          requests:
+            cpu: "800m"
+            memory: "1200Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1400Mi"
+
+  service:
+    generation-scheduler:
+      # Defines how many requests can be handled concurrently within the namespace
+      # If the capacity is lower than what we have in the DB -- the ones in DB will wait
+      max-concurrent-generations: 20
+
+      # Maximum number of generations that will fetched from the database to be scheduled within the namespace.
+      sync-batch: 10
+
+      # The interval on which the scheduler will run.
+      sync-interval: 15s
+
+  leader:
+    # Duration in seconds that non-leaders will wait before trying to acquire leadership if no renewal occurs.
+    lease-duration: 30
+
+    # The interval on which the lease will be checked
+    check-interval: 10s

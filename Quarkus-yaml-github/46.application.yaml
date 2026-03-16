@@ -1,0 +1,439 @@
+quarkus:
+  log:
+    sentry:
+      ~: ${SENTRY_ENABLED:true}
+      level: ${SENTRY_LOG_LEVEL:WARN}
+
+  mongodb:
+    database: gameDB
+    application-name: game-service-${ENVIRONMENT:dev}
+
+  rest-client:
+    mpl:
+      url: ${MPL_URL:https://qa-partner.mpl.live}
+      scope: javax.inject.Singleton
+    user-service:
+      uri: ${USER_SERVICE_URI:http://localhost:8080}
+      scope: javax.inject.Singleton
+    market-service:
+      uri: ${MARKET_SERVICE_URI:http://localhost:8015}
+      scope: javax.inject.Singleton
+    wallet-service:
+      uri: ${WALLET_SERVICE_URI:http://localhost:8030}
+      scope: javax.inject.Singleton
+    social-service:
+      uri: ${SOCIAL_SERVICE_URI:http://localhost:8080}
+      scope: javax.inject.Singleton
+
+
+format:
+  cache:
+    expiry:
+      default:
+        milli-seconds: ${FORMAT_CACHE_EXPIRY_DEFAULT_MILLI_SECONDS:900000}
+        seconds: ${FORMAT_CACHE_EXPIRY_DEFAULT_SECONDS:900}
+  schema:
+    version:
+      current: ${FORMAT_SCHEMA_VERSION_CURRENT:v1}
+
+
+group:
+  cache:
+    expiry:
+      default:
+        milli-seconds: ${GROUP_CACHE_EXPIRY_DEFAULT_MILLI_SECONDS:900000}
+        seconds: ${GROUP_CACHE_EXPIRY_DEFAULT_SECONDS:900}
+  schema:
+    version:
+      current: ${GROUP_SCHEMA_VERSION_CURRENT:v1}
+
+
+marketstat:
+  cache:
+    expiry:
+      default:
+        milli-seconds: ${MARKETSTAT_CACHE_EXPIRY_DEFAULT_MILLI_SECONDS:900000}
+        seconds: ${MARKETSTAT_CACHE_EXPIRY_DEFAULT_SECONDS:900}
+  schema:
+    version:
+      current: ${MARKETSTAT_SCHEMA_VERSION_CURRENT:v1}
+
+
+policy:
+  cache:
+    expiry:
+      default:
+        milli-seconds: ${POLICY_CACHE_EXPIRY_DEFAULT_MILLI_SECONDS:900000}
+        seconds: ${POLICY_CACHE_EXPIRY_DEFAULT_SECONDS:900}
+  schema:
+    version:
+      current: ${POLICY_SCHEMA_VERSION_CURRENT:v1}
+
+
+pool:
+  leaderboard:
+    short-pool:
+      epochs: ${POOL_LEADERBOARD_SHORT_POOL_EPOCHS:5}
+      duration-threshold:
+        seconds: ${POOL_LEADERBOARD_SHORT_POOL_DURATION_THRESHOLD:600}
+    long-pool:
+      epochs: ${POOL_LEADERBOARD_LONG_POOL_EPOCHS:30}
+    cold-start:
+      duration-threshold:
+        seconds: ${POOL_LEADERBOARD_COLD_START_DURATION_THRESHOLD:600}
+  state:
+    active:
+      lock:
+        attempt-duration:
+          milli-secs: ${POOL_ACTIVE_STATE_LOCK_ATTEMPT_DURATION_MILLI_SECONDS:5000}
+        lease-time:
+          milli-secs: ${POOL_ACTIVE_STATE_LOCK_LEASE_TIME_MILLI_SECONDS:15000}
+      queue:
+        url: ${POOL_ACTIVE_STATE_QUEUE_URL:none}
+        wait-time:
+          milli-secs: ${POOL_ACTIVE_STATE_QUEUE_WAIT_TIME_MILLI_SECS:1000}
+          secs: ${POOL_ACTIVE_STATE_QUEUE_WAIT_TIME_SECS:1}
+        batch:
+          size: ${POOL_ACTIVE_STATE_QUEUE_BATCH_SIZE:10}
+        blocking: ${POOL_ACTIVE_STATE_QUEUE_BLOCKING:false}
+        enabled: ${POOL_ACTIVE_STATE_QUEUE_ENABLED:true}
+    cancelled:
+      lock:
+        attempt-duration:
+          milli-secs: ${POOL_CANCELLED_STATE_LOCK_ATTEMPT_DURATION_MILLI_SECONDS:5000}
+        lease-time:
+          milli-secs: ${POOL_CANCELLED_STATE_LOCK_LEASE_TIME_MILLI_SECONDS:15000}
+      queue:
+        url: ${POOL_CANCELLED_STATE_QUEUE_URL:none}
+        wait-time:
+          milli-secs: ${POOL_CANCELLED_STATE_QUEUE_WAIT_TIME_MILLI_SECS:1000}
+          secs: ${POOL_CANCELLED_STATE_QUEUE_WAIT_TIME_SECS:1}
+        batch:
+          size: ${POOL_CANCELLED_STATE_QUEUE_BATCH_SIZE:1}
+        blocking: ${POOL_CANCELLED_STATE_QUEUE_BLOCKING:false}
+        enabled: ${POOL_CANCELLED_STATE_QUEUE_ENABLED:true}
+    created:
+      lock:
+        attempt-duration:
+          milli-secs: ${POOL_CREATED_STATE_LOCK_ATTEMPT_DURATION_MILLI_SECONDS:5000}
+        lease-time:
+          milli-secs: ${POOL_CREATED_STATE_LOCK_LEASE_TIME_MILLI_SECONDS:15000}
+      queue:
+        url: ${POOL_CREATED_STATE_QUEUE_URL:none}
+        wait-time:
+          milli-secs: ${POOL_CREATED_STATE_QUEUE_WAIT_TIME_MILLI_SECS:1000}
+          secs: ${POOL_CREATED_STATE_QUEUE_WAIT_TIME_SECS:1}
+        batch:
+          size: ${POOL_CREATED_STATE_QUEUE_BATCH_SIZE:10}
+        blocking: ${POOL_CREATED_STATE_QUEUE_BLOCKING:false}
+        enabled: ${POOL_CREATED_STATE_QUEUE_ENABLED:true}
+    done:
+      lock:
+        attempt-duration:
+          milli-secs: ${POOL_DONE_STATE_LOCK_ATTEMPT_DURATION_MILLI_SECONDS:5000}
+        lease-time:
+          milli-secs: ${POOL_DONE_STATE_LOCK_LEASE_TIME_MILLI_SECONDS:15000}
+      queue:
+        url: ${POOL_DONE_STATE_QUEUE_URL:none}
+        wait-time:
+          milli-secs: ${POOL_DONE_STATE_QUEUE_WAIT_TIME_MILLI_SECS:1000}
+          secs: ${POOL_DONE_STATE_QUEUE_WAIT_TIME_SECS:1}
+        batch:
+          size: ${POOL_DONE_STATE_QUEUE_BATCH_SIZE:1}
+        blocking: ${POOL_DONE_STATE_QUEUE_BLOCKING:false}
+        enabled: ${POOL_DONE_STATE_QUEUE_ENABLED:true}
+    final:
+      lock:
+        attempt-duration:
+          milli-secs: ${POOL_FINAL_STATE_LOCK_ATTEMPT_DURATION_MILLI_SECONDS:5000}
+        lease-time:
+          milli-secs: ${POOL_FINAL_STATE_LOCK_LEASE_TIME_MILLI_SECONDS:15000}
+      queue:
+        url: ${POOL_FINAL_STATE_QUEUE_URL:none}
+        wait-time:
+          milli-secs: ${POOL_FINAL_STATE_QUEUE_WAIT_TIME_MILLI_SECS:1000}
+          secs: ${POOL_FINAL_STATE_QUEUE_WAIT_TIME_SECS:1}
+        batch:
+          size: ${POOL_FINAL_STATE_QUEUE_BATCH_SIZE:1}
+        blocking: ${POOL_FINAL_STATE_QUEUE_BLOCKING:true}
+        enabled: ${POOL_FINAL_STATE_QUEUE_ENABLED:true}
+    live:
+      lock:
+        attempt-duration:
+          milli-secs: ${POOL_LIVE_STATE_LOCK_ATTEMPT_DURATION_MILLI_SECONDS:5000}
+        lease-time:
+          milli-secs: ${POOL_LIVE_STATE_LOCK_LEASE_TIME_MILLI_SECONDS:15000}
+      queue:
+        url: ${POOL_LIVE_STATE_QUEUE_URL:none}
+        wait-time:
+          milli-secs: ${POOL_LIVE_STATE_QUEUE_WAIT_TIME_MILLI_SECS:1000}
+          secs: ${POOL_LIVE_STATE_QUEUE_WAIT_TIME_SECS:1}
+        batch:
+          size: ${POOL_LIVE_STATE_QUEUE_BATCH_SIZE:1}
+        blocking: ${POOL_LIVE_STATE_QUEUE_BLOCKING:true}
+        enabled: ${POOL_LIVE_STATE_QUEUE_ENABLED:true}
+    process-winnings:
+      lock:
+        attempt-duration:
+          milli-secs: ${POOL_PROCESSING_WINNINGS_STATE_LOCK_ATTEMPT_DURATION_MILLI_SECONDS:5000}
+        lease-time:
+          milli-secs: ${POOL_PROCESSING_WINNINGS_STATE_LOCK_LEASE_TIME_MILLI_SECONDS:15000}
+      queue:
+        url: ${POOL_PROCESSING_WINNINGS_STATE_QUEUE_URL:none}
+        wait-time:
+          milli-secs: ${POOL_PROCESSING_WINNINGS_STATE_QUEUE_WAIT_TIME_MILLI_SECS:1000}
+          secs: ${POOL_PROCESSING_WINNINGS_STATE_QUEUE_WAIT_TIME_SECS:1}
+        batch:
+          size: ${POOL_PROCESSING_WINNINGS_STATE_QUEUE_BATCH_SIZE:10}
+        blocking: ${POOL_PROCESSING_WINNINGS_STATE_QUEUE_BLOCKING:false}
+        enabled: ${POOL_PROCESSING_WINNINGS_STATE_QUEUE_ENABLED:true}
+    process-refunds:
+      lock:
+        attempt-duration:
+          milli-secs: ${POOL_PROCESSING_REFUNDS_STATE_LOCK_ATTEMPT_DURATION_MILLI_SECONDS:5000}
+        lease-time:
+          milli-secs: ${POOL_PROCESSING_REFUNDS_STATE_LOCK_LEASE_TIME_MILLI_SECONDS:15000}
+      queue:
+        url: ${POOL_PROCESSING_REFUNDS_STATE_QUEUE_URL:none}
+        wait-time:
+          milli-secs: ${POOL_PROCESSING_REFUNDS_STATE_QUEUE_WAIT_TIME_MILLI_SECS:1000}
+          secs: ${POOL_PROCESSING_REFUNDS_STATE_QUEUE_WAIT_TIME_SECS:1}
+        batch:
+          size: ${POOL_PROCESSING_REFUNDS_STATE_QUEUE_BATCH_SIZE:10}
+        blocking: ${POOL_PROCESSING_REFUNDS_STATE_QUEUE_BLOCKING:false}
+        enabled: ${POOL_PROCESSING_REFUNDS_STATE_QUEUE_ENABLED:true}
+    suspended:
+      lock:
+        attempt-duration:
+          milli-secs: ${POOL_SUSPENDED_STATE_LOCK_ATTEMPT_DURATION_MILLI_SECONDS:5000}
+        lease-time:
+          milli-secs: ${POOL_SUSPENDED_STATE_LOCK_LEASE_TIME_MILLI_SECONDS:15000}
+      queue:
+        url: ${POOL_SUSPENDED_STATE_QUEUE_URL:none}
+        wait-time:
+          milli-secs: ${POOL_SUSPENDED_STATE_QUEUE_WAIT_TIME_MILLI_SECS:1000}
+          secs: ${POOL_SUSPENDED_STATE_QUEUE_WAIT_TIME_SECS:1}
+        batch:
+          size: ${POOL_SUSPENDED_STATE_QUEUE_BATCH_SIZE:10}
+        blocking: ${POOL_SUSPENDED_STATE_QUEUE_BLOCKING:false}
+        enabled: ${POOL_SUSPENDED_STATE_QUEUE_ENABLED:true}
+  cache:
+    expiry:
+      default:
+        milli-seconds: ${POOL_CACHE_EXPIRY_DEFAULT_MILLI_SECONDS:900000}
+        seconds: ${POOL_CACHE_EXPIRY_DEFAULT_SECONDS:900}
+      upcoming-public-pools:
+        milli-seconds: ${POOL_CACHE_EXPIRY_UPCOMING_PUBLIC_POOLS_MILLI_SECONDS:900000}
+        seconds: ${POOL_CACHE_EXPIRY_UPCOMING_PUBLIC_POOLS_SECONDS:900}
+  template-reconciliation:
+    calendar-buffer-windows: ${POOL_TEMPLATE_RECONCILIATION_CALENDAR_BUFFER_WINDOWS:50}
+  schema:
+    version:
+      current: ${POOL_SCHEMA_VERSION_CURRENT:v1}
+  format:
+    portfolio:
+      weightage:
+        max: ${POOL_FORMAT_PORTFOLIO_WEIGHTAGE_MAX:97}
+        min: ${POOL_FORMAT_PORTFOLIO_WEIGHTAGE_MIN:1}
+        total: ${POOL_FORMAT_PORTFOLIO_WEIGHTAGE_TOTAL:100}
+      securities:
+        max: ${POOL_FORMAT_PORTFOLIO_SECURITIES_MAX:100}
+        min: ${POOL_FORMAT_PORTFOLIO_SECURITIES_MIN:4}
+    portfolio-boosters:
+      booster-weightage:
+        default: ${POOL_FORMAT_PORTFOLIO_BOOSTERS_BOOSTER_WEIGHTAGE_DEFAULT:1.0}
+        allowed: ${POOL_FORMAT_PORTFOLIO_BOOSTERS_BOOSTER_WEIGHTAGE_ALLOWED:1.0,1.5,2.0}
+        non-default:
+          count: ${POOL_FORMAT_PORTFOLIO_BOOSTERS_BOOSTER_WEIGHTAGE_NON_DEFAULT_COUNT:1}
+        min: ${POOL_FORMAT_PORTFOLIO_BOOSTERS_BOOSTER_MIN:1}
+        total: ${POOL_FORMAT_PORTFOLIO_BOOSTERS_BOOSTER_TOTAL:100}
+      securities:
+        max: ${POOL_FORMAT_PORTFOLIO_BOOSTERS_SECURITIES_MAX:100}
+        min: ${POOL_FORMAT_PORTFOLIO_BOOSTERS_SECURITIES_MIN:4}
+    picks:
+      weightage:
+        max: ${POOL_FORMAT_PICKS_WEIGHTAGE_MAX:1}
+        min: ${POOL_FORMAT_PICKS_WEIGHTAGE_MIN:1}
+      securities:
+        max: ${POOL_FORMAT_PICKS_SECURITIES_MAX:100}
+        min: ${POOL_FORMAT_PICKS_SECURITIES_MIN:4}
+    long-short:
+      weightage:
+        max: ${POOL_FORMAT_LONG_SHORT_WEIGHTAGE_MAX:1}
+        min: ${POOL_FORMAT_LONG_SHORT_WEIGHTAGE_MIN:1}
+      securities:
+        max: ${POOL_FORMAT_LONG_SHORT_SECURITIES_MAX:100}
+        min: ${POOL_FORMAT_LONG_SHORT_SECURITIES_MIN:4}
+
+
+poolentry:
+  cache:
+    expiry:
+      default:
+        milli-seconds: ${POOLENTRY_CACHE_EXPIRY_DEFAULT_MILLI_SECONDS:900000}
+        seconds: ${POOLENTRY_CACHE_EXPIRY_DEFAULT_SECONDS:900}
+  schema:
+    version:
+      current: ${POOLENTRY_SCHEMA_VERSION_CURRENT:v1}
+
+
+template:
+  cache:
+    expiry:
+      default:
+        milli-seconds: ${TEMPLATE_CACHE_EXPIRY_DEFAULT_MILLI_SECONDS:900000}
+        seconds: ${TEMPLATE_CACHE_EXPIRY_DEFAULT_SECONDS:900}
+  schema:
+    version:
+      current: ${TEMPLATE_SCHEMA_VERSION_CURRENT:v1}
+
+
+tradingfloor:
+  cache:
+    expiry:
+      default:
+        milli-seconds: ${TRADINGFLOOR_CACHE_EXPIRY_DEFAULT_MILLI_SECONDS:900000}
+        seconds: ${TRADINGFLOOR_CACHE_EXPIRY_DEFAULT_SECONDS:900}
+  schema:
+    version:
+      current: ${TRADINGFLOOR_SCHEMA_VERSION_CURRENT:v1}
+
+
+userpool:
+  cache:
+    expiry:
+      default:
+        milli-seconds: ${USERPOOL_CACHE_EXPIRY_DEFAULT_MILLI_SECONDS:900000}
+        seconds: ${USERPOOL_CACHE_EXPIRY_DEFAULT_SECONDS:900}
+  schema:
+    version:
+      current: ${USERPOOL_SCHEMA_VERSION_CURRENT:v1}
+
+
+winningsbreakupalgo:
+  cache:
+    expiry:
+      default:
+        milli-seconds: ${WINNINGSBREAKUPALGO_CACHE_EXPIRY_DEFAULT_MILLI_SECONDS:900000}
+        seconds: ${WINNINGSBREAKUPALGO_CACHE_EXPIRY_DEFAULT_SECONDS:900}
+  schema:
+    version:
+      current: ${WINNINGSBREAKUPALGO_SCHEMA_VERSION_CURRENT:v1}
+
+
+wallet:
+  credit:
+    balance:
+      queue:
+        url: ${WALLET_CREDIT_BALANCE_QUEUE_URL:none}
+        wait-time:
+          milli-secs: ${WALLET_CREDIT_BALANCE_QUEUE_WAIT_TIME_MILLI_SECS:1000}
+          secs: ${WALLET_CREDIT_BALANCE_QUEUE_WAIT_TIME_SECS:1}
+        batch:
+          size: ${WALLET_CREDIT_BALANCE_QUEUE_BATCH_SIZE:10}
+        blocking: ${WALLET_CREDIT_BALANCE_QUEUE_BLOCKING:false}
+        enabled: ${WALLET_CREDIT_BALANCE_QUEUE_ENABLED:true}
+  refund:
+    balance:
+      queue:
+        url: ${WALLET_REFUND_BALANCE_QUEUE_URL:none}
+        wait-time:
+          milli-secs: ${WALLET_REFUND_BALANCE_QUEUE_WAIT_TIME_MILLI_SECS:1000}
+          secs: ${WALLET_REFUND_BALANCE_QUEUE_WAIT_TIME_SECS:1}
+        batch:
+          size: ${WALLET_REFUND_BALANCE_QUEUE_BATCH_SIZE:10}
+        blocking: ${WALLET_REFUND_BALANCE_QUEUE_BLOCKING:false}
+        enabled: ${WALLET_REFUND_BALANCE_QUEUE_ENABLED:true}
+
+
+entry:
+  reconciliation:
+    queue:
+      url: ${ENTRY_RECONCILIATION_QUEUE_URL:none}
+      wait-time:
+        milli-secs: ${ENTRY_RECONCILIATION_QUEUE_WAIT_TIME_MILLI_SECS:1000}
+        secs: ${ENTRY_RECONCILIATION_QUEUE_WAIT_TIME_SECS:1}
+      batch:
+        size: ${ENTRY_RECONCILIATION_QUEUE_BATCH_SIZE:10}
+      blocking: ${ENTRY_RECONCILIATION_QUEUE_BLOCKING:false}
+      enabled: ${ENTRY_RECONCILIATION_QUEUE_ENABLED:true}
+
+
+mpl:
+  admin:
+    metric:
+      user: ${MPL_ADMIN_METRIC_USER:3667329}
+
+
+framework:
+  aws:
+    sqs:
+      enabled: ${FRAMEWORK_AWS_SQS_ENABLED:false}
+  outbox:
+    enabled: ${FRAMEWORK_OUTBOX_ENABLED:true}
+    serializer: ${FRAMEWORK_OUTBOX_SERIALIZER:confluentAvroSerializer}
+    schema:
+      registry:
+        url: ${FRAMEWORK_OUTBOX_SCHEMA_REGISTRY_URL:http://localhost:8081}
+
+
+game:
+  default:
+    channelId: 7c90a37f-6ea6-4b20-a55d-172bee914c1f
+
+
+kafka:
+  bootstrap:
+    servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+
+mp:
+  messaging:
+    connector:
+      smallrye-kafka:
+        schema:
+          registry:
+            url: ${FRAMEWORK_OUTBOX_SCHEMA_REGISTRY_URL:http://localhost:29080}
+
+    incoming:
+      Pool:
+        enabled: ${KAFKA_SCHEDULER_ENABLED:false}
+        connector: smallrye-kafka
+        broadcast: true
+        failure-strategy: dead-letter-queue
+        dead-letter-queue:
+          topic: dead-letter.game-service.${KAFKA_POOLS_SCHEDULER_GROUP_ID:Pool}
+        topic: ${KAFKA_POOLS_TOPIC:game-service.outbox.event.Pool}
+        group:
+          id: ${KAFKA_POOLS_SCHEDULER_GROUP_ID:Pool}
+        health-enabled: false
+        enable:
+          auto:
+            commit: true
+        auto:
+          offset:
+            reset: ${KAFKA_POOLS_OFFSET_RESET:earliest}
+          commit:
+            interval:
+              ms: ${KAFKA_POOLS_AUTO_COMMIT_INTERVAL:5000}
+
+      PoolEntry:
+        enabled: ${KAFKA_SCHEDULER_ENABLED:false}
+        connector: smallrye-kafka
+        broadcast: true
+        failure-strategy: dead-letter-queue
+        dead-letter-queue:
+          topic: dead-letter.game-service.${KAFKA_POOL_ENTRIES_SCHEDULER_GROUP_ID:PoolEntry}
+        topic: ${KAFKA_POOL_ENTRIES_TOPIC:game-service.outbox.event.PoolEntry}
+        group:
+          id: ${KAFKA_POOL_ENTRIES_SCHEDULER_GROUP_ID:PoolEntry}
+        health-enabled: false
+        enable:
+          auto:
+            commit: true
+        auto:
+          offset:
+            reset: ${KAFKA_POOL_ENTRIES_OFFSET_RESET:earliest}
+          commit:
+            interval:
+              ms: ${KAFKA_POOL_ENTRIES_AUTO_COMMIT_INTERVAL:5000}

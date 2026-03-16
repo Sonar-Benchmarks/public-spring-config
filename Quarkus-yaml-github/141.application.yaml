@@ -1,0 +1,64 @@
+quarkus:
+  application:
+    name: order-service
+
+  datasource:
+    db-kind: postgresql
+    username: ${QUARKUS_DATASOURCE_USERNAME:saga}
+    password: ${QUARKUS_DATASOURCE_PASSWORD:saga}
+    reactive:
+      url: ${QUARKUS_DATASOURCE_REACTIVE_URL:postgresql://localhost:5432/orders}
+      max-size: 5
+      idle-timeout: PT1M
+    jdbc:
+      max-size: 2
+      acquisition-timeout: 15S
+      idle-removal-interval: PT30S
+      url: ${QUARKUS_DATASOURCE_JDBC_URL:jdbc:postgresql://localhost:5432/orders}
+
+  flyway:
+    migrate-at-start: true
+
+  http:
+    port: 8080
+
+  container-image:
+    build: true
+    group: saga
+    name: order-service
+    tag: latest
+    builder: docker
+    dockerfile-jvm-path: src/main/docker/Dockerfile.jvm
+
+rabbitmq-host: ${RABBITMQ_HOST:localhost}
+rabbitmq-port: ${RABBITMQ_PORT:5672}
+rabbitmq-username: ${RABBITMQ_USERNAME:ivang}
+rabbitmq-password: ${RABBITMQ_PASSWORD:ivang123}
+
+mp:
+  messaging:
+    outgoing:
+      order-events:
+        connector: smallrye-rabbitmq
+        exchange:
+          name: order-events
+          type: topic
+          durable: true
+        default-routing-key: order.created
+        publisher-confirms: true
+
+    incoming:
+      order-status-updates:
+        connector: smallrye-rabbitmq
+        queue:
+          name: order-status-queue
+          durable: true
+          x-dead-letter-exchange: saga-dlx
+          x-dead-letter-routing-key: order.status.dlq
+          x-queue-type: quorum
+        exchange:
+          name: order-status-events
+          type: topic
+        routing-keys: order.status.changed
+        auto-acknowledgement: false
+        failure-strategy: reject

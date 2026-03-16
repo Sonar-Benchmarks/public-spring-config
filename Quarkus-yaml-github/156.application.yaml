@@ -1,0 +1,45 @@
+quarkus:
+  datasource:
+    db-kind: postgresql
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    jdbc:
+      url: jdbc:postgresql://productdb:5432/products
+  hibernate-orm:
+    database:
+      generation: drop-and-create
+  package:
+    jar:
+      type: mutable-jar
+  live-reload:
+    password: livereloadpassword
+    url: http://localhost:8081
+  redis:
+    hosts: redis://cache:6379
+  oidc:
+    auth-server-url: https://auth.dlugoschvincent.de/realms/exe
+"%prod":
+  quarkus:
+    hibernate-orm:
+      sql-load-script: import.sql
+rabbitmq-host: rabbitmq
+rabbitmq-port: 5672
+rabbitmq-username: ${RABBITMQ_DEFAULT_USER}
+rabbitmq-password: ${RABBITMQ_DEFAULT_PASS}
+mp:
+  messaging:
+    outgoing:
+      stock:
+        connector: smallrye-rabbitmq
+        exchange:
+          name: stock
+      order-validation:
+        connector: smallrye-rabbitmq
+        exchange:
+          name: order-validation
+    incoming:
+      order-validation-request:
+        connector: smallrye-rabbitmq
+        auto-acknowledgement: true
+        queue:
+          name: order-validation-request

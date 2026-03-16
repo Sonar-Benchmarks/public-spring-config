@@ -1,0 +1,23 @@
+# Kafka Configuration
+kafka.bootstrap.servers=localhost:19092,localhost:29092,localhost:39092
+
+# Consumer Configuration 
+mp.messaging.incoming.disburse-commands.connector=smallrye-kafka
+mp.messaging.incoming.disburse-commands.topic=Microfinance.Commands.DisburseCommand
+mp.messaging.incoming.disburse-commands.key.deserializer=org.apache.kafka.common.serialization.VoidDeserializer
+mp.messaging.incoming.disburse-commands.value.deserializer=org.apache.kafka.common.serialization.ByteArrayDeserializer
+mp.messaging.incoming.disburse-commands.group.id=simple
+mp.messaging.incoming.disburse-commands.auto.offset.reset=earliest
+
+# Database Configuration - Pure Reactive
+quarkus.datasource.reactive.url=postgresql://localhost:5433/microfinance_state_database
+quarkus.datasource.reactive.max-size=20
+quarkus.datasource.username=postgres
+quarkus.datasource.password=UAHSq248uwqejadkASJD
+
+# Hibernate Configuration
+quarkus.hibernate-orm.database.generation=drop-and-create
+
+# Logging
+quarkus.log.level=INFO
+quarkus.log.console.enable=true

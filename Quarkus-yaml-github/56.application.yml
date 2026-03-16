@@ -1,0 +1,153 @@
+---
+eosc:
+  service:
+    # Set to unique instance ID (machine hostname) in class DynamicConfiguration
+    instance: default
+    accounting:
+      server:
+      metric:
+      group:
+    qos:
+      quantiles: [ 0.95, 0.98 ]
+      slos: [ 500 ] # SLOs expressed in milliseconds
+  parser:
+    zenodo:
+      name: Zenodo
+      class: parser.zenodo.ZenodoParser
+      url: https://zenodo.org
+      timeout: 5000
+    esrf:
+      name: ESRF
+      class: parser.esrf.EsrfParser
+      url: https://icatplus.esrf.fr
+    b2share:
+      name: B2Share
+      class: parser.b2share.B2ShareParser
+    signpost:
+      name: Signposting
+      class: parser.generic.SignpostParser
+  transfer:
+    destination:
+      dcache:
+        description: dCache
+        service: fts
+        storage: webdav
+      s3:
+        description: S3 compatible object storage
+        service: fts
+        storage: minio
+      s3s:
+        description: S3 compatible object storage over HTTPS
+        service: fts
+        storage: minios
+#      storm:
+#        description: StoRM
+#        service: fts
+#        storage: webdav
+      ftp:
+        description: Storage site supporting the FTP protocol
+        service: fts
+    service:
+      fts:
+        name: EGI Data Transfer
+        class: egi.eu.EgiDataTransfer
+        url: https://fts-egi.cern.ch:8446
+        timeout: 3000
+        trust-store-file: cern-truststore.jks
+        trust-store-password: password
+    storage:
+      minio:
+        name: Min.io object storage
+        class: egi.eu.MinioStorage
+        auth: keys
+        protocol: s3
+        timeout: 3000
+      minios:
+        name: Min.io object storage
+        class: egi.eu.MinioStorage
+        auth: keys
+        protocol: https
+        timeout: 3000
+      webdav:
+        name: WebDAV storage
+        class: egi.eu.WebDavStorage
+        auth: token
+        protocol: https
+
+quarkus:
+  application:
+    name: data-transfer
+  log:
+    level: INFO
+    min-level: DEBUG
+    console:
+      enabled: true
+      format: "%d{HH:mm:ss} %-5p traceId=%X{traceId}, spanId=%X{spanId}, sampled=%X{sampled} [%c{2.}] (%t) %s%e%n"
+      json:
+        enabled: false
+    file:
+      enabled: true
+      # Changed to include instance in class DynamicConfiguration
+      path: logs/data-transfer.json
+      format: "%d{HH:mm:ss} %-5p traceId=%X{traceId}, parentId=%X{parentId}, spanId=%X{spanId}, sampled=%X{sampled} [%c{2.}] (%t) %s%e%n"
+      rotation:
+        max-file-size: 1M
+        max-backup-index: 10
+      json:
+        enabled: true
+  otel:
+    traces:
+      enabled: true
+    metrics:
+      enabled: true
+    exporter:
+      otlp:
+        endpoint: http://localhost:4317
+  micrometer:
+    enabled: true
+    export:
+      prometheus:
+        path: /metrics
+    binder:
+      http-client:
+        ignore-patterns: /.+
+      http-server:
+        ignore-patterns: /metrics
+  swagger-ui:
+    always-include: true
+    path: /swagger-ui
+    theme: flattop
+    urls:
+      default: /openapi
+    urls-primary-name: default
+  smallrye-openapi:
+    path: /openapi
+    info-version: 1.1.101
+    security-scheme-name: OIDC
+    security-scheme-description: OpenID Connect access token issued by EGI Check-In
+    security-scheme: jwt
+    jwt-security-scheme-value: bearer
+    jwt-bearer-format: JWT
+  jackson:
+    fail-on-unknown-properties: false
+  http:
+    port: 8089
+    auth:
+      basic: false
+    cors:
+      enabled: true
+      headers: Origin,Authorization,Authorization-Storage,Content-Type,Accept,X-Requested-With
+      methods: HEAD,GET,POST,PUT,DELETE,OPTIONS
+      origins: "*"
+    proxy:
+      proxy-address-forwarding: true
+      allow-x-forwarded: true
+      enable-forwarded-host: true
+    access-log:
+      enabled: false
+      pattern: "%r -> %s\n%{ALL_REQUEST_HEADERS}\n"
+      log-to-file: true
+      base-file-name: data-transfer
+      log-directory: logs/http
+  tls:
+    trust-all: false

@@ -1,0 +1,28 @@
+quarkus:
+  liquibase:
+    change-log: db/changelog.yaml
+    contexts: all,test
+    migrate-at-start: false
+  log:
+    level: WARN
+
+mp:
+  messaging:
+    incoming:
+      course-state:
+        connector: smallrye-in-memory
+        topic: Courses-course_state
+      player-state:
+        connector: smallrye-in-memory
+        topic: Players-player_state
+      scores-incoming:
+        connector: smallrye-in-memory
+        topic: Scorecards-score_entries
+
+    outgoing:
+      scorecard-state:
+        connector: smallrye-in-memory
+        topic: Scorecards-scorecard_state
+      scores:
+        connector: smallrye-in-memory
+        topic: Scorecards-score_entries

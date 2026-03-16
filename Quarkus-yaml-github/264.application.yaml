@@ -1,0 +1,27 @@
+quarkus:
+  smallrye-graphql:
+    schema-include-scalars: true
+  flyway:
+    migrate-at-start: true
+  ssl:
+    native: true
+  native:
+    compression:
+      level: 5
+    container-build: true
+
+mp:
+  messaging:
+    outgoing:
+      match-result:
+        connector: smallrye-kafka
+        topic: toeggelomat-test
+        value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+"%dev":
+  quarkus:
+    datasource:
+      username: postgres
+      password: postgres
+      jdbc:
+        url: jdbc:postgresql://localhost:5432/postgres

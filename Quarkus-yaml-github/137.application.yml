@@ -1,0 +1,114 @@
+quarkus:
+  application:
+    name: finance-forecasting
+  index-dependency:
+    common-security:
+      group-id: com.chiroerp
+      artifact-id: common-security
+    forecasting-api:
+      group-id: com.chiroerp
+      artifact-id: forecasting-api
+  http:
+    host: 0.0.0.0
+    port: ${FINANCE_FORECASTING_HTTP_PORT:8095}
+  datasource:
+    db-kind: postgresql
+    username: ${POSTGRES_FINANCE_FORECASTING_USER:svc_finance_forecasting}
+    password: ${POSTGRES_FINANCE_FORECASTING_PASSWORD:dev_password}
+    jdbc:
+      url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DATABASE:chiroerp}?currentSchema=${POSTGRES_FINANCE_FORECASTING_SCHEMA:finance_forecasting}
+      max-size: ${DB_POOL_MAX_SIZE:20}
+      min-size: ${DB_POOL_MIN_IDLE:2}
+      acquisition-timeout: ${DB_POOL_ACQUIRE_TIMEOUT:5s}
+  hibernate-orm:
+    database:
+      generation: none
+    physical-naming-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    log:
+      sql: false
+  flyway:
+    migrate-at-start: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+    schemas: ${POSTGRES_FINANCE_FORECASTING_SCHEMA:finance_forecasting}
+    table: flyway_history_finance_forecasting
+  smallrye-openapi:
+    path: /q/openapi
+    store-schema-directory: build/openapi
+  swagger-ui:
+    always-include: true
+    path: /q/swagger-ui
+  log:
+    level: ${LOG_LEVEL:INFO}
+    console:
+      json: true
+
+kafka:
+  bootstrap:
+    servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+  security:
+    protocol: ${KAFKA_SECURITY_PROTOCOL:PLAINTEXT}
+  sasl:
+    mechanism: ${KAFKA_SASL_MECHANISM:PLAIN}
+    jaas:
+      config: ${KAFKA_SASL_JAAS_CONFIG:}
+  ssl:
+    truststore:
+      location: ${KAFKA_SSL_TRUSTSTORE_LOCATION:}
+      password: ${KAFKA_SSL_TRUSTSTORE_PASSWORD:}
+
+mp:
+  messaging:
+    incoming:
+      forecasting-event-inbox:
+        connector: smallrye-kafka
+        topic: ${FORECASTING_INBOX_TOPIC:finance.forecasting.integration-events}
+        group-id: ${FORECASTING_INBOX_CONSUMER_GROUP_ID:finance-forecasting-inbox-events}
+        bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+        auto-offset-reset: latest
+        value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        failure-strategy: dead-letter-queue
+        "dead-letter-queue.topic": ${FORECASTING_INBOX_DLQ_TOPIC:finance.forecasting.integration-events.dlq}
+        "security.protocol": ${kafka.security.protocol:${KAFKA_SECURITY_PROTOCOL:PLAINTEXT}}
+        "sasl.mechanism": ${kafka.sasl.mechanism:${KAFKA_SASL_MECHANISM:PLAIN}}
+        "sasl.jaas.config": ${kafka.sasl.jaas.config:${KAFKA_SASL_JAAS_CONFIG:}}
+        "ssl.truststore.location": ${kafka.ssl.truststore.location:${KAFKA_SSL_TRUSTSTORE_LOCATION:}}
+        "ssl.truststore.password": ${kafka.ssl.truststore.password:${KAFKA_SSL_TRUSTSTORE_PASSWORD:}}
+
+chiroerp:
+  messaging:
+    forecasting-events:
+      topic: ${FORECASTING_EVENTS_TOPIC:finance.forecasting.events}
+      dlq-topic: ${FORECASTING_EVENTS_DLQ_TOPIC:finance.forecasting.events.dlq}
+      outbox:
+        enabled: ${FORECASTING_OUTBOX_ENABLED:true}
+        poll-interval: ${FORECASTING_OUTBOX_POLL_INTERVAL:5s}
+        batch-size: ${FORECASTING_OUTBOX_BATCH_SIZE:100}
+        max-attempts: ${FORECASTING_OUTBOX_MAX_ATTEMPTS:10}
+        max-backoff-seconds: ${FORECASTING_OUTBOX_MAX_BACKOFF_SECONDS:60}
+        retention:
+          enabled: ${FORECASTING_OUTBOX_RETENTION_ENABLED:true}
+          cleanup-interval: ${FORECASTING_OUTBOX_RETENTION_CLEANUP_INTERVAL:1h}
+          published-days: ${FORECASTING_OUTBOX_RETENTION_PUBLISHED_DAYS:7}
+          dead-days: ${FORECASTING_OUTBOX_RETENTION_DEAD_DAYS:30}
+          delete-batch-size: ${FORECASTING_OUTBOX_RETENTION_DELETE_BATCH_SIZE:1000}
+  security:
+    tenant-filter:
+      enabled: ${TENANT_SECURITY_FILTER_ENABLED:true}
+  identity:
+    jwt:
+      secret: ${IDENTITY_JWT_SECRET}
+      issuer: ${IDENTITY_JWT_ISSUER:identity-core}
+
+"%prod":
+  kafka:
+    security:
+      protocol: SASL_SSL
+    sasl:
+      mechanism: ${KAFKA_SASL_MECHANISM:PLAIN}
+      jaas:
+        config: ${KAFKA_SASL_JAAS_CONFIG}
+    ssl:
+      truststore:
+        location: ${KAFKA_SSL_TRUSTSTORE_LOCATION}
+        password: ${KAFKA_SSL_TRUSTSTORE_PASSWORD}

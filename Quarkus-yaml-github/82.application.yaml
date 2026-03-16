@@ -1,0 +1,169 @@
+# Global configuration shared by all profiles
+quarkus:
+  http:
+    port: 8082
+  application:
+    name: amazoff-orders
+
+  hibernate-orm:
+    database:
+      generation: update
+
+  # Enable health checks
+  smallrye-health:
+    root-path: /q/health
+
+  # Disable separate management interface - keep everything on main port
+  management:
+    enabled: false
+
+  # OIDC Configuration
+  oidc:
+    auth-server-url: ${KEYCLOAK_AUTH_SERVER_URL:http://192.168.49.2:30005}/realms/${KEYCLOAK_REALM:amazoff}
+    client-id: ${KEYCLOAK_CLIENT_ID:amazoff-backend}
+    credentials:
+      secret: ${KEYCLOAK_CLIENT_SECRET:your-client-secret}
+    tls:
+      verification: ${KEYCLOAK_TLS_VERIFICATION:none}
+    token:
+      issuer: ${KEYCLOAK_TOKEN_ISSUER:http://192.168.49.2:30005}/realms/${KEYCLOAK_REALM:amazoff}
+
+  smallrye-jwt:
+    enabled: true
+    
+  smallrye-openapi:
+    path: /q/openapi
+    security-schemes:
+      bearerAuth:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
+
+# Micrometer configuration for Prometheus
+micrometer:
+  export:
+    prometheus:
+      enabled: true
+      path: /q/metrics
+
+mp:
+  messaging:
+    incoming:
+      get-products-responses:
+        connector: smallrye-rabbitmq
+        auto-acknowledgment: true
+      reserve-stock-responses:
+        connector: smallrye-rabbitmq
+        auto-acknowledgment: true
+      release-stock-responses:
+        connector: smallrye-rabbitmq
+        auto-acknowledgment: true
+      get-buyer-responses:
+        connector: smallrye-rabbitmq
+        auto-acknowledgment: true
+    outgoing:
+      get-products-requests:
+        connector: smallrye-rabbitmq
+      reserve-stock-requests:
+        connector: smallrye-rabbitmq
+      release-stock-requests:
+        connector: smallrye-rabbitmq
+      get-buyer-requests:
+        connector: smallrye-rabbitmq
+
+    # Global RabbitMQ connector configuration with environment variable overrides
+    connector:
+      smallrye-rabbitmq:
+        username: ${RABBITMQ_USERNAME:guest}
+        password: ${RABBITMQ_PASSWORD:guest}
+        host: ${RABBITMQ_HOST:localhost}
+        port: ${RABBITMQ_PORT:5672}
+    
+# Development profile configuration
+"%dev":
+  quarkus:
+    datasource:
+      db-kind: postgresql
+      username: amazoff_user
+      password: amazoff_password
+      reactive:
+        url: vertx-reactive:postgresql://localhost:5432/amazoff_orders
+    hibernate-orm:
+      log:
+        sql: true
+      reactive:
+        database:
+          generation: drop-and-create
+    log:
+      console:
+        level: DEBUG
+    
+    # Dev OIDC Configuration
+    oidc:
+      auth-server-url: http://192.168.49.2:30080/realms/amazoff
+      client-id: amazoff-backend
+      tls:
+        verification: none
+      token:
+        issuer: http://192.168.49.2:30080/realms/amazoff
+
+  # Override RabbitMQ settings for development
+  mp:
+    messaging:
+      connector:
+        smallrye-rabbitmq:
+          username: guest
+          password: guest
+          host: localhost
+          port: 5672
+
+# Test profile configuration
+"%test":
+  quarkus:
+    datasource:
+      db-kind: h2
+      jdbc:
+        url: jdbc:h2:mem:amazoff_orders_test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+        driver: org.h2.Driver
+      username: sa
+      password: ""
+    hibernate-orm:
+      reactive:
+        database:
+          generation: drop-and-create
+    log:
+      console:
+        level: DEBUG
+
+# Production profile configuration
+"%prod":
+  quarkus:
+    datasource:
+      db-kind: postgresql
+      username: ${DB_USERNAME:postgres}
+      password: ${DB_PASSWORD:postgres}
+      reactive:
+        url: vertx-reactive:postgresql://${DB_HOST:orders-db}:${DB_PORT:5432}/${DB_NAME:amazoff}
+    hibernate-orm:
+      database:
+        generation: update
+    log:
+      console:
+        level: INFO
+        
+    swagger-ui:
+      always-include: true
+      path: /q/swagger-ui
+    smallrye-openapi:
+      path: /q/openapi
+      
+    # Prod OIDC Configuration
+    oidc:
+      auth-server-url: ${KEYCLOAK_AUTH_SERVER_URL}/realms/${KEYCLOAK_REALM}
+      client-id: ${KEYCLOAK_CLIENT_ID}
+      credentials:
+        secret: ${KEYCLOAK_CLIENT_SECRET}
+      tls:
+        verification: ${KEYCLOAK_TLS_VERIFICATION:required}
+      token:
+        issuer: ${KEYCLOAK_TOKEN_ISSUER}/realms/${KEYCLOAK_REALM}

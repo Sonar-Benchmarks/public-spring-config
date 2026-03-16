@@ -1,0 +1,140 @@
+agoora-endpoint: local.spoud.io
+agoora-insecure: false
+agoora-transport-path: /default/kafka
+
+agoora:
+  # The scrapper is not on 100% of the time. It starts listening every {period} for a maximum of {max-samples} messages and {max-wait}
+  scrapper:
+    max-samples: 100
+    period: PT15M
+    profiling:
+      enabled: true
+    hooks:
+      enabled: true
+  kafka:
+    key:
+    secret:
+    topic-filter-regex: .+
+    consumer-group-filter-regex: .+
+    bootstrap-servers: kafka:9092
+    protocol: PLAINTEXT
+    key-store-location:
+    key-store-password:
+    trust-store-location:
+    trust-store-password:
+  registry:
+    confluent:
+      url:
+      api-key:
+      api-secret:
+      public-url:
+  property-templates:
+    kafka-topic:
+    kafka-consumer-group:
+  transport:
+    agoora-path: ${agoora-transport-path}
+  auth:
+    server-url: https://${agoora-endpoint}/auth/
+    realm: spoud
+    user:
+      name: to-be-defined
+      token: to-be-defined
+  logistics:
+    endpoint: ${agoora-endpoint}
+    insecure: ${agoora-insecure}
+  hooks:
+    endpoint: ${agoora-endpoint}
+    insecure: ${agoora-insecure}
+  schema:
+    endpoint: ${agoora-endpoint}
+    insecure: ${agoora-insecure}
+  looker:
+    endpoint: ${agoora-endpoint}
+    insecure: ${agoora-insecure}
+  blob:
+    endpoint: ${agoora-endpoint}
+    insecure: ${agoora-insecure}
+  profiler:
+    endpoint: localhost:8089
+    insecure: true
+
+quarkus:
+  kafka:
+    snappy:
+      enabled: true
+  reactive-messaging:
+    health:
+      enabled: false
+  arc:
+    # Needed for the grpc interceptors
+    remove-unused-beans: fwk
+  http:
+    port: 8280
+  ssl:
+    native: true
+  native:
+    container-build: true
+    additional-build-args:
+      - --allow-incomplete-classpath
+      - --report-unsupported-elements-at-runtime
+      - -H:IncludeResourceBundles=com.sun.org.apache.xerces.internal.impl.msg.XMLMessages
+  log:
+    category:
+      "io.spoud.agoora":
+        level: INFO
+      "org.apache.kafka":
+        level: WARN
+
+
+  micrometer:
+    binder:
+      jvm: true
+      kafka:
+        enabled: true
+      grpc-client:
+        enabled: true
+      system: true
+      http-client:
+        enabled: true
+      mp-metrics:
+        enabled: true
+
+
+rest-confluent-registry/mp-rest/url: ${agoora.registry.confluent.url}
+#rest-confluent-registry/mp-rest/trustStore:
+#rest-confluent-registry/mp-rest/trustStorePassword:
+#rest-confluent-registry/mp-rest/trustStoreType: JKS
+#rest-confluent-registry/mp-rest/keyStore: JKS
+#rest-confluent-registry/mp-rest/keyStorePassword: JKS
+#rest-confluent-registry/mp-rest/keyStoreType: JKS
+
+"%dev":
+  agoora-endpoint: local.spoud.io
+  agoora-insecure: true
+  agoora-transport-path: /default/kafka/kafka
+  agoora:
+    property-templates:
+      kafka-topic: '{ "kafka.manager.url": "https://km.sdm.spoud.io/clusters/sdm/topics/{TOPIC_NAME}" }'
+    scrapper:
+      max-samples: 10
+      period: 2M
+    auth:
+      server-url: http://${agoora-endpoint}/auth/
+      user:
+        name: sdm_t_338908ea-30f7-4b73-aff9-7b2a08ccac7f
+        token: utQmxZZWC56aFfTrD8cTZSewPA574uTC
+    registry:
+      confluent:
+        url: http://kafka:8081
+    schema-cache:
+      schema-by-id: 1000
+      schema-expiration: 1H
+      topic-name-schema-id-cache: 5000
+      topic-name-id-expiration: 12H
+
+
+  quarkus:
+    log:
+      category:
+        "io.spoud.agoora":
+          level: INFO

@@ -1,0 +1,20 @@
+quarkus:
+  rest-client:
+    auth:
+      url: ${AUTH_SERVER_URL}
+      scope: javax.inject.Singleton
+    json:
+      url: ${JSON_API_URL}
+      scope: javax.inject.Singleton
+
+daml:
+  ledger:
+    host: ${LEDGER_HOST}
+    port: ${LEDGER_PORT}
+    auth:
+      username: ${LEDGER_USER}
+      password: ${LEDGER_PASSWORD}
+  app-id: ${LEDGER_USER}
+  party: ${PROVIDER_PARTY}
+  factory-id: ${FACTORY_CONTRACT_ID}
+  government: ${GOVERNMENT_PARTY}

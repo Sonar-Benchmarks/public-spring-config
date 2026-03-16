@@ -1,0 +1,27 @@
+quarkus:
+  application:
+    name: System-wiki
+
+  http:
+    cors:
+      ~: ${CORS:false}
+      origins: ${CORS_ORIGINS}
+  #      origins: /.*/
+
+  mongodb:
+    connection-string: ${MONGODB_URL:mongodb://root:example@localhost:27017/system-wiki?authSource=admin}
+    database: ${MONGODB_DATABASE:system-wiki}
+
+  jackson:
+    write-dates-as-timestamps: true
+
+  smallrye-openapi:
+    enable: true
+    info:
+      title: demo
+      description: "Abc"
+    path: "/openapi"
+
+  swagger-ui:
+    enable: true
+    path: "/swagger-ui"

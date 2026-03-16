@@ -1,0 +1,52 @@
+# Program configuration
+apelle:
+  songs:
+    sources:
+      youtube:
+        api-uri: &yt-api https://www.googleapis.com/youtube/v3
+        watch-uri: https://www.youtube.com/watch
+
+# Quarkus configuration
+quarkus:
+  # Banner
+  banner:
+    path: banner.txt
+  # Database: the application for now support only PostgreSQL
+  datasource:
+    db-kind: postgresql
+  hibernate-orm:
+    database:
+      generation: none
+    sql-load-script: no-file
+  flyway:
+    migrate-at-start: true
+  # Run basic globally
+  http:
+    auth:
+      basic: true
+  rest:
+    path: /api/v1
+  # External APIs urls
+  rest-client:
+    youtube-api:
+      url: *yt-api
+  # Configuration of the Swagger
+  smallrye-openapi:
+    info-version: ${quarkus.application.version}
+    store-schema-directory: src/main/webui/openapi
+    store-schema-file-name: apelle
+  swagger-ui:
+    deep-linking: true
+  # Frontend integration
+  quinoa:
+    build-dir: build
+    enable-spa-routing: true
+    package-manager-command:
+      build-env:
+        VITE_QUARKUS_PROFILE: ${quarkus.profile}
+      dev-env:
+        VITE_QUARKUS_PROFILE: ${quarkus.profile}
+  # Cache: redis/keyval is for now the only supported
+  redis:
+    configure-client-name: true
+    client-name: ${quarkus.application.name:apelle}

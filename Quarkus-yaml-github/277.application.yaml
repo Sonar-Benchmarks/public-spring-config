@@ -1,0 +1,559 @@
+quarkus:
+  application:
+    name: village-homepage
+    version: ${project.version:dev}
+  http:
+    port: 8080
+
+  # OpenAPI/Swagger UI Configuration (Task I6.T9)
+  smallrye-openapi:
+    path: /q/openapi
+    info-title: Village Homepage API
+    info-version: 1.0.0
+    info-description: Customizable homepage portal API with widgets, marketplace classifieds, and curated web directory
+    info-contact-email: tcurran@villagecompute.com
+    info-contact-name: Village Compute
+    info-contact-url: https://villagecompute.com
+    info-license-name: Proprietary
+  swagger-ui:
+    always-include: true
+    path: /q/swagger-ui
+    title: Village Homepage API
+    theme: flattop
+    urls-primary-name: Village Homepage API
+
+  # Qute Configuration
+  qute:
+    strict-rendering: false
+    property-not-found-strategy: default
+    type-check-excludes: "ProfileResource/**"
+
+  # REST Client Configuration
+  rest-client:
+    # Google OAuth REST client (Policy P1, Feature F1)
+    google-oauth:
+      url: https://oauth2.googleapis.com
+      scope: jakarta.inject.Singleton
+      # Connection timeout for OAuth API calls
+      connect-timeout: 10000
+      read-timeout: 10000
+
+    # Facebook OAuth REST client (Policy P1, Feature F1)
+    facebook-oauth:
+      url: https://graph.facebook.com/v18.0
+      scope: jakarta.inject.Singleton
+      # Connection timeout for OAuth API calls
+      connect-timeout: 10000
+      read-timeout: 10000
+
+    # Apple OAuth REST client (Policy P1, Feature F1)
+    apple-oauth:
+      url: https://appleid.apple.com
+      scope: jakarta.inject.Singleton
+      # Connection timeout for OAuth API calls
+      connect-timeout: 10000
+      read-timeout: 10000
+
+  # S3 Configuration - Disable DevServices (use MinIO from docker-compose)
+  s3:
+    devservices:
+      enabled: false
+    # S3 Client Configuration for Cloudflare R2 (Policy P4)
+    aws:
+      region: ${S3_REGION:auto}
+      credentials:
+        type: static
+        static-provider:
+          access-key-id: ${S3_ACCESS_KEY:minioadmin}
+          secret-access-key: ${S3_SECRET_KEY:minioadmin}
+    endpoint-override: ${S3_ENDPOINT:http://localhost:9000}
+
+  # Logging Configuration
+  log:
+    level: INFO
+    console:
+      # Enable structured JSON logging for production observability
+      json:
+        # Standard fields automatically included: timestamp, sequence, loggerClassName, loggerName, level, message, threadName, threadId
+        # Custom fields added via MDC enrichment (see LoggingEnricher)
+        additional-field:
+          service.name.value: village-homepage
+          service.version.value: ${quarkus.application.version}
+          environment.value: ${ENVIRONMENT:dev}
+
+    # Minimum log levels by category
+    category:
+      "villagecompute.homepage": DEBUG
+      "io.quarkus": INFO
+      "org.hibernate": WARN
+
+  # OpenTelemetry Configuration
+  otel:
+    # Service identification
+    resource:
+      attributes: "service.name=village-homepage,service.version=${quarkus.application.version},deployment.environment=${ENVIRONMENT:dev}"
+
+    # Tracing configuration
+    traces:
+      sampler: always_on
+
+    # OTLP exporter settings
+    exporter:
+      otlp:
+        # Dev profile uses local Jaeger (from docker-compose)
+        endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT:http://localhost:4318}
+        protocol: http/protobuf
+        timeout: 10s
+        # Compress traces for network efficiency
+        compression: gzip
+
+    # Propagation format for distributed tracing
+    propagators: tracecontext,baggage
+
+    # SDK configuration
+    sdk:
+      disabled: false
+
+  # Hibernate ORM Configuration
+  hibernate-orm:
+    # Database schema management (Policy I2: Named query validation)
+    database:
+      generation: none
+    sql-load-script: no-file
+
+    # JSON format mapping for database columns (JSONB support)
+    # Uses global formatting facilities for JSON serialization/deserialization
+    mapping:
+      format:
+        # Ignore format mapper warnings - we use standard ObjectMapper for database JSON
+        global: ignore
+
+    # Second-level cache configuration (Task I6.T6: Performance optimization)
+    # Enable Caffeine-based second-level entity cache and query cache for static/read-heavy data
+    second-level-caching-enabled: true
+
+    # Per-entity cache configuration
+    cache:
+      # Geographic data (static reference data, 24-hour TTL)
+      "villagecompute.homepage.data.models.GeoCountry":
+        expiration:
+          max-idle: 86400  # 24 hours - countries never change
+
+      "villagecompute.homepage.data.models.GeoState":
+        expiration:
+          max-idle: 86400  # 24 hours - states/provinces rarely change
+
+      "villagecompute.homepage.data.models.GeoCity":
+        expiration:
+          max-idle: 3600  # 1 hour - popular city lookups (153K rows, cache hot cities only)
+
+      # Directory category tree (mostly static, 1-hour TTL)
+      "villagecompute.homepage.data.models.DirectoryCategory":
+        expiration:
+          max-idle: 3600  # 1 hour - category structure updated infrequently
+
+      # Marketplace category taxonomy (static, 24-hour TTL)
+      "villagecompute.homepage.data.models.MarketplaceCategory":
+        expiration:
+          max-idle: 86400  # 24 hours - category taxonomy is fixed
+
+      # Feature flags (configuration data, 5-minute TTL for fast flag updates)
+      "villagecompute.homepage.data.models.FeatureFlag":
+        expiration:
+          max-idle: 300  # 5 minutes - balance between performance and flag update latency
+
+      # RSS sources (read-heavy during feed aggregation, 1-hour TTL)
+      "villagecompute.homepage.data.models.RssSource":
+        expiration:
+          max-idle: 3600  # 1 hour - source metadata changes infrequently
+
+    # Query cache configuration (1-hour default TTL)
+    # Caches query result sets (list of entity IDs) for frequently repeated queries
+    query:
+      cache:
+        enabled: true
+        # Default TTL for cached query results
+        default-ttl: 3600  # 1 hour
+
+  # Hibernate Search + Elasticsearch Configuration (Policy P11, Feature F12.2)
+  hibernate-search-orm:
+    elasticsearch:
+      # Elasticsearch version (required by Quarkus)
+      version: 8
+      # Dev: localhost, Prod: ES cluster endpoint
+      hosts: ${ELASTICSEARCH_HOSTS:localhost:9200}
+      protocol: http
+      # Automatic indexing: sync updates to ES on entity persist/update
+      automatic-indexing:
+        enabled: true
+        synchronization-strategy: sync
+      # Schema management: create-or-update for migrations, validate in prod
+      schema-management:
+        strategy: ${ELASTICSEARCH_SCHEMA_STRATEGY:create-or-update}
+      # Indexing queue configuration for async operations
+      indexing:
+        queue-count: 4
+        queue-size: 50
+      # Request timeout for ES operations
+      request-timeout: 10s
+
+  # OIDC Multi-Tenant Configuration (Policy P1, P9, F1)
+  # Supports Google, Facebook, and Apple OAuth providers
+  oidc:
+    tenant-enabled: true
+    authentication:
+      # Callback endpoint consumed by AuthIdentityService bootstrap flow
+      redirect-path: /api/auth/callback
+    google:
+      auth-server-url: https://accounts.google.com
+      client-id: ${GOOGLE_CLIENT_ID:}
+      credentials:
+        secret: ${GOOGLE_CLIENT_SECRET:}
+      application-type: web-app
+      authentication:
+        scopes: openid,email,profile
+      token:
+        refresh-expired: true
+        refresh-token-time-skew: 5s
+      token-state-manager:
+        encryption-secret: ${OIDC_STATE_SECRET:local-dev-oidc-state-secret}
+
+    facebook:
+      auth-server-url: https://www.facebook.com
+      client-id: ${FACEBOOK_APP_ID:}
+      credentials:
+        secret: ${FACEBOOK_APP_SECRET:}
+      application-type: web-app
+      authentication:
+        scopes: email,public_profile
+      token:
+        refresh-expired: true
+        refresh-token-time-skew: 5s
+      token-state-manager:
+        encryption-secret: ${OIDC_STATE_SECRET:local-dev-oidc-state-secret}
+
+    apple:
+      auth-server-url: https://appleid.apple.com
+      client-id: ${APPLE_CLIENT_ID:}
+      credentials:
+        secret: ${APPLE_CLIENT_SECRET:}
+      application-type: web-app
+      authentication:
+        scopes: email,name
+      token:
+        refresh-expired: true
+        refresh-token-time-skew: 5s
+      token-state-manager:
+        encryption-secret: ${OIDC_STATE_SECRET:local-dev-oidc-state-secret}
+
+  # Cache Configuration (Feature I4.T6: AI Cost Optimization)
+  cache:
+    caffeine:
+      # AI Tagging Results Cache (content hash → tagging result)
+      "ai-tagging-cache":
+        initial-capacity: 100
+        maximum-size: 10000
+        expire-after-write: 30D  # 30 days
+      # AI Embedding Results Cache (text hash → embedding vector)
+      "ai-embedding-cache":
+        initial-capacity: 50
+        maximum-size: 5000
+        expire-after-write: 90D  # 90 days
+
+  # LangChain4j AI Integration (Policy P2/P10)
+  langchain4j:
+    # Use Anthropic Claude for chat/tagging, OpenAI for embeddings
+    chat-model:
+      provider: anthropic
+    embedding-model:
+      provider: openai
+    anthropic:
+      api-key: ${ANTHROPIC_API_KEY:}
+      # Default model configuration (can be overridden in AiConfig bean producers)
+      chat-model:
+        model-name: claude-3-5-sonnet-20241022  # Claude Sonnet 3.5 for production accuracy
+        temperature: 0.7  # Balanced creativity for content tagging
+        max-tokens: 4096  # Support longer responses for categorization
+        timeout: 60s  # Prevent hanging requests
+        max-retries: 3  # Handle transient failures (429 rate limits, 5xx errors)
+      log-requests: ${AI_LOG_REQUESTS:false}
+      log-responses: ${AI_LOG_RESPONSES:false}
+    openai:
+      api-key: ${OPENAI_API_KEY:sk-proj-dummy-key-for-tests}
+      embedding-model:
+        model-name: text-embedding-3-small  # OpenAI's efficient embedding model (1536 dimensions)
+        timeout: 30s
+        max-retries: 3
+      log-requests: ${AI_LOG_REQUESTS:false}
+      log-responses: ${AI_LOG_RESPONSES:false}
+
+# VillageCompute Custom Configuration
+villagecompute:
+  # AI Model Configuration (Feature I4.T6: Dual-model cost optimization)
+  ai:
+    model:
+      # Sonnet model (high accuracy for fraud detection)
+      sonnet:
+        name: ${AI_MODEL_SONNET:claude-3-5-sonnet-20241022}
+      # Haiku model (cost-efficient for bulk tagging/categorization, 10x cheaper)
+      haiku:
+        name: ${AI_MODEL_HAIKU:claude-3-haiku-20240307}
+      # Shared model parameters
+      temperature: ${AI_MODEL_TEMPERATURE:0.7}
+      max-tokens: ${AI_MODEL_MAX_TOKENS:4096}
+      timeout-seconds: ${AI_MODEL_TIMEOUT_SECONDS:60}
+      max-retries: ${AI_MODEL_MAX_RETRIES:3}
+
+    # Rate Limiting Configuration (Feature I4.T6: Budget control)
+    rate-limit:
+      requests-per-minute: ${AI_RATE_LIMIT_RPM:60}
+      tokens-per-day: ${AI_RATE_LIMIT_TOKENS_PER_DAY:1000000}  # 1M tokens/day
+
+  # Authentication Configuration (Policy P1, P9)
+  auth:
+    # Anonymous cookie settings (Policy P9)
+    cookie:
+      name: vu_anon_id
+      max-age: 31536000  # 1 year in seconds
+      secure: ${COOKIE_SECURE:true}
+      http-only: true
+      same-site: Lax
+      # Domain for production subdomain sharing (optional, defaults to current host)
+      domain: ${COOKIE_DOMAIN:}
+
+    # Session cookie settings (authenticated users)
+    session:
+      cookie:
+        name: vu_session
+        max-age: 86400  # 24 hours in seconds
+        # Inherits secure, http-only, same-site, and domain from anonymous cookie settings
+
+    # Bootstrap superuser token (Policy P1)
+    # One-time use token for first admin creation
+    # Stored in Kubernetes secret: homepage-bootstrap-credentials
+    bootstrap:
+      token: ${BOOTSTRAP_TOKEN:}
+      admin-exists: ${BOOTSTRAP_ADMIN_EXISTS:false}
+
+    # JWT session signing (Policy P9)
+    jwt:
+      issuer: ${JWT_ISSUER:https://homepage.villagecompute.com}
+      audience: village-homepage
+      secret: ${JWT_SESSION_SECRET:local-dev-secret-change-me}
+      expiration-minutes: ${JWT_EXPIRATION_MINUTES:60}
+
+    rate-limit:
+      login:
+        max-requests: ${AUTH_LOGIN_MAX_REQUESTS:20}
+        window-seconds: ${AUTH_LOGIN_WINDOW_SECONDS:60}
+      bootstrap:
+        max-requests: ${BOOTSTRAP_MAX_REQUESTS:5}
+        window-seconds: ${BOOTSTRAP_WINDOW_SECONDS:3600}
+
+  # Apple Sign-In JWT Configuration (Feature I3.T3)
+  apple:
+    team-id: ${APPLE_TEAM_ID:}
+    key-id: ${APPLE_KEY_ID:}
+    private-key-path: ${APPLE_PRIVATE_KEY_PATH:/secrets/apple-auth-key.p8}
+
+  # Stripe Payment Integration (Policy P3, Feature F12.8)
+  stripe:
+    secret-key: ${STRIPE_SECRET_KEY:sk_test_CHANGE_ME}
+    webhook-secret: ${STRIPE_WEBHOOK_SECRET:whsec_CHANGE_ME}
+    publishable-key: ${STRIPE_PUBLISHABLE_KEY:pk_test_CHANGE_ME}
+
+  # Object Storage Configuration (Policy P4: Indefinite retention with versioning)
+  storage:
+    # S3/R2 Connection Settings
+    endpoint: ${S3_ENDPOINT:http://localhost:9000}  # MinIO for dev, R2 for prod
+    access-key: ${S3_ACCESS_KEY:minioadmin}
+    secret-key: ${S3_SECRET_KEY:minioadmin}
+    region: ${S3_REGION:auto}  # Cloudflare R2 uses 'auto'
+
+    # Bucket names per asset domain (Policy P4)
+    buckets:
+      screenshots: ${S3_BUCKET_SCREENSHOTS:screenshots}
+      listings: ${S3_BUCKET_LISTINGS:listings}
+      profiles: ${S3_BUCKET_PROFILES:profiles}
+      gdpr-exports: ${S3_BUCKET_GDPR_EXPORTS:gdpr-exports}
+
+    # Signed URL TTLs (Policy P4)
+    signed-url-ttl:
+      private-minutes: ${SIGNED_URL_PRIVATE_TTL:1440}  # 24 hours for drafts
+      public-minutes: ${SIGNED_URL_PUBLIC_TTL:10080}    # 7 days for public assets
+
+    # WebP conversion settings (Policy P4: thumbnail/full variants)
+    webp:
+      quality: ${WEBP_QUALITY:85}
+      thumbnail-width: 200
+      thumbnail-height: 200
+      list-width: 800
+      list-height: 600
+      full-width: 1600
+      full-height: 1200
+
+  # Quarkus Mailer SMTP Configuration (Feature F14.3: Email delivery)
+  mailer:
+    # Sender email address (overridable per-email via Mail.setFrom)
+    from: ${EMAIL_FROM:noreply@villagecompute.com}
+    # SMTP host (dev: Mailpit localhost, prod: external SMTP relay)
+    host: ${SMTP_HOST:localhost}
+    # SMTP port (dev: 1025 for Mailpit, prod: 587 for TLS)
+    port: ${SMTP_PORT:1025}
+    # SMTP authentication
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    # TLS settings (disabled in dev, required in prod)
+    tls: ${SMTP_TLS:false}
+    start-tls: ${SMTP_START_TLS:DISABLED}
+    auth-methods: ${SMTP_AUTH_METHODS:}
+    # Mock mode (disable to send real emails even in dev)
+    mock: false
+
+# Email Configuration (Features F12.6, F14.3: Marketplace email relay)
+email:
+  imap:
+    # IMAP server for polling inbound replies (F14.3)
+    # Dev: Mailpit (localhost:1143), Prod: Gmail/AWS SES/etc
+    host: ${EMAIL_IMAP_HOST:localhost}
+    port: ${EMAIL_IMAP_PORT:1143}
+    username: ${EMAIL_IMAP_USERNAME:}
+    password: ${EMAIL_IMAP_PASSWORD:}
+    folder: ${EMAIL_IMAP_FOLDER:INBOX}
+    ssl: ${EMAIL_IMAP_SSL:false}
+    # In dev mode with Mailpit: host=localhost, port=1143, username=empty, password=empty, ssl=false
+    # In prod with Gmail: host=imap.gmail.com, port=993, username=email@domain.com, password=${EMAIL_IMAP_PASSWORD}, ssl=true
+
+  # Notification settings (Policy F14.3: Email Communication)
+  notifications:
+    from: ${EMAIL_FROM:noreply@villagecompute.com}
+    platform-name: ${EMAIL_PLATFORM_NAME:Village Homepage}
+    base-url: ${EMAIL_BASE_URL:https://homepage.villagecompute.com}
+    ops-alert-email: ${EMAIL_OPS_ALERT:ops@villagecompute.com}
+
+  # Unsubscribe token settings (Feature I5.T3: Secure unsubscribe links)
+  unsubscribe:
+    secret: ${EMAIL_UNSUBSCRIBE_SECRET:default-dev-secret-change-in-prod}
+
+  # Homepage Configuration (Feature I6.T5: Sitemap generation)
+  homepage:
+    base-url: ${HOMEPAGE_BASE_URL:http://localhost:8080}
+
+  # CDN Configuration (Feature I6.T5: Sitemap CDN delivery)
+  cdn:
+    base-url: ${CDN_BASE_URL:http://localhost:9000}
+
+# GDPR Configuration (Policy P1: GDPR/CCPA data governance)
+gdpr:
+  # Data export settings
+  export-ttl-days: ${GDPR_EXPORT_TTL_DAYS:7}  # Signed URL validity period
+
+  # Deletion settings
+  deletion-delay-hours: ${GDPR_DELETION_DELAY_HOURS:0}  # Immediate deletion by default
+
+# Profile-specific overrides
+"%dev":
+  quarkus:
+    log:
+      console:
+        # Use human-readable logs in dev mode (override JSON)
+        json: false
+        format: "%d{HH:mm:ss} %-5p [%c{2.}] (%t) %X{trace_id} %X{user_id} %s%e%n"
+    otel:
+      exporter:
+        otlp:
+          # Local Jaeger from docker-compose
+          endpoint: http://localhost:4318
+    # Dev mode SMTP configuration (Mailpit)
+    mailer:
+      host: localhost
+      port: 1025
+      username: ""
+      password: ""
+      tls: false
+      start-tls: DISABLED
+      mock: false
+  # Development cookie settings (HTTP-compatible)
+  villagecompute:
+    auth:
+      cookie:
+        secure: false
+
+"%test":
+  quarkus:
+    log:
+      level: WARN
+      console:
+        json: false
+    otel:
+      sdk:
+        # Disable telemetry in tests to avoid noise
+        disabled: true
+    # NOTE: Datasource configuration moved to application-test.properties
+    # Tests using @TestProfile(PostgreSQLTestProfile.class) use PostgreSQL Testcontainers
+    # Legacy tests using @QuarkusTestResource(H2TestResource.class) use H2 in-memory
+    # Disable S3 dev services in tests
+    s3:
+      devservices:
+        enabled: false
+    # Disable Elasticsearch in tests (use in-memory indexing)
+    hibernate-search-orm:
+      elasticsearch:
+        schema-management:
+          strategy: drop-and-create
+      backend:
+        type: lucene
+
+"%prod":
+  quarkus:
+    # Database connection pool tuning (Task I6.T8: max 50 connections)
+    datasource:
+      jdbc:
+        max-size: 50
+        min-size: 10
+        initial-size: 10
+        acquisition-timeout: 10s
+        leak-detection-interval: 2m
+
+    # Cache configuration tuning for production load
+    cache:
+      caffeine:
+        "ai-tagging-cache":
+          maximum-size: 50000  # Increased from 10000 for production
+        "ai-embedding-cache":
+          maximum-size: 25000  # Increased from 5000 for production
+
+    # HTTP server tuning for production workload
+    http:
+      limits:
+        max-body-size: 50M
+      io-threads: 8
+      worker-threads: 100
+
+    log:
+      console:
+        json: true
+      category:
+        "villagecompute.homepage": INFO
+    otel:
+      exporter:
+        otlp:
+          # Production collector endpoint (managed by ops team)
+          # Set via environment variable: OTEL_EXPORTER_OTLP_ENDPOINT
+          endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT}
+          headers: ${OTEL_EXPORTER_OTLP_HEADERS:}
+    # Production SMTP configuration (external SMTP relay with TLS)
+    mailer:
+      host: ${SMTP_HOST}
+      port: ${SMTP_PORT:587}
+      username: ${SMTP_USERNAME}
+      password: ${SMTP_PASSWORD}
+      tls: true
+      start-tls: REQUIRED
+      auth-methods: DIGEST-MD5 CRAM-SHA256 CRAM-SHA1 CRAM-MD5 PLAIN LOGIN
+  # Production URLs (Feature I6.T5: Sitemap generation)
+  villagecompute:
+    homepage:
+      base-url: https://homepage.villagecompute.com
+    cdn:
+      base-url: https://cdn.villagecompute.com

@@ -1,0 +1,26 @@
+quarkus:
+  console:
+    disable-input: true
+
+  container-image:
+    build: true
+    push: true
+
+  datasource:
+    db-kind: h2
+    jdbc:
+      url: "jdbc:h2:mem:default;DB_CLOSE_DELAY=-1"
+
+  hibernate-orm:
+    database:
+      generation: drop-and-create
+
+  kubernetes:
+    idempotent: true
+    generate-image-pull-secret: true
+
+"%test":
+  datasource:
+    db-kind: h2
+    jdbc:
+      url: "jdbc:h2:mem:test"

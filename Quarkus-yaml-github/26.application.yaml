@@ -1,0 +1,39 @@
+quarkus:
+  http:
+    port: 8080
+    root-path: "/nx-cloud"
+  liquibase-mongodb:
+    change-log: db/change-log.yaml
+    migrate-at-start: true
+  mongodb:
+    database: graphoenix
+  smallrye-openapi:
+    security-scheme: api-key
+    api-key-parameter-in: header
+    api-key-parameter-name: authorization
+  azure:
+    app:
+      configuration:
+        enabled: false
+
+graphoenix-server:
+  configuration:
+    client-bundle-version: 2412.18.5.hotfix5
+    client-bundle-path: nx-cloud/static/client-bundle
+
+"%dev":
+  quarkus:
+    mongodb:
+      connection-string: mongodb://localhost:27017
+  graphoenix-server:
+    configuration:
+      application-url: http://localhost:10000
+    storage:
+      type: s3
+      s3:
+        endpoint: http://localhost:9000
+        region: us-east-1
+        access-key-id: graphoenix
+        secret-access-key: graphoenix
+        bucket: graphoenix
+        force-path-style: true

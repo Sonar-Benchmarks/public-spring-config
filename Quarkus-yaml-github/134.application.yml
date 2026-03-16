@@ -1,0 +1,130 @@
+application:
+  name: Dashboard IMU
+  environment: ${ENVIRONMENT:production}
+  database:
+    host: ${DATABASE_HOST:localhost}
+    name: ${DATABASE_NAME:dashboard-imu}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:1}
+    port: ${DATABASE_PORT:5432}
+  frontend:
+    url: ${FRONTEND_URL:"http://localhost:8080"}
+  backend:
+    host: ${BACKEND_HOST:0.0.0.0}
+    port: ${BACKEND_PORT:7000}
+    protocol: ${BACKEND_PROTOCOL:http}
+    base-url: ${application.backend.host}:${application.backend.port}
+  security:
+    issuer: ${SECURITY_ISSUER:dashboard-imu}
+    token: ${SECURITY_TOKEN:1}
+    subject: ${SECURITY_ISSUER:dashboard-imu}
+  socket:
+    host: ${SOCKET_HOST:localhost}
+    port: ${SOCKET_PORT:7001}
+  mqtt:
+    host: ${MQTT_HOST:localhost}
+    port: ${MQTT_PORT:7002}
+  mdns:
+    protocol: ${MDNS_PROTOCOL:http}
+    name: ${MDNS_NAME:dashboard}
+  smtp:
+    host: smtp.gmail.com
+    user: ${SMTP_USER:email@gmail.com}
+    password: ${SMTP_PASSWORD:1}
+    port: 587
+    tls: true
+    ssl: true
+    from: ${SMTP_USER:email@gmail.com}
+    default-to: seuemail@gmail.com
+
+smallrye:
+  jwt:
+    sign:
+      key:
+        location: classpath:security/private.pem
+
+mp:
+  jwt:
+    verify:
+      publickey:
+        location: classpath:security/public.pem
+      issuer: ${application.security.issuer}
+
+quarkus:
+  application:
+    name: ${application.mdns.name}
+  mdns:
+    enabled: true
+  package:
+    jar:
+      type: fast-jar
+  native:
+    enabled: true
+    container-build: true
+  devservices:
+    enabled: false
+  live-reload:
+    instrumentation: true
+  analytics:
+    disabled: true
+  http:
+    host: ${application.backend.host}
+    port: ${application.backend.port}
+    cors:
+      ~: true
+      origins: "*"
+    record-request-start-time: true
+    limits:
+      max-body-size: 100M
+    access-log:
+      enabled: true
+      pattern: '%h %l %u %t "%r" %s %bbytes %Dms'
+  log:
+    console:
+      format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n"
+      charset: UTF-8
+    file:
+      format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n"
+      charset: UTF-8
+  cache:
+    caffeine:
+      permission-cache:
+        expire-after-write: 60M
+      movement-types-cache:
+        expire-after-write: 20M
+      user-context-cache:
+        expire-after-write: 10M
+        initial-capacity: 100
+        maximum-size: 1000
+  hibernate-orm:
+    log:
+      sql: false
+    jdbc:
+      timezone: America/Sao_Paulo
+    database:
+      generation: update
+    packages: com.rot, com.blazebit.persistence.impl.function.entity
+    implicit-naming-strategy: com.rot.core.hibernate.implementation.ImplicitNamingStrategyImpl
+    second-level-caching-enabled: false
+  datasource:
+    db-kind: postgresql
+    db-version: 18.0
+    username: ${application.database.username}
+    password: ${application.database.password}
+    devservices:
+      enabled: false
+    jdbc:
+      leak-detection-interval: 8000
+      idle-removal-interval: 50M
+      max-lifetime: 50M
+      max-size: 500
+      url: jdbc:postgresql://${application.database.host}:${application.database.port}/${application.database.name}?autoReconnect=true&useSSL=false
+  flyway:
+    migrate-at-start: false
+    baseline-on-migrate: true
+#    baseline-version: "1"
+  locales: pt-BR
+  smallrye-jwt:
+    enabled: true
+  config:
+    locations: application-dev.yml,application.yml

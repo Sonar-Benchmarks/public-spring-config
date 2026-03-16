@@ -1,0 +1,35 @@
+compiler:
+  directory: ${COMPILER_BASE_DIR:../compiler}
+  language-ext:
+    java: java
+    python: py
+    c: c
+  language-out-ext:
+    java: ${COMPILER_JAVA_OUT_EXT:jtxt}
+    python: ${COMPILER_PYTHON_OUT_EXT:ptxt}
+    c: ${COMPILER_C_OUT_EXT:ctxt}
+  language-out-err-ext:
+    java: ${COMPILER_JAVA_OUT_ERR_EXT:jext}
+    python: ${COMPILER_PYTHON_OUT_ERR_EXT:pext}
+    c: ${COMPILER_C_OUT_ERR_EXT:cext}
+  others-ext:
+    - out
+  languages:
+    java:
+      - "17"
+    python:
+      - "3.10.0"
+    c:
+      - "17"
+
+
+cron:
+  expr: ${COMPILER_CRON_EXP:*/10 * * * * ?}
+
+quarkus:
+  http:
+    port: ${PORT:8081}
+    cors:
+      ~: true
+      origins: http://localhost:5173
+      methods: GET,PUT,POST,OPTION,PUT

@@ -1,0 +1,35 @@
+# Quarkus will choose application.yaml over application.properties.
+quarkus:
+    http:
+        port: 8080
+        read-timeout: 15m
+        limits:
+          max-body-size: 1024M
+    otel:
+        enabled: true
+        traces:
+            enabled: true
+            sampler:
+                ~: traceidratio
+                arg: 1.0
+
+    # Logging (disable console on prod)
+    log:
+        level: INFO
+        category:
+            "org.commonjava.util.gateway":
+                level: TRACE
+        console:
+            level: TRACE
+            enable: true
+        file:
+            enable: true
+            path: "log/gateway.log"
+            level: DEBUG
+            format: "%d{HH:mm:ss} %-5p [%c{2.}] (%t) %s%e%n"
+            rotation:
+                max-backup-index: 5
+                max-file-size: 10M
+
+    swagger-ui:
+        always-include: true

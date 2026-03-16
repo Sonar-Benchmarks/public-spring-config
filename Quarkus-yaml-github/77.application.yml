@@ -1,0 +1,77 @@
+quarkus:
+  banner:
+    enabled: false
+  cache:
+    enabled: true
+    caffeine:
+        expire-after-write: 30m
+        maximum-size: 50
+  http:
+    access-log:
+      enabled: true
+      log-to-file: true
+      base-file-name: application-access
+      log-directory: target
+
+    cors:
+      ~: true
+      origins: "*"
+    root-path: /api
+    record-request-start-time: true
+  log:
+    file:
+      enable: true
+      path: "./target/application-server.log"
+      format: "%d{yyyy-MM-dd HH:mm:ss} %-5p [%c] (%t) %s%e%n"
+      rotation:
+        file-suffix: .yyyy-MM-dd
+        max-file-size: 1M
+  rest-client:
+    connect-timeout: 5000
+    read-timeout: 5000
+    weather:
+      url: https://api.weatherapi.com
+
+weather:
+  api-key: ${WEATHER_API_KEY}
+  cities:
+    - "Alba Iulia"
+    - "Arad"
+    - "Pitesti"
+    - "Bacau"
+    - "Oradea"
+    - "Bistrita"
+    - "Botosani"
+    - "Brasov"
+    - "Braila"
+    - "Buzau"
+    - "Resita"
+    - "Calarasi"
+    - "Cluj-Napoca"
+    - "Constanta"
+    - "Covasna"
+    - "Targoviste"
+    - "Craiova"
+    - "Galati"
+    - "Giurgiu"
+    - "Targu Jiu"
+    - "Miercurea Ciuc"
+    - "Deva"
+    - "Slobozia"
+    - "Iasi"
+    - "Baia Mare"
+    - "Drobeta-Turnu Severin"
+    - "Targu Mures"
+    - "Piatra Neamt"
+    - "Slatina"
+    - "Ploiesti"
+    - "Satu Mare"
+    - "Zalau"
+    - "Sibiu"
+    - "Suceava"
+    - "Timisoara"
+    - "Tulcea"
+    - "Ramnicu Valcea"
+    - "Vaslui"
+    - "Focsani"
+    - "Bucuresti"

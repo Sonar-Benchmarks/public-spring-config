@@ -1,0 +1,77 @@
+quarkus:
+  arc:
+    selected-alternatives:
+      - org.acme.orders.config.JwtAuthContextProducer
+  http:
+    port: ${HTTP_PORT:8083}
+  
+  datasource:
+    db-kind: postgresql
+    username: ${DB_USER:appuser}
+    password: ${DB_PASSWORD:apppassword}
+    jdbc:
+      url: ${DB_JDBC_URL:jdbc:postgresql://localhost:5432/appdb}
+  
+  hibernate-orm:
+    database:
+      generation: update
+    jdbc:
+      statement-batch-size: 20
+  
+  log:
+    category:
+      "org.hibernate.SQL":
+        level: INFO
+  
+  smallrye-openapi:
+    path: ${OPENAPI_PATH:/openapi/orders}
+
+  swagger-ui:
+    always-include: true
+    path: ${SWAGGER_PATH:/swagger/orders}
+
+# JWT Configuration
+jwt:
+  issuer: ${JWT_ISSUER:users-service}
+  algorithm: ${JWT_ALGORITHM:HS256}
+  secret: ${JWT_SECRET:super-secret-change-me-please-change-me-32-bytes-minimum-length}
+
+# Kafka Configuration
+mp.messaging:
+  outgoing:
+    order-events:
+      connector: smallrye-kafka
+      topic: order-events
+      key.serializer: org.apache.kafka.common.serialization.StringSerializer
+      value.serializer: org.apache.kafka.common.serialization.StringSerializer
+      max.request.size: 10485760
+      acks: all
+      retries: 3
+      compression.type: snappy
+      enable.idempotence: true
+      bootstrap.servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+  
+  incoming:
+    article-events:
+      connector: smallrye-kafka
+      topic: article-events
+      key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group.id: orders-service-group
+      auto.offset.reset: earliest
+      fetch.max.bytes: 10485760
+      enable.auto.commit: false
+      commit-strategy: throttled
+      failure-strategy: ignore
+      max.poll.records: 500
+      session.timeout.ms: 30000
+      heartbeat.interval.ms: 3000
+      bootstrap.servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+kafka:
+  bootstrap:
+    servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+# REST Client for Articles Service
+articles-service/mp-rest/url: ${ARTICLES_SERVICE_URL:http://localhost:8082}
+articles-service/mp-rest/scope: jakarta.inject.Singleton

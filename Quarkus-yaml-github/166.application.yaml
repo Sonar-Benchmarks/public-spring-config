@@ -1,0 +1,153 @@
+security:
+  anonymous-user-enabled: false
+  anonymous-user-session-timeout: 300 # Inactivity in seconds after which an anonymous session is removed from chat memory
+  admin-write-only-enabled: false # With this enabled, only admins have write-access to knowledge, i.e. regular users cannot add or modify knowledge
+
+frontend:
+  # Provide the configuration for the frontend OIDC client
+  oidc:
+    client-id: llamara-frontend
+    # Default paths for Keycloak
+    authorization-path: /protocol/openid-connect/auth
+    logout-path: /protocol/openid-connect/logout
+    token-path: /protocol/openid-connect/token
+    # Optional audience for the OIDC token, may be used to obtain JWT access tokens instead of Auth0 opaque access tokens.
+    # audience:
+  # Provide legals links for the frontend
+  legals:
+    # imprint: "https://example.com/imprint" # Link to imprint
+    # privacy-policy: "https://example.com/privacy-policy" # Link to privacy policy
+
+chat:
+  memory:
+    # Maximum number of messages to keep in memory, i.e. to present to the LLM when sending a prompt.
+    # Keep in mind: bigger memory = more input tokens = more cost
+    window: token # Supported values: message, token
+    max-messages: 5
+    max-tokens: 1000
+    tokenizer:
+      provider: openai # Supported providers: openai (as Azure is using OpenAI models, we can use OpenAI tokenizer)
+      model: gpt-4o-mini
+  history:
+    max-messages: 50 # Maximum number of messages to keep in history, i.e. to present them to the user.
+  models:
+    # Supported model providers: azure, openai, ollama
+    # Supported model parameters: temperature, top-p, frequency-penalty, presence-penalty, max-tokens
+    # See https://platform.openai.com/docs/api-reference/chat/create for parameter description.
+    # - Gemini models support temperature, top-p and max-tokens.
+    # - Mistral models support temperature, top-p and max-tokens.
+    # - Ollama models support temperature, top-p and frequency-penalty.
+    # - (Microsoft Azure) OpenAI supports all model parameters.
+
+    # Google Gemini models need model config and GOOGLE_GEMINI_API_KEY env variable
+    #- uid: gemini-2-0-flash
+    #  provider: google-gemini
+    #  model: gemini-2.0-flash
+    #  label: Gemini 2.0 Flash
+    #  description: Google Gemini 2.0 Flash
+
+    # Mistral models need model config and MISTRAL_API_KEY env variable
+    #- uid: mistral-small
+    #  provider: mistral
+    #  model: mistral-small-latest
+    #  label: Mistral Small
+
+    # Microsoft Azure OpenAI models need resource-name, model config and AZURE_API_KEY env variable
+    #- uid: azure-gpt4o-mini
+    #  provider: azure
+    #  resource-name: my-azure-resource # Azure OpenAI resource name
+    #  model: gpt-4o-mini-2024-07-18 # Azure OpenAI deployment name
+    #  label: Azure GPT 4o Mini
+    #  description: Azure OpenAI GPT 4 Omni Mini
+
+    # Ollama models need base URL and model config
+    #- uid: llama3-1
+    #  provider: ollama
+    #  base-url: http://localhost:11435
+    #  model: llama3.1
+    #  label: LLAMA 3.1
+    #  description: Meta LLAMA 3.1 8b
+
+    # OpenAI models need model config and OPENAI_API_KEY key env variable
+    - uid: gpt4o-mini
+      provider: openai
+      model: gpt-4o-mini
+      label: GPT 4o Mini
+      description: OpenAI GPT 4 Omni Mini
+
+    # OpenAI reasoning models require disabling the system prompt and setting the temperature to 1.0
+    #- uid: o1-mini
+    #  provider: openai
+    #  model: o1-mini
+    #  label: o1 Mini
+    #  description: OpenAI o1 Mini
+    #  system-prompt-enabled: false
+    #  temperature: 1.0
+
+embedding:
+  store:
+    type: qdrant # Supported types: qdrant
+    host: localhost
+    port: 6334 # Qdrant gRPC port
+    tls: false
+    collection-name: text-embedding-3-large
+    vector-size: 3072
+  model:
+    provider: openai # Supported providers: azure, google-gemini, mistral, ollama, openai
+    # Azure OpenAI models need resource-name, model config and AZURE_API_KEY env variable
+    # Google Gemini Models need model config and GOOGLE_GEMINI_API_KEY env variable
+    # Mistral models need model config and MISTRAL_API_KEY env variable
+    # Ollama models need base URL and model config
+    # OpenAI models need model config and OPENAI_API_KEY key env variable
+    # Ollama models need base URL and model config
+    model: text-embedding-3-large
+
+file-storage:
+  type: minio # Supported types: minio, fs
+  # MinIO needs url configuration and MINIO_ACCESS_KEY and MINIO_SECRET_KEY env variables
+  # FS needs path configuration
+  bucket-name: llamara # The MinIO bucket name
+  secure: false
+
+ingestion:
+  document-splitter:
+    type: paragraph # Supported types: line, paragraph, recursive
+    max-segment-size: 1000
+    max-overlap-size: 200
+
+retrieval:
+  # The prompt template is used to inject the retrieved context into the user prompt and instruct the chat model to generate a response.
+  # It must contain {{userMessage}} and {{contents}} variables.
+  prompt-template: |-
+    {{userMessage}}
+    
+    Answer preferably using the following information.
+    When answering using the following information, ALWAYS provide the source of the information for EACH paragraph.
+    The source is specified by the knowledge_id and embedding_id and MUST be in the following JSON format: { "knowledge_id": knowledge_id, "embedding_id": embedding_id }.
+    Again: ALWAYS provide the source of the information for EACH paragraph.
+    
+    If, I repeat ONLY if explicitly asked for citation, cite the relevant parts word-by-word and provide the source of the information.
+    If the citation is in a different language than the question, provide a translation.
+    If you are not asked for citation, answer in your own words.
+    
+    If the following information is not sufficient to answer, answer the question with your own knowledge.
+    In that case, you MUST state that you are answering based on your own knowledge.
+    
+    Information:
+    {{contents}}
+  # The missing knowledge prompt template is used to prompt the chat model for its own knowledge if no context was retrieved.
+  # It must contain the {{userMessage}} variable.
+  missing-knowledge-prompt-template: |-
+      {{userMessage}}
+      
+      Answer based on your own knowledge.
+      You MUST state that you are answering based on your own knowledge.
+
+quarkus:
+  swagger-ui:
+    enabled: false
+  oidc:
+    authentication:
+    # When using Auth0, you need to set the roles claim path, e.g. to "auth0/roles", and create an action flow to map the roles to the token.
+    # roles:
+      # role-claim-path: '"auth0/roles"'

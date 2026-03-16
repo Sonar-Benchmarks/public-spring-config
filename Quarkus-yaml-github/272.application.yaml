@@ -1,0 +1,22 @@
+quarkus:
+  datasource:
+    username: postgres
+    password: postgres
+    devservices:
+      enabled: true
+      port: 5432
+      db-name: ${database.name}
+      image-name: postgres:17.6-alpine3.22
+  hibernate-orm:
+    log:
+      sql: true
+  otel:
+    enabled: false
+  log:
+    category:
+      "org.hibernate":
+        min-level: trace
+        level: trace
+      "org.postgresql":
+        min-level: trace
+        level: trace

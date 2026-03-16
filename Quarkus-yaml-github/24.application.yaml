@@ -1,0 +1,37 @@
+working-groups:
+  organizations:
+    - quarkusio
+    - quarkiverse
+  project-prefix: WG -
+
+
+quarkus:
+  smallrye-graphql-client:
+    github:
+      url: https://api.github.com/graphql
+      header:
+        Authorization: Bearer ${GITHUB_TOKEN}
+
+  hibernate-orm:
+    database:
+      generation: update
+  datasource:
+    db-kind: sqlite
+    jdbc:
+      url: jdbc:sqlite:./working-groups.db
+  langchain4j:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      timeout: 1m
+
+
+"%prod":
+  quarkus:
+    hibernate-orm:
+      database:
+        generation: update
+    datasource:
+      db-kind: sqlite
+      jdbc:
+        url: jdbc:sqlite:file:wg.db?nolock=1
+

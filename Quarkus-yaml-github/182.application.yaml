@@ -1,0 +1,22 @@
+quarkus:
+  liquibase-mongodb:
+    change-log: db/changelog.yaml
+    contexts: dev,test
+    migrate-at-start: true
+    validate-on-migrate: true
+
+mp:
+  messaging:
+    incoming:
+      course-state:
+        connector: smallrye-in-memory
+        topic: "Courses.course_state"
+      hole-state:
+        connector: smallrye-in-memory
+        topic: "Courses.hole_state"
+      player-state:
+        connector: smallrye-in-memory
+        topic: "Players.player_state"
+      scorecard-state:
+        connector: smallrye-in-memory
+        topic: "Scorecards.scorecard_state"

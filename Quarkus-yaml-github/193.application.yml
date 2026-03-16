@@ -1,0 +1,49 @@
+file-server:
+  upload-path: ./fileUploads/
+web:
+  redirects: # 支持配置301跳转
+    - from: /
+      to: /web/
+frontend: # 支持配置前端文件夹
+  resources:
+    - prefix: /web1/
+      path: /Users/workspace/xxx/dist
+proxy: # 内嵌反向代理服务器
+  upstreams:
+    - prefix: /web/
+      url: http://localhost:8001/web/
+quarkus:
+  http:
+    port: 8080
+  rest:
+    path: /api
+
+  datasource:
+    db-kind: postgresql
+    username: postgres
+    password: muyun2024
+    jdbc:
+      url: jdbc:postgresql://localhost:54324/muyun
+  banner:
+    path: banner.txt
+
+  management:
+    enable-compression: true
+
+  log:
+    category:
+      "org.jdbi":
+        level: INFO
+
+    level: INFO
+    console:
+      enable: true
+      format: "%d{yyyy-MM-dd HH:mm:ss} %-5p [%c{3.}] (%t) %s%e%n"
+    file:
+      enable: false
+      path: logs/muyun.log
+      level: DEBUG
+      format: "%d{yyyy-MM-dd HH:mm:ss} %-5p [%c{3.}] (%t) %s%e%n"
+      rotation:
+        file-suffix: .yyyy-MM-dd
+        rotate-on-boot: true
